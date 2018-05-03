@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/spec_edit_ly"
+        android:layout_width="90dip"
+        android:layout_height="55dip"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/edit_spec"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/edit_spec" />
+
+        <ImageView
+            android:id="@+id/delete_spec"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/delete_spec" />
+
+        <ImageView
+            android:id="@+id/add_spec"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_spec" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dip"
+        android:layout_toLeftOf="@id/spec_edit_ly"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/spec_tv"
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="1dip"
+            android:hint="特殊日期备注"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:textColor="@color/item_second_font_color"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/spec_date"
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:layout_weight="1.5"
+            android:gravity="center_vertical"
+            android:padding="1dip"
+            android:hint="特殊日期"
+            android:textColor="@color/item_second_font_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</RelativeLayout>

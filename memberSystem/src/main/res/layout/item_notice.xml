@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="0dip" >
+
+        <ImageView
+            android:id="@+id/notice_iv"
+            android:layout_width="45dip"
+            android:layout_height="45dip"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:src="@drawable/notice_icon" />
+
+        <TextView
+            android:id="@+id/notice_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="0dip"
+            android:drawablePadding="0dip"
+            android:drawableRight="@drawable/ic_right_arrow"
+            android:gravity="center_vertical"
+            android:text="2017-04-30"
+            android:textColor="@color/item_second_font_color"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/notice_date"
+            android:layout_toRightOf="@id/notice_iv"
+            android:paddingLeft="6dip"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/notice_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/item_font_color"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:text="51节礼品"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/notice_manager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.3"
+                android:text="销售经理"
+                android:drawableLeft="@drawable/customer_server_center_gray"
+                android:gravity="center_vertical"
+                android:textColor="@color/item_second_font_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+        
+        <ImageView 
+            android:id="@+id/handle"
+            android:layout_width="40dip"
+            android:layout_height="29dip"
+            android:src="@drawable/handled"
+            android:scaleType="fitCenter"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="120dip"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginRight="24dp"
+        android:background="@color/item_line_color" />
+
+</LinearLayout>

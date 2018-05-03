@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="0dip" >
+
+        <LinearLayout
+            android:id="@+id/customer_avater_rl"
+            android:layout_width="100dip"
+            android:layout_height="48dip"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+
+            <CheckBox
+                android:id="@+id/customer_select"
+                android:layout_width="48dip"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:button="@drawable/checkbox_selector"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <com.lyp.membersystem.view.CircleImageView
+                android:id="@+id/customer_avater"
+                android:layout_width="48dip"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dip"
+                android:scaleType="centerCrop"
+                android:src="@drawable/customer_avater_dafault"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/customer_avater_rl"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/item_font_color"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginRight="24dp"
+        android:background="@color/item_line_color" />
+
+</LinearLayout>

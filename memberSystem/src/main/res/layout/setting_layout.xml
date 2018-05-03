@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/main_bg_color" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:onClick="onBack" >
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="center"
+                android:src="@drawable/back_white" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dp"
+                android:background="@color/item_line_color" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:visibility="visible"
+                android:onClick="upLoadQBasemap" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="0dip"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_right_arrow"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/qgraphbasemap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dip"
+                    android:drawablePadding="2dip"
+                    android:gravity="center_vertical"
+                    android:text="上传Q底图"
+                    android:textColor="@color/item_font_color"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+            
+             <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dp"
+                android:background="@color/item_line_color" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:onClick="upLoadSignBasemap" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="0dip"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_right_arrow"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/signaturebasemap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dip"
+                    android:drawablePadding="2dip"
+                    android:gravity="center_vertical"
+                    android:text="上传签名底图"
+                    android:textColor="@color/item_font_color"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+            
+             <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dp"
+                android:background="@color/item_line_color" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:visibility="visible"
+                android:onClick="upLoadBusinessCard" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="0dip"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_right_arrow"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/businesscard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dip"
+                    android:drawablePadding="2dip"
+                    android:gravity="center_vertical"
+                    android:text="上传名片"
+                    android:textColor="@color/item_font_color"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10px"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dp"
+                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/exitBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dip"
+                    android:layout_marginEnd="10dip"
+                    android:layout_marginStart="10dip"
+                    android:background="@drawable/btn_red_selector"
+                    android:gravity="center"
+                    android:onClick="exitApp"
+                    android:text="退出"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

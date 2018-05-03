@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#F1F1F1"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/no_child"
+        style="@style/popwindow_tv_16_width_220"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:padding="5dip"
+        android:singleLine="true"
+        android:text="无子女"
+        android:textColor="@color/item_second_font_color" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="@color/divide_line" />
+
+    <TextView
+        android:id="@+id/has_child"
+        style="@style/popwindow_tv_16_width_220"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:padding="5dip"
+        android:singleLine="true"
+        android:text="有子女"
+        android:textColor="@color/item_second_font_color" />
+
+</LinearLayout>

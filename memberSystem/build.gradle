@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "com.lyp.membersystem"
+        minSdkVersion 19
+        targetSdkVersion 24
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':bQMM_Lib')
+    compile 'com.android.support:support-v4:24.2.1'
+    compile files('libs/alipaySdk-20170725.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/bugly_crash_release.jar')
+    compile files('libs/glide-3.6.1.jar')
+    compile files('libs/HwPush_SDK_NOMAP_V2705.jar')
+    compile files('libs/jsoup-1.7.1.jar')
+    compile files('libs/libpingpp-2.1.12.jar')
+    compile files('libs/locSDK_6.13.jar')
+    compile files('libs/MobCommons-2016.0301.1053.jar')
+    compile files('libs/MobTools-2016.0301.1053.jar')
+    compile files('libs/org.apache.http.legacy.jar')
+    compile files('libs/pinyin4j-2.5.0.jar')
+    compile files('libs/ShareSDK-Core-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.0.jar')
+    compile files('libs/swipemenulistview.jar')
+    compile files('libs/universal-image-loader-1.9.3.jar')
+    compile files('libs/UPPayAssistEx.jar')
+    compile files('libs/UPPayPluginExPro.jar')
+    compile files('libs/wechat-sdk-android-without-mta.jar')
+    compile files('libs/Yuntx_IMLib_v5.3.1r.jar')
+    implementation 'com.android.support:appcompat-v7:24.2.1'
+    implementation 'com.android.support:design:24.2.1'
+    implementation 'com.jakewharton:butterknife:8.4.0'
+}

@@ -1,0 +1,190 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F1F1"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/main_bg_color" >
+
+       <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:onClick="onBack" >
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="center"
+                android:src="@drawable/back_white" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/back"
+                android:scaleType="center"
+                android:src="@drawable/nag_white" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/mall"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@color/white" >
+
+        <Gallery
+            android:id="@+id/img_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="270dp" />
+
+        <ImageView
+            android:id="@+id/guide_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="2dip"
+            android:src="@drawable/page_indicator_unfocused" />
+
+        <ImageView
+            android:id="@+id/guide_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="2dip"
+            android:layout_toLeftOf="@id/guide_two"
+            android:src="@drawable/page_indicator_focused" />
+
+        <ImageView
+            android:id="@+id/guide_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="2dip"
+            android:layout_toRightOf="@id/guide_two"
+            android:src="@drawable/page_indicator_unfocused" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/item_line_color" />
+
+    <TextView
+        android:id="@+id/good_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:lines="3"
+        android:paddingBottom="10dip"
+        android:paddingEnd="20dip"
+        android:paddingStart="20dip"
+        android:paddingTop="10dip"
+        android:text="@string/mall"
+        android:textColor="@color/item_font_color"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginEnd="20dip"
+        android:layout_marginStart="20dip"
+        android:background="@color/item_line_color" />
+
+    <TextView
+        android:id="@+id/good_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="5dip"
+        android:paddingEnd="20dip"
+        android:paddingStart="20dip"
+        android:paddingTop="5dip"
+        android:text="￥888"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:paddingBottom="20dip"
+        android:paddingEnd="0dip"
+        android:paddingStart="20dip"
+        android:paddingTop="20dip" >
+
+        <TextView
+            android:id="@+id/good_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:lines="1"
+            android:text="规则"
+            android:textColor="@color/item_font_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/good_rule_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/good_rule"
+            android:drawableEnd="@drawable/ic_right_arrow"
+            android:gravity="center_vertical|right"
+            android:lines="1"
+            android:paddingStart="10dip"
+            android:text="规则"
+            android:textColor="@color/item_font_color"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="60dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/buy_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#1AB392"
+                android:gravity="center"
+                android:onClick="buyBtn"
+                android:paddingEnd="30dip"
+                android:paddingStart="30dip"
+                android:text="@string/select"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

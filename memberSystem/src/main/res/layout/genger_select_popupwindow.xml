@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pop_bg_shape"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/btn1"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="全部" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/item_line_color" />
+
+    <TextView
+        android:id="@+id/btn2"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="男" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/item_line_color" />
+
+    <TextView
+        android:id="@+id/btn3"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="女" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/item_line_color" />
+
+    <TextView
+        android:id="@+id/btn4"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="儿童" />
+
+</LinearLayout>

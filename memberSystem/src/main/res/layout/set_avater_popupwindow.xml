@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pop_bg_shape"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/invoke_camera"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="@string/invoke_camera" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/divide_line" />
+
+    <TextView
+        android:id="@+id/select_from_gallery"
+        style="@style/popwindow_tv_16_width_220"
+        android:text="@string/select_from_gallery" />
+
+</LinearLayout>
