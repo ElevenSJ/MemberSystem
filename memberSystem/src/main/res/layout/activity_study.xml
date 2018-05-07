@@ -43,54 +43,119 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline">
 
         <TextView
-            android:id="@+id/txt_customer"
+            android:id="@+id/txt_read_book"
             style="@style/TxtBlackSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/img_customer"
+            android:drawableTop="@drawable/img_read_book"
             android:gravity="center_horizontal"
-            android:text="客户管理\nCUSTOMER"
+            android:text="作者说书"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_gift_shop"
+            android:id="@+id/txt_morning_meetting"
             style="@style/TxtBlackSmall"
             android:layout_width="0dp"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/img_gift_shop"
+            android:drawableTop="@drawable/img_morning_meetting"
             android:gravity="center_horizontal"
-            android:text="礼品商城\nGIFT SHOP"
+            android:text="早会题材"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_study"
+            android:id="@+id/txt_good_time"
             style="@style/TxtBlackSmall"
             android:layout_width="0dp"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/img_study"
+            android:drawableTop="@drawable/img_good_time"
             android:gravity="center_horizontal"
-            android:text="进修学习\nSTUDY"
+            android:text="精粹时光"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_reservation"
+            android:id="@+id/txt_train"
             style="@style/TxtBlackSmall"
             android:layout_width="0dp"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/img_reservation"
+            android:drawableTop="@drawable/img_train"
             android:gravity="center_horizontal"
-            android:text="预约服务\nRESERVATION"
+            android:text="培训课程"
             android:textStyle="bold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/layout">
+
+        <TextView
+            android:id="@+id/txt_teacher"
+            style="@style/TxtBlackSmall"
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/img_teacher"
+            android:gravity="center_horizontal"
+            android:text="讲师介绍"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_MDRT"
+            style="@style/TxtBlackSmall"
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/img_mdrt"
+            android:gravity="center_horizontal"
+            android:text="MDRT秘诀"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_forum"
+            style="@style/TxtBlackSmall"
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/img_forum"
+            android:gravity="center_horizontal"
+            android:text="首席论坛"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_class"
+            style="@style/TxtBlackSmall"
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/img_class"
+            android:gravity="center_horizontal"
+            android:text="小课堂"
+            android:textStyle="bold" />
+    </LinearLayout>
     <com.jude.easyrecyclerview.EasyRecyclerView
         android:id="@+id/ryl_view"
         android:layout_width="0dp"
@@ -98,7 +163,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout"
+        app:layout_constraintTop_toBottomOf="@+id/layout1"
         app:layout_constraintVertical_bias="0.0"
         app:layout_empty="@layout/layout_view_empty"
         app:scrollbarStyle="insideOverlay"

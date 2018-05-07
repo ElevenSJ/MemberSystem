@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Keep;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.sj.utils.Utils;
 
@@ -18,7 +19,7 @@ import com.sj.utils.Utils;
 public abstract class FragmentBase extends Fragment {
 
     protected ActivityBase mActivity;
-
+    public View view;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -31,7 +32,7 @@ public abstract class FragmentBase extends Fragment {
      *
      * @return ActivityBase
      */
-    protected ActivityBase getHoldingActivity() {
+    public ActivityBase getHoldingActivity() {
         return mActivity;
     }
 
@@ -100,6 +101,10 @@ public abstract class FragmentBase extends Fragment {
      */
     protected void popFragment() {
         getHoldingActivity().popFragment();
+    }
+
+    public View findViewById(int id){
+        return view.findViewById(id);
     }
 
 }

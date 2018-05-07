@@ -971,6 +971,44 @@
             android:launchMode="standard"
             android:screenOrientation="portrait" >
         </activity>
+
+
+        <!--二期改造 -->
+        <activity
+            android:name="com.sj.activity.ActivityMain"
+            android:theme="@style/AppNewTheme"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.sj.activity.ActivityRegister"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.sj.activity.RegisterHtmlActivity"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.sj.activity.ActivityStudy"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.sj.activity.ActivityForumDetail"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.sj.activity.ActivityCardBag"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivityForum"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

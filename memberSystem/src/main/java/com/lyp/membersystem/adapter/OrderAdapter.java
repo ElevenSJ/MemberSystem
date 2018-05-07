@@ -8,11 +8,11 @@ import com.lyp.membersystem.bean.GoodBean;
 import com.lyp.membersystem.bean.OrderBean;
 import com.lyp.membersystem.manager.ImageManager;
 import com.lyp.membersystem.ui.GoodDetailActivity;
-import com.lyp.membersystem.ui.OrderActivity;
 import com.lyp.membersystem.ui.OrderDetailActivity;
 import com.lyp.membersystem.view.contactsort.ContactSortModel;
 import com.nodeprogress.nodeprogress.ExpressActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +25,9 @@ import android.widget.TextView;
 public class OrderAdapter extends BaseAdapter {
 
 	private List<OrderBean> orderList;
-	private OrderActivity activity;
+	private Context activity;
 
-	public OrderAdapter(List<OrderBean> orderList, OrderActivity context) {
+	public OrderAdapter(List<OrderBean> orderList, Context context) {
 		super();
 		this.orderList = orderList;
 		this.activity = context;

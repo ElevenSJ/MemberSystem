@@ -668,4 +668,15 @@
     <string name="title_home">首页</string>
     <string name="title_dashboard">订单</string>
     <string name="title_notifications">我的</string>
+
+    <string name="txt_not_register">还没有账号？<u>立即注册</u></string>
+    <string name="txt_register_html">用户<u>注册协议</u></string>
+    <string name="register">注册</string>
+
+    <!--EasyRecyclerView库的公用布局-->
+    <string name="more_loading">加载更多…</string>
+    <string name="no_more">没有更多了</string>
+    <string name="load_error_resume">加载出错，点击重试</string>
+    <string name="more">更多</string>
+    <string name="no_data">暂无数据</string>
 </resources>

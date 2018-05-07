@@ -1,17 +1,5 @@
 package com.lyp.membersystem;
 
-import org.json.JSONObject;
-
-import com.lyp.membersystem.base.BaseActivity;
-import com.lyp.membersystem.log.LogUtils;
-import com.lyp.membersystem.net.Errors;
-import com.lyp.membersystem.net.MessageContants;
-import com.lyp.membersystem.net.NetProxyManager;
-import com.lyp.membersystem.utils.Constant;
-import com.lyp.membersystem.utils.SystemStatusManager;
-import com.lyp.membersystem.utils.ToastUtil;
-import com.lyp.membersystem.view.dialog.WaitDialog;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -22,6 +10,22 @@ import android.text.Editable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+
+import com.lyp.membersystem.base.BaseActivity;
+import com.lyp.membersystem.log.LogUtils;
+import com.lyp.membersystem.net.Errors;
+import com.lyp.membersystem.net.MessageContants;
+import com.lyp.membersystem.net.NetProxyManager;
+import com.lyp.membersystem.utils.Constant;
+import com.lyp.membersystem.utils.SystemStatusManager;
+import com.lyp.membersystem.utils.ToastUtil;
+import com.lyp.membersystem.view.dialog.WaitDialog;
+import com.sj.activity.ActivityRegister;
+import com.sj.activity.ActivityMain;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class LoginActivity extends BaseActivity {
 
@@ -61,6 +65,24 @@ public class LoginActivity extends BaseActivity {
 		setTranslucentStatus();
 		setContentView(R.layout.login_layout);
 		initView();
+		AndPermission.with(this)
+				.permission(Permission.WRITE_EXTERNAL_STORAGE,
+						Permission.READ_EXTERNAL_STORAGE,
+						Permission.READ_PHONE_STATE,
+						Permission.ACCESS_COARSE_LOCATION,
+						Permission.CAMERA,
+						Permission.RECORD_AUDIO)
+				.onGranted(new Action() {
+					@Override
+					public void onAction(List<String> permissions) {
+						// TODO what to do.
+					}
+				}).onDenied(new Action() {
+			@Override
+			public void onAction(List<String> permissions) {
+				// TODO what to do
+			}
+		}).start();
 	}
 
 	@Override
@@ -95,6 +117,11 @@ public class LoginActivity extends BaseActivity {
 		NetProxyManager.getInstance().toGetSMSAuthCode(mainHandler, phone);
 	}
 
+	public void toRegister(View view){
+		Intent intent = new Intent(this, ActivityRegister.class);
+		startActivityForResult(intent,101);
+	}
+
 	public void login(View view) {
 //		loginSuccess();
 		
@@ -118,7 +145,7 @@ public class LoginActivity extends BaseActivity {
 
 	private void loginSuccess() {
 		Intent intent = new Intent();
-		intent.setClass(LoginActivity.this, MainActivity.class);
+		intent.setClass(LoginActivity.this, ActivityMain.class);
 		startActivity(intent);
 		finish();
 	}
@@ -214,6 +241,19 @@ public class LoginActivity extends BaseActivity {
 		} catch (Exception ex) {
 			LogUtils.e(ex.getMessage());
 			return;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK){
+			if (requestCode == 101){
+				if (data!=null){
+					String phoneNum = data.getStringExtra("phoneNum");
+					phone_number_et.setText(phoneNum);
+				}
+			}
 		}
 	}
 }

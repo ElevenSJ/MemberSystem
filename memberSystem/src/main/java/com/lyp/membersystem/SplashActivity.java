@@ -1,14 +1,5 @@
 package com.lyp.membersystem;
 
-import org.json.JSONObject;
-
-import com.lyp.membersystem.base.BaseActivity;
-import com.lyp.membersystem.base.BaseApplication;
-import com.lyp.membersystem.net.Errors;
-import com.lyp.membersystem.net.MessageContants;
-import com.lyp.membersystem.utils.Constant;
-import com.lyp.membersystem.utils.ToastUtil;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +7,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.WindowManager;
+
+import com.lyp.membersystem.base.BaseActivity;
+import com.lyp.membersystem.net.MessageContants;
+import com.lyp.membersystem.utils.Constant;
+import com.lyp.membersystem.utils.ToastUtil;
+import com.sj.activity.ActivityMain;
 
 public class SplashActivity extends BaseActivity {
 
@@ -64,7 +60,7 @@ public class SplashActivity extends BaseActivity {
 					if (isFirst || tokenid == null) {
 						intent.setClass(SplashActivity.this, LoginActivity.class);
 					} else {
-						intent.setClass(SplashActivity.this, MainActivity.class);
+						intent.setClass(SplashActivity.this, ActivityMain.class);
 					}
 					startActivity(intent);
 					finish();

@@ -5,6 +5,7 @@ import java.io.InvalidClassException;
 import java.util.Stack;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.log.LogUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -14,6 +15,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.sj.http.UrlConfig;
+import com.sj.utils.Utils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yuntongxun.ecdemo.common.CCPAppManager;
 import com.yuntongxun.ecdemo.common.utils.ECPreferenceSettings;
@@ -52,13 +55,17 @@ public class BaseApplication extends Application {
 		// 每一条Crash都会被立即上报
 		// 自定义日志将会在Logcat中输出
 		// 建议在测试阶段建议设置成true，发布时设置为false。
-		CrashReport.initCrashReport(getApplicationContext(), "87e0dbcc90", true);
+//		CrashReport.initCrashReport(getApplicationContext(), "87e0dbcc90", true);
 //		initImageLoader(getApplicationContext());
 		CCPAppManager.setContext(instance);
 		FileAccessor.initFileAccess();
 		setChattingContactId();
 		initImageLoader();
 //		SDKInitializer.initialize(instance);
+
+		//二期
+		Utils.init(this);
+		HttpManager.init(this.getApplicationContext(), UrlConfig.BASE_URL);
 	}
 
 	public static BaseApplication getInstance() {

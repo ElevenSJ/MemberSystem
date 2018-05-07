@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true" 
+    android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/login"
+        android:text="@string/register"
         android:layout_marginTop="15dp"
         android:textColor="@color/black"
         android:textSize="22sp" />
@@ -20,7 +20,7 @@
         android:layout_height="0dip"
         android:layout_weight="0.6"
         android:scaleType="center"
-        android:src="@drawable/avater_login" />
+        android:src="@drawable/avater_register" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -68,6 +68,9 @@
             android:layout_marginRight="10dp"
             android:background="#F0F0F0" />
 
+
+
+
         <RelativeLayout
             android:id="@+id/verify_code_rl"
             android:layout_width="match_parent"
@@ -98,7 +101,6 @@
                 android:gravity="center"
                 android:onClick="getVerifyCode"
                 android:padding="3dip"
-                android:ems="4"
                 android:text="@string/verify_code"
                 android:textColor="@color/main_bg_color"
                 android:textSize="15sp" />
@@ -119,35 +121,53 @@
                 android:textSize="15sp" />
         </RelativeLayout>
 
+        <CheckBox
+            android:id="@+id/rdbt_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/verify_code_rl"
+            android:layout_marginTop="8dp"
+            android:button="@null"
+            android:checked="true"
+            android:layout_marginLeft="25dp"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="18dp"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/gray"
+            android:textSize="15sp"
+            android:text="同意" />
+
+        <TextView
+            android:id="@+id/txt_register_html"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/rdbt_agree"
+            android:layout_alignBottom="@+id/rdbt_agree"
+            android:layout_toRightOf="@+id/rdbt_agree"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/txt_register_html"
+            android:clickable="true"
+            android:onClick="toRegisterHtml"
+            android:textColor="@color/gray"
+            android:textSize="15sp"/>
+
         <Button
             android:id="@+id/bt_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/verify_code_rl"
+            android:layout_below="@id/rdbt_agree"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
             android:layout_marginTop="8dip"
             android:background="@drawable/btn_lg_green"
             android:gravity="center"
-            android:onClick="login"
+            android:onClick="register"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/txt_to_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_below="@+id/bt_login"
-            android:singleLine="true"
-            android:gravity="center"
-            android:textColor="@color/gray"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:onClick="toRegister"
-            android:text="@string/txt_not_register"
-            android:textSize="15sp" />
     </RelativeLayout>
 
 </LinearLayout>

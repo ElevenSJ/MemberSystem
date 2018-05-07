@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/buyBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name"
+        app:srcCompat="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/txt_name"
+        style="@style/TxtBlackNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <TextView
+        android:id="@+id/txt_time"
+        style="@style/TxtGrayMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/TxtRedMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableLeft="@drawable/img_price"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_time"
+        app:layout_constraintTop_toBottomOf="@+id/txt_time" />
+
+
+    <Button
+        android:id="@+id/buyBtn"
+        android:layout_width="80dip"
+        android:layout_height="26dip"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_sm_green_outline"
+        android:focusable="false"
+        android:gravity="center"
+        android:text="@string/buy"
+        android:textColor="@color/main_bg_color"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_price"
+        app:layout_constraintTop_toBottomOf="@+id/txt_price" />
+</android.support.constraint.ConstraintLayout>
