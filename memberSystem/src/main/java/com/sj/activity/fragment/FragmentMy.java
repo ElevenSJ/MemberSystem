@@ -44,6 +44,7 @@ import com.lyp.membersystem.view.CircleImageView;
 import com.lyp.membersystem.view.CustomPopupWindow;
 import com.lyp.membersystem.view.dialog.WaitDialog;
 import com.sj.activity.ActivityCardBag;
+import com.sj.activity.MessageActivity;
 import com.sj.activity.base.FragmentBase;
 import com.yuntongxun.ecdemo.common.utils.LogUtil;
 
@@ -256,6 +257,11 @@ public class FragmentMy extends FragmentBase implements OnClickListener {
         return dateFormat.format(date) + ".jpg";
     }
 
+    public void systemMessage(View view) {
+        Intent intent = new Intent();
+        intent.setClass(getHoldingActivity(), MessageActivity.class);
+        startActivity(intent);
+    }
     public void memberBuy(View view) {
         Intent intent = new Intent();
         intent.setClass(getHoldingActivity(), MemberActivity.class);

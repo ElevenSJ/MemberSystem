@@ -2,11 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    dexOptions {
+        jumboMode true
+    }
     signingConfigs {
         release {
             keyAlias 'sunjie'
             keyPassword 'sJ121314'
-            storeFile file('C:/Users/Administrator/Desktop/sunjie.keystore.jks')
+            storeFile file('C:/Users/SunJ/StudioProjects/MemberSystem/sunjie.keystore.jks')
             storePassword 'sJ121314'
         }
     }
@@ -16,18 +26,42 @@ android {
         applicationId "com.lyp.membersystem"
         minSdkVersion 19
         targetSdkVersion 27
+        multiDexEnabled true
+        resConfigs "zh"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
         }
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi'
+            // 还可以添加 , 'armeabi-v7a', 'arm64-v8a' 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+            }
+
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "91bd873100168cfc34c141ca", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+            minifyEnabled true
+        }
+        debug {
             signingConfig signingConfigs.release
         }
     }
+
 }
 
 dependencies {
@@ -55,7 +89,6 @@ dependencies {
     compile files('libs/wechat-sdk-android-without-mta.jar')
     compile files('libs/Yuntx_IMLib_v5.3.1r.jar')
     implementation 'com.jakewharton:butterknife:8.4.0'
-    implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support:design:27.+'
     //easyrecyclerview
     implementation 'com.jude:easyrecyclerview:4.4.2'
@@ -67,4 +100,16 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
     //最新版本
     implementation 'com.yanzhenjie:permission:2.0.0-rc4'
+    //友盟分享
+    implementation 'com.umeng.sdk:share-core:6.9.1'
+    implementation 'com.umeng.sdk:share-wechat:6.9.1'
+    implementation 'com.umeng.sdk:shareboard-widget:6.9.1'
+    implementation files('libs/umeng-common-1.5.1.jar')
+    //極光推送
+    compile 'cn.jiguang.sdk:jpush:3.1.1'
+    // 此处以JPush 3.1.1 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.1.9'
+    // 此处以JCore 1.1.9 版本为例。
+    //Zxing
+    compile 'com.github.yuzhiqiang1993:zxing:2.1.6'
 }

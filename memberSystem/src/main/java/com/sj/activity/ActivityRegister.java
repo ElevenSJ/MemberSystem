@@ -130,7 +130,7 @@ public class ActivityRegister extends ActivityBase {
     }
 
     public void toRegisterHtml(View view) {
-        Intent intent = new Intent(this, RegisterHtmlActivity.class);
+        Intent intent = new Intent(this, ActivityHtml.class);
         intent.putExtra("html",html);
         startActivity(intent);
     }

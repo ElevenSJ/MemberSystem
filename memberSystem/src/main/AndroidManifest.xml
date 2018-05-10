@@ -986,13 +986,13 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.sj.activity.RegisterHtmlActivity"
+            android:name="com.sj.activity.ActivityHtml"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.sj.activity.ActivityStudy"
-            android:theme="@style/AppNewTheme"
+            android:theme="@style/AppTheme.NoTitle"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -1012,6 +1012,31 @@
             android:name="com.sj.activity.ActivityChooseArea"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.sj.activity.MessageActivity"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
+
+
+        <!-- 极光推送 绑定别名service-->
+        <service android:name="com.sj.service.JPushAliasService" />
+        <!-- 极光推送 消息接受receiver-->
+        <receiver
+            android:name="com.sj.receiver.JPushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="com.sj.yeeda" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

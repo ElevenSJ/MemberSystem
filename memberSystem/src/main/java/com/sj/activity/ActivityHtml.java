@@ -22,7 +22,7 @@ import okio.Utf8;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class RegisterHtmlActivity extends ActivityBase {
+public class ActivityHtml extends ActivityBase {
 
     WebView webview;
     @BindView(R.id.webview_layout)

@@ -1,5 +1,6 @@
 package com.sj.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,11 +29,19 @@ import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.AmountView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -64,6 +73,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
         forumBean = (ForumBean) getIntent().getSerializableExtra("data");
         setTitleTxt("首席论坛");
+        setTitleRightTxt("分享");
         txtName = findViewById(R.id.txt_name);
         banner = findViewById(R.id.banner);
         txtPrice = findViewById(R.id.txt_price);
@@ -131,7 +141,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
                 startActivityForResult(intent, 101);
                 break;
             case R.id.bt_buy:
-                if (itemsBean==null||TextUtils.isEmpty(txtArea.getText().toString())) {
+                if (itemsBean == null || TextUtils.isEmpty(txtArea.getText().toString())) {
                     ToastUtil.showMessage("请选择区域");
                     break;
                 }
@@ -164,12 +174,29 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         }
     }
 
+    //if(Build.VERSION.SDK_INT>=23)
+//
+//    {
+//        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS,
+// Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
+//    }
+    @Override
+    public void onRightTxt(View view) {
+        super.onRightTxt(view);
+        if (forumBean == null) {
+            return;
+        }
+        ToastUtil.showMessage("去分享");
+        new ShareAction(ActivityForumDetail.this).withText(forumBean.getName()).setDisplayList(SHARE_MEDIA.WEIXIN)
+                .setCallback(shareListener).open();
+    }
+
     private void doBuy() {
         showProgress();
         Map<String, Object> parameters = new ArrayMap<>(3);
         parameters.put("token_id", tokenid);
         parameters.put("itemId", itemsBean.getId());
-        parameters.put("quantity",amountView.getAmount());
+        parameters.put("quantity", amountView.getAmount());
         HttpManager.get(UrlConfig.FORUM_BUY_LIST, parameters, new Callback() {
             @Override
             public void onSuccess(String message) {
@@ -208,4 +235,42 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
             return imageView;
         }
     }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            ToastUtil.showMessage("分享成功");
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtil.showMessage("分享失败");
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtil.showMessage("取消分享");
+        }
+    };
 }

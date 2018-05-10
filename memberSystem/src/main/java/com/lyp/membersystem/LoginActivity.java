@@ -74,6 +74,9 @@ public class LoginActivity extends BaseActivity {
 						Permission.READ_PHONE_STATE,
 						Permission.ACCESS_COARSE_LOCATION,
 						Permission.CAMERA,
+						Permission.READ_PHONE_STATE,
+						Permission.ACCESS_FINE_LOCATION,
+						Permission.CALL_PHONE,
 						Permission.RECORD_AUDIO)
 				.onGranted(new Action() {
 					@Override
@@ -239,6 +242,7 @@ public class LoginActivity extends BaseActivity {
 			editor.putString(Constant.TOKEN_ID, token);
 			editor.putString(Constant.ID, id);
 			editor.putString(Constant.USER_NAME, name);
+			editor.putString(Constant.USER_ACCOUNT, phone);
 			editor.commit();
 			loginSuccess();
 		} catch (Exception ex) {

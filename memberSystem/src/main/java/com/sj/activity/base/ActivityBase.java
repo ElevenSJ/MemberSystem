@@ -33,17 +33,18 @@ public abstract class ActivityBase extends AppCompatActivity {
 	private WaitDialog mWaitDialog;
 	public boolean isPause = false;
 
-	@Nullable
-	@BindView(R.id.tv_title)
 	TextView txtTitle;
+	TextView txtTitleRight;
+	ImageView imgRight;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewManager.getInstance().addActivity(this);
 		setContentView(getContentLayout());
-		ButterKnife.bind(this);
 		txtTitle = findViewById(R.id.tv_title);
+		txtTitleRight = findViewById(R.id.tv_right);
+		imgRight= findViewById(R.id.right);
 		initView();
 	}
 	
@@ -188,11 +189,33 @@ public abstract class ActivityBase extends AppCompatActivity {
 
 	public void setTitleTxt(String titleTxt) {
 		if (txtTitle != null) {
-			txtTitle.setVisibility(titleTxt == null || TextUtils.isEmpty(titleTxt) ? View.INVISIBLE : View.VISIBLE);
-			if (titleTxt != null && !TextUtils.isEmpty(titleTxt)) {
+			txtTitle.setVisibility(TextUtils.isEmpty(titleTxt) ? View.INVISIBLE : View.VISIBLE);
+			if (!TextUtils.isEmpty(titleTxt)) {
 				txtTitle.setText(titleTxt);
 			}
 		}
+	}
+	public void setTitleRightTxt(String txt) {
+		if (txtTitleRight != null) {
+			txtTitleRight.setVisibility(TextUtils.isEmpty(txt) ? View.INVISIBLE : View.VISIBLE);
+			if (!TextUtils.isEmpty(txt)) {
+				txtTitleRight.setText(txt);
+			}
+		}
+	}
+
+	public void setRightImg(int res) {
+		if (imgRight != null) {
+			imgRight.setVisibility(res==0 ? View.GONE : View.VISIBLE);
+			if (res!=0) {
+				imgRight.setImageResource(res);
+			}
+		}
+	}
+
+	public void onRightImg(View view) {
+	}
+	public void onRightTxt(View view) {
 	}
 
 	public void onBack(View view) {

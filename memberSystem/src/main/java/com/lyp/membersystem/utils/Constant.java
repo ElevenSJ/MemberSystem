@@ -28,4 +28,8 @@ public class Constant {
     public static final String CONDITION_THREE = "2";//启用规则，生日通知
     
     public static final String RELOGIN = "-100";//启用规则，生日通知
+
+	public static final String IS_SET_ALIAS = "is_set_alias";
+
+	public static final String USER_ACCOUNT = "user_account";
 }

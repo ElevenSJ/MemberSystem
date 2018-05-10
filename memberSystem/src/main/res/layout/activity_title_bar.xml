@@ -44,5 +44,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:scaleType="center"
+        android:onClick="onRightImg"
+        android:visibility="gone"
         android:layout_centerVertical="true" />
+
+
+    <TextView
+        android:id="@+id/tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:clickable="true"
+        android:visibility="gone"
+        android:onClick="onRightTxt"
+        android:textSize="16sp" />
 </RelativeLayout>

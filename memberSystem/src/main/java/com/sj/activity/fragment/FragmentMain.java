@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -22,7 +23,9 @@ import com.lyp.membersystem.ui.MyCustomerActivity;
 import com.lyp.membersystem.ui.ServiceActivity;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
+import com.sj.activity.ActivityHtml;
 import com.sj.activity.ActivityStudy;
+import com.sj.activity.MessageActivity;
 import com.sj.activity.base.FragmentBase;
 import com.sj.activity.bean.Bannerbean;
 import com.sj.http.Callback;
@@ -31,8 +34,10 @@ import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +60,7 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
 
     SharedPreferences mSharedPreferences;
     String tokenId;
+    List<Bannerbean> bannerList;
 
     public static FragmentMain newInstance() {
         return new FragmentMain();
@@ -110,7 +116,17 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                if (bannerList==null||bannerList.isEmpty()){
+                    return;
+                }
+                Intent intent = new Intent(getHoldingActivity(), ActivityHtml.class);
+                intent.putExtra("url",bannerList.get(position).getAccessLink());
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -155,7 +171,7 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
             @Override
             public void onSuccessData(String json) {
                 Log.d(TAG, "onSuccessData: ");
-                List<Bannerbean> bannerList = new GsonResponsePasare<List<Bannerbean>>() {
+               bannerList = new GsonResponsePasare<List<Bannerbean>>() {
                 }.deal(json);
                 if (bannerList != null && bannerList.size() > 0) {
                     banner.setImages(bannerList);
@@ -182,7 +198,8 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         Intent intent = new Intent();
         switch (id) {
             case R.id.right:
-                ToastUtil.showMessage("系统通知");
+                intent.setClass(getHoldingActivity(), MessageActivity.class);
+                startActivity(intent);
                 break;
             case R.id.txt_customer:
                 intent.setClass(getHoldingActivity(), MyCustomerActivity.class);
@@ -194,6 +211,7 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
                 break;
             case R.id.txt_study:
                 intent.setClass(getHoldingActivity(), ActivityStudy.class);
+                intent.putParcelableArrayListExtra("bannerData",(ArrayList<Bannerbean>) bannerList);
                 startActivity(intent);
                 break;
             case R.id.txt_reservation:

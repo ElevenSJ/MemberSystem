@@ -1,17 +1,20 @@
 package com.sj.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.FragmentAdapter;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.base.FragmentBase;
 import com.sj.activity.fragment.FragmentMain;
 import com.sj.activity.fragment.FragmentMy;
 import com.sj.activity.fragment.FragmentOrder;
+import com.sj.service.JPushAliasService;
 import com.sj.widgets.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class ActivityMain extends ActivityBase {
     private FragmentAdapter mAdapter;
     private int index = 0;
 
+    private String phone;
+
     @Override
     public int getContentLayout() {
         // TODO Auto-generated method stub
@@ -37,6 +42,19 @@ public class ActivityMain extends ActivityBase {
         mPager = findViewById(R.id.container_pager);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         initViewPager();
+        setAlias();
+    }
+
+    private void setAlias() {
+        SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
+        phone = mSharedPreferences.getString(Constant.USER_ACCOUNT, "");
+        boolean setAlias = mSharedPreferences.getBoolean(Constant.IS_SET_ALIAS, false);
+        if (setAlias) {
+            Intent intent = new Intent();
+            intent.putExtra("alias",phone);
+            intent.setClass(this, JPushAliasService.class);
+            startService(intent);
+        }
     }
 
 

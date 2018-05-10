@@ -1,10 +1,13 @@
 package com.lyp.membersystem.base;
 
-import java.io.File;
-import java.io.InvalidClassException;
-import java.util.Stack;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.support.multidex.MultiDexApplication;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.log.LogUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -17,7 +20,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.sj.http.UrlConfig;
 import com.sj.utils.Utils;
-import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.yuntongxun.ecdemo.common.CCPAppManager;
 import com.yuntongxun.ecdemo.common.utils.ECPreferenceSettings;
 import com.yuntongxun.ecdemo.common.utils.ECPreferences;
@@ -25,14 +29,13 @@ import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 import com.yuntongxun.ecdemo.common.utils.LogUtil;
 import com.yuntongxun.ecdemo.ui.huawei.PustDemoActivity;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.Application;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import java.io.File;
+import java.io.InvalidClassException;
+import java.util.Stack;
 
-public class BaseApplication extends Application {
+import cn.jpush.android.api.JPushInterface;
+
+public class BaseApplication extends MultiDexApplication {
 
 	private static BaseApplication instance;
 	public static Context applicationContext;
@@ -66,6 +69,11 @@ public class BaseApplication extends Application {
 		//二期
 		Utils.init(this);
 		HttpManager.init(this.getApplicationContext(), UrlConfig.BASE_URL);
+		UMConfigure.setLogEnabled(true);
+		UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "5af3fda6f43e483b3d0000bb");
+		PlatformConfig.setWeixin("wx194d9f8a263dd765", "3baf1193c85774b3fd9d18447d76cab0");
+		JPushInterface.setDebugMode(true);
+		JPushInterface.init(this);
 	}
 
 	public static BaseApplication getInstance() {
