@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import com.jady.retrofitclient.HttpManager;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
+import com.sj.activity.ActivityCardBag;
 import com.sj.activity.adapter.CardRyvAdapter;
 import com.sj.activity.base.FragmentBase;
+import com.sj.activity.bean.CardBean;
 import com.sj.activity.bean.ForumListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
@@ -47,7 +50,6 @@ public class CardFragment extends FragmentBase {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         index = getArguments().getInt("index");
-
         mSharedPreferences = getHoldingActivity().getSharedPreferences(Constant.SHARED_PREFERENCE, getHoldingActivity().MODE_PRIVATE);
         tokenId = mSharedPreferences.getString(Constant.TOKEN_ID, "");
     }
@@ -56,39 +58,24 @@ public class CardFragment extends FragmentBase {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmemt_card, container, false);
+        initView();
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
-        getData();
+        if (getUserVisibleHint()){
+            getData();
+        }
     }
 
-    private void getData() {
-        getHoldingActivity().showProgress();
-        Map<String, Object> parameters = new ArrayMap<>(2);
-        parameters.put("token_id", tokenId);
-        parameters.put("type", index);
-        HttpManager.get(UrlConfig.CARD_LIST, parameters, new Callback() {
-            @Override
-            public void onSuccess(String message) {
-            }
-
-            @Override
-            public void onSuccessData(String json) {
-            }
-
-            @Override
-            public void onFailure(String error_code, String error_message) {
-            }
-
-            @Override
-            public void onFinish() {
-                getHoldingActivity(). hideProgress();
-            }
-        });
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser&&rylView!=null&&mAdapter!=null&&mAdapter.getCount()==0){
+            getData();
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     private void initView() {
@@ -98,6 +85,37 @@ public class CardFragment extends FragmentBase {
         rylView.setLayoutManager(layoutManager);
         mAdapter = new CardRyvAdapter(getHoldingActivity());
         rylView.setAdapter(mAdapter);
+    }
+
+
+    private void getData() {
+        Map<String, Object> parameters = new ArrayMap<>(2);
+        parameters.put("token_id", tokenId);
+        parameters.put("type", index);
+        HttpManager.get(UrlConfig.CARD_LIST, parameters, new Callback() {
+            @Override
+            public void onSuccess(String message) {
+                Log.d(TAG, "onSuccess: ");
+            }
+
+            @Override
+            public void onSuccessData(String json) {
+                Log.d(TAG, "onSuccessData: ");
+                CardBean cardBean = new GsonResponsePasare<CardBean>() {
+                }.deal(json);
+                if (cardBean!=null){
+                    Log.d(TAG, "onSuccessData: index = "+index+",size = "+cardBean.getCpChiefBBS().size());
+                    ((ActivityCardBag)getHoldingActivity()).setCardNum(index,cardBean.getCount(),cardBean.getSideCount());
+                    mAdapter.addAll(cardBean.getCpChiefBBS());
+                }
+            }
+
+            @Override
+            public void onFailure(String error_code, String error_message) {
+                Log.d(TAG, "onSuccessData: ");
+
+            }
+        });
     }
 
 }

@@ -230,4 +230,6 @@
 
     <color name="nodeColor">#cccccc</color>
     <color name="nodeTextColor">#00bcb4</color>
+
+    <color name="divider">#ffd2d2d2</color>
 </resources>

@@ -23,27 +23,29 @@ public abstract class Callback extends HttpCallback<String> {
         try {
             BaseResponse baseResponse = JSON.parseObject(json, BaseResponse.class);
             if (baseResponse.success) {
-                if (baseResponse.object==null){
+                if (baseResponse.object == null) {
                     onSuccess(baseResponse.message);
-                }else{
+                } else {
                     onSuccessData(json);
                 }
             } else {
                 onFailed(baseResponse.resCode, baseResponse.message);
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
+            e.printStackTrace();
             onSuccess(json);
         }
         onFinish();
     }
+
     @Override
     public void onFailed(String error_code, String error_message) {
         onFinish();
         onFailure(error_code, error_message);
         //其他设备登录统一处理
-        if (error_code.equals(Constant.RELOGIN)){
+        if (error_code.equals(Constant.RELOGIN)) {
             Intent intent = new Intent(Utils.getContext(), ActivityMain.class);
-            intent.putExtra("LoginOut",true);
+            intent.putExtra("LoginOut", true);
             Utils.getContext().startActivity(intent);
         }
     }

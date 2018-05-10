@@ -46,7 +46,7 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
         rylView = findViewById(R.id.ryl_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);
-        DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.gray), 2, 16, 16);
+        DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.item_line_color), 1, 16, 16);
         dividerDecoration.setDrawLastItem(false);
         rylView.addItemDecoration(dividerDecoration);
         mAdapter = new ForumRyvAdapter(this);
