@@ -22,6 +22,9 @@ import com.lyp.membersystem.utils.ToastUtil;
 import com.lyp.membersystem.view.dialog.WaitDialog;
 import com.sj.activity.ActivityRegister;
 import com.sj.activity.ActivityMain;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import org.json.JSONObject;
 

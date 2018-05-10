@@ -5,12 +5,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.ui.fragment.CashCardFrag;
 import com.lyp.membersystem.view.tabmenu.PagerSlidingTabStrip;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.fragment.CardFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActivityCardBag extends ActivityBase {
 
@@ -19,6 +25,9 @@ public class ActivityCardBag extends ActivityBase {
     String[] titles = new String[2];
     private SharedPreferences mSharedPreferences;
 
+    List<Fragment> fragmentList = new ArrayList<>(2);
+
+    MyAdapter pageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +40,10 @@ public class ActivityCardBag extends ActivityBase {
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         titles[0] = "我的卡券";
         titles[1] = "已使用卡券";
-        pager.setAdapter(new MyAdapter(getSupportFragmentManager(), titles));
+        fragmentList.add(CardFragment.newInstance(0));
+        fragmentList.add(CardFragment.newInstance(1));
+        pageAdapter = new MyAdapter(getSupportFragmentManager());
+        pager.setAdapter(pageAdapter);
         tabs.setViewPager(pager);
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -51,34 +63,35 @@ public class ActivityCardBag extends ActivityBase {
         });
     }
 
+    public void setCardNum(int index, int count, int sideCount) {
+        Log.d("setCardNum", "setCardNum: index = "+index);
+        if (index == 0) {
+            titles[0] = "我的卡券(" + count + ")";
+            titles[1] = "已使用卡券(" + sideCount + ")";
+            tabs.setViewPager(pager);
+        }
+    }
+
 
     public class MyAdapter extends FragmentPagerAdapter {
-        String[] _titles;
 
-        public MyAdapter(FragmentManager fm, String[] titles) {
+        public MyAdapter(FragmentManager fm) {
             super(fm);
-            _titles = titles;
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            // TODO Auto-generated method stub
-            return POSITION_NONE;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return _titles[position];
+            return titles[position];
         }
 
         @Override
         public int getCount() {
-            return _titles.length;
+            return titles.length;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return CardFragment.newInstance(position);
+            return fragmentList.get(position);
         }
 
     }

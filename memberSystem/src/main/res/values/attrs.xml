@@ -110,13 +110,15 @@
         <!--
         	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
         	able to scroll while refreshing, and behaves better. It acheives this by adding
-        	Header and/or Footer Views to the ListView.
+        	Header and/or Footer Views to the ListView.
+
         -->
         <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
 
         <!--
         	Whether the Drawable should be continually rotated as you pull. This only
-        	takes effect when using the 'Rotate' Animation Style.
+        	takes effect when using the 'Rotate' Animation Style.
+
         -->
         <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
 
@@ -181,5 +183,15 @@
     <declare-styleable name="NodeProgressView">
         <attr name="width" format="dimension"/>
         <attr name="nodeRadius" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="AmountView">
+        <!-- 左右2边+-按钮的宽度 -->
+        <attr name="btnWidth" format="dimension" />
+        <!-- 中间TextView的宽度 -->
+        <attr name="tvWidth" format="dimension" />
+        <!--<attr name="tvColor" format="color"/>-->
+        <attr name="tvTextSize" format="dimension"/>
+        <attr name="btnTextSize" format="dimension"/>
     </declare-styleable>
 </resources>

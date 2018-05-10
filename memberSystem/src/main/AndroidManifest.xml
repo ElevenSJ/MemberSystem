@@ -976,7 +976,7 @@
         <!--二期改造 -->
         <activity
             android:name="com.sj.activity.ActivityMain"
-            android:theme="@style/AppNewTheme"
+            android:theme="@style/AppTheme.NoTitle"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
@@ -1007,8 +1007,11 @@
         <activity
             android:name="com.sj.activity.ActivityForum"
             android:theme="@style/AppNewTheme"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivityChooseArea"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

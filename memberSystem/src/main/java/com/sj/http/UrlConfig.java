@@ -23,6 +23,10 @@ public class UrlConfig {
 
     //首席论坛列表
     public static final String FORUM_LIST = "api/app/v1/getChiefbbsList";
-    //首席论坛列表
+    //卡包列表
     public static final String CARD_LIST = "api/app/v1/getMemberCouponListById";
+    //首席论坛购买
+    public static final String FORUM_BUY_LIST = "api/app/v1/buyCpChiefbbs";
+    //首页轮播图
+    public static final String BANNER_LIST = "api/app/v1/getHomePageSlideshowDisplay";
 }
