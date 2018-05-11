@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jady.retrofitclient.HttpManager;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.lyp.membersystem.R;
@@ -22,7 +21,6 @@ import com.lyp.membersystem.ui.MallFragmentActivity;
 import com.lyp.membersystem.ui.MyCustomerActivity;
 import com.lyp.membersystem.ui.ServiceActivity;
 import com.lyp.membersystem.utils.Constant;
-import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.ActivityHtml;
 import com.sj.activity.ActivityStudy;
 import com.sj.activity.MessageActivity;
@@ -37,7 +35,6 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +46,6 @@ import java.util.Map;
 public class FragmentMain extends FragmentBase implements View.OnClickListener {
 
     Banner banner;
-    ImageView back;
     TextView tvTitle;
     ImageView right;
     TextView txtCustomer;
@@ -87,9 +83,8 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
     }
 
     private void initView() {
-        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.ccp_translucent_half));
+        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.transparent_color));
         banner = (Banner) findViewById(R.id.banner);
-        back = (ImageView) findViewById(R.id.back);
         tvTitle = (TextView) findViewById(R.id.tv_title);
         right = (ImageView) findViewById(R.id.right);
         txtCustomer = (TextView) findViewById(R.id.txt_customer);
@@ -97,8 +92,8 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         txtStudy = (TextView) findViewById(R.id.txt_study);
         txtReservation = (TextView) findViewById(R.id.txt_reservation);
         rylView = (EasyRecyclerView) findViewById(R.id.ryl_view);
+
         tvTitle.setText(getResources().getString(R.string.app_name));
-//        findViewById(R.id.layout_back).setVisibility(View.GONE);
         right.setImageResource(R.drawable.img_notice);
         right.setOnClickListener(this);
         txtCustomer.setOnClickListener(this);
@@ -119,10 +114,11 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                if (bannerList==null||bannerList.isEmpty()){
+                if (bannerList==null||bannerList.isEmpty()|| TextUtils.isEmpty(bannerList.get(position).getAccessLink())){
                     return;
                 }
                 Intent intent = new Intent(getHoldingActivity(), ActivityHtml.class);
+                intent.putExtra("title",bannerList.get(position).getName());
                 intent.putExtra("url",bannerList.get(position).getAccessLink());
                 startActivity(intent);
             }
@@ -211,7 +207,6 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
                 break;
             case R.id.txt_study:
                 intent.setClass(getHoldingActivity(), ActivityStudy.class);
-                intent.putParcelableArrayListExtra("bannerData",(ArrayList<Bannerbean>) bannerList);
                 startActivity(intent);
                 break;
             case R.id.txt_reservation:

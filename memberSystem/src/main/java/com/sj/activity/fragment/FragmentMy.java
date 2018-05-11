@@ -17,9 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lyp.membersystem.R;
@@ -58,10 +56,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 
 /**
@@ -172,6 +166,7 @@ public class FragmentMy extends FragmentBase implements OnClickListener {
         findViewById(R.id.layout_queryapplyservice).setOnClickListener(this);
         findViewById(R.id.layout_cardPackBtn).setOnClickListener(this);
         findViewById(R.id.layout_notForget).setOnClickListener(this);
+        findViewById(R.id.layout_systemMessage).setOnClickListener(this);
         findViewById(R.id.layout_settings).setOnClickListener(this);
     }
 
@@ -764,6 +759,9 @@ public class FragmentMy extends FragmentBase implements OnClickListener {
                 break;
             case R.id.layout_notForget:
                 notForget(v);
+                break;
+            case R.id.layout_systemMessage:
+                systemMessage(v);
                 break;
             case R.id.layout_settings:
                 settings(v);

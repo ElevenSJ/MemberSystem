@@ -3,22 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/main_bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/main_bg_color" >
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="24dp" >
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/order_query"
-            android:textColor="@color/white"
-            android:textSize="22sp" />
+            style="@style/TxtWhiteBig" />
     </RelativeLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView

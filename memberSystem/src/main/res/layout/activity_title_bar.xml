@@ -35,8 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        style="@style/TxtWhiteBig"  />
 
     <ImageView
         android:id="@+id/right"

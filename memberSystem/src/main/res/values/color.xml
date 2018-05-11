@@ -157,6 +157,7 @@
     <drawable name="video_notify_new_state">#222222</drawable>
     
     <color name="ccp_alert_bg">#3F474A</color>
+    <color name="transparent_color">#00ffffff</color>
     <color name="ccp_translucent_half">#b0000000</color>
     <color name="ccp_video_transparent">#f0000000</color>
     

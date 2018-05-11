@@ -1,18 +1,13 @@
 package com.sj.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jady.retrofitclient.HttpManager;
@@ -20,32 +15,21 @@ import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.base.ActivityBase;
-import com.sj.activity.bean.Bannerbean;
 import com.sj.activity.bean.ForumBean;
-import com.sj.activity.bean.ForumListBean;
-import com.sj.activity.fragment.FragmentMain;
 import com.sj.http.Callback;
-import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.AmountView;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.yanzhenjie.permission.Action;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 创建时间: on 2018/5/6.
@@ -86,7 +70,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置自动轮播，默认为true
-        banner.isAutoPlay(true);
+//        banner.isAutoPlay(true);
         //设置轮播时间
         banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
@@ -153,6 +137,10 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
                     ToastUtil.showMessage("请选择数量");
                     break;
                 }
+                if (amountView.getAmount() > itemsBean.getTotal()) {
+                    ToastUtil.showMessage("超出库存量，请重新选择");
+                    break;
+                }
                 doBuy();
                 break;
             default:
@@ -168,6 +156,9 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
                 itemsBean = forumBean.getItems().get(data.getIntExtra("data", 0));
                 if (itemsBean != null) {
                     txtArea.setText(itemsBean.getAreaName());
+                    if (amountView.getAmount()>itemsBean.getTotal()){
+                        amountView.setAmount(itemsBean.getTotal());
+                    }
                     amountView.setGoods_storage(itemsBean.getTotal());
                 }
             }
@@ -187,7 +178,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
             return;
         }
         ToastUtil.showMessage("去分享");
-        new ShareAction(ActivityForumDetail.this).withText(forumBean.getName()).setDisplayList(SHARE_MEDIA.WEIXIN)
+        new ShareAction(ActivityForumDetail.this).withText(forumBean.getName()).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE)
                 .setCallback(shareListener).open();
     }
 
@@ -205,6 +196,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
 
             @Override
             public void onSuccessData(String json) {
+                ToastUtil.showMessage("购买成功");
             }
 
             @Override
@@ -273,4 +265,10 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
             ToastUtil.showMessage("取消分享");
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(this).release();
+    }
 }

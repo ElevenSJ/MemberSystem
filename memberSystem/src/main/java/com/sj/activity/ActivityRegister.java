@@ -131,6 +131,7 @@ public class ActivityRegister extends ActivityBase {
 
     public void toRegisterHtml(View view) {
         Intent intent = new Intent(this, ActivityHtml.class);
+        intent.putExtra("title","注册协议");
         intent.putExtra("html",html);
         startActivity(intent);
     }

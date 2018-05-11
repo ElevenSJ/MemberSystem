@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.utils.ToastUtil;
 
 
 /**
@@ -102,6 +103,8 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
             if (amount < goods_storage) {
                 amount++;
                 etAmount.setText(amount + "");
+            }else{
+                ToastUtil.showMessage("库存不足");
             }
         }
 
@@ -129,6 +132,7 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
         amount = Integer.valueOf(s.toString());
         if (amount > goods_storage) {
             etAmount.setText(goods_storage + "");
+            ToastUtil.showMessage("库存不足");
             return;
         }
 

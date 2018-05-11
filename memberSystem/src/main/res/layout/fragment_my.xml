@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/main_bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/main_bg_color" >
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="24dp" >
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -40,14 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/my"
-            android:textColor="@color/white"
-            android:textSize="22sp" />
+            style="@style/TxtWhiteBig"/>
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom"
+        android:background="@color/white"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -220,7 +221,6 @@
                             android:layout_toLeftOf="@id/renewalBtn"
                             android:layout_toRightOf="@id/renewal"
                             android:gravity="center_vertical"
-                            android:text="有效期至2018-05-21"
                             android:textColor="@color/item_second_font_color"
                             android:textSize="18sp" />
                     </RelativeLayout>
@@ -323,9 +323,9 @@
                         android:background="@color/item_line_color" />
 
                     <RelativeLayout
+                        android:id="@+id/layout_systemMessage"
                         android:layout_width="match_parent"
-                        android:layout_height="65dp"
-                        android:onClick="systemMessage">
+                        android:layout_height="65dp">
 
                         <ImageView
                             android:id="@+id/express_address_right_arrow"

@@ -29,4 +29,6 @@ public class UrlConfig {
     public static final String FORUM_BUY_LIST = "api/app/v1/buyCpChiefbbs";
     //首页轮播图
     public static final String BANNER_LIST = "api/app/v1/getHomePageSlideshowDisplay";
+    //进修学习轮播图
+    public static final String BANNER_LIST_STUDY = "api/app/v1/getFurtherStudySlideshowDisplay";
 }

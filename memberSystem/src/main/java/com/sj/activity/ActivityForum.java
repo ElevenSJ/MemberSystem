@@ -21,8 +21,6 @@ import com.sj.http.UrlConfig;
 
 import java.util.Map;
 
-import butterknife.BindView;
-
 /**
  * 创建时间: on 2018/5/6.
  * 创建人: 孙杰

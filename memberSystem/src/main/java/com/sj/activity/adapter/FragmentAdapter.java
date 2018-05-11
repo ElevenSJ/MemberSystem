@@ -16,9 +16,9 @@ import java.util.List;
  * @name ResourcePagerAdapter
  */
 public class FragmentAdapter extends FragmentStatePagerAdapter {
-    private List<FragmentBase> mFragments;
+    private List<Fragment> mFragments;
 
-    public FragmentAdapter(FragmentManager fm, List<FragmentBase> mFragments) {
+    public FragmentAdapter(FragmentManager fm, List<Fragment> mFragments) {
         super(fm);
         this.mFragments = mFragments;
     }

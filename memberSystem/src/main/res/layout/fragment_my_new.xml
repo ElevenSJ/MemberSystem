@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg_color">
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/activity_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        >
+        <android.support.constraint.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bg_color">
+
+            <com.lyp.membersystem.view.CircleImageView
+                android:id="@+id/user_avater"
+                android:layout_width="110dip"
+                android:layout_height="110dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/avater_bg"
+                android:scaleType="centerCrop"
+                android:src="@drawable/personal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/txt_user_name"
+                style="@style/TxtWhiteBig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/img_qcode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_avater" />
+
+            <ImageView
+                android:id="@+id/img_qcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/qr_code_white"
+                app:layout_constraintBottom_toBottomOf="@+id/q_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/q_iv"
+                android:layout_width="80dip"
+                android:layout_height="220dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="center"
+                android:src="@drawable/default_q_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/user_avater"
+                app:layout_constraintTop_toTopOf="@+id/user_avater" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:divider="@color/item_line_color"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/q_iv"
+                app:layout_constraintVertical_bias="0.0">
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_my_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_my_sign"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="我的签名" />
+
+                    <ImageView
+                        android:id="@+id/iv_signature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/txt_my_sign"
+                        android:scaleType="centerInside" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_renewal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_renewal"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:drawablePadding="2dip"
+                        android:drawableStart="@drawable/membei_icon"
+                        android:gravity="center_vertical"
+                        android:text="会员" />
+
+                    <Button
+                        android:id="@+id/bt_renewal"
+                        style="@style/TxtBlackSmall"
+                        android:layout_width="80dip"
+                        android:layout_height="30dip"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/btn_sm_green_outline"
+                        android:gravity="center"
+                        android:text="续费/升级"
+                        android:textColor="@color/main_bg_color" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_my_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_my_wallet"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:drawablePadding="2dip"
+                        android:drawableStart="@drawable/card_pack"
+                        android:gravity="center_vertical"
+                        android:text="我的钱包" />
+
+                    <TextView
+                        android:id="@+id/txt_my_wallet_value"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:text="0"
+                        android:textColor="@color/red" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_card_bag"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_my_card_bag"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:drawablePadding="2dip"
+                        android:drawableStart="@drawable/card_pack"
+                        android:gravity="center_vertical"
+                        android:text="我的卡包" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_right_arrow" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_system_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_system_message"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:drawablePadding="2dip"
+                        android:drawableStart="@drawable/card_pack"
+                        android:gravity="center_vertical"
+                        android:text="系统通知" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_right_arrow" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_custom"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_custom"
+                        style="@style/TxtBlackNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:drawablePadding="2dip"
+                        android:drawableStart="@drawable/card_pack"
+                        android:gravity="center_vertical"
+                        android:text="跪求勿忘" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_right_arrow" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/user_avater"
+                app:layout_constraintEnd_toEndOf="@+id/user_avater"
+                app:srcCompat="@drawable/edit_spec" />
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+</LinearLayout>

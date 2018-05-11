@@ -20,6 +20,7 @@ import com.sj.activity.fragment.CardFragment;
 import com.sj.http.Callback;
 import com.sj.http.UrlConfig;
 import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.bean.ZxingConfig;
 import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.ArrayList;
@@ -118,17 +119,16 @@ public class ActivityCardBag extends ActivityBase {
 
     @Override
     public void onRightImg(View view) {
-        //ZxingConfig config = new ZxingConfig();
-//config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
-//config.setPlayBeep(true);//是否播放提示音
-//config.setShake(true);//是否震动
-//config.setShowAlbum(true);//是否显示相册
-//config.setShowFlashLight(true);//是否显示闪光灯
+        ZxingConfig config = new ZxingConfig();
+        config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+        config.setPlayBeep(true);//是否播放提示音
+        config.setShake(true);//是否震动
+        config.setShowAlbum(true);//是否显示相册
+        config.setShowFlashLight(true);//是否显示闪光灯
 
-
-//如果不传 ZxingConfig的话，两行代码就能搞定了
+        //如果不传 ZxingConfig的话，两行代码就能搞定了
         Intent intent = new Intent(ActivityCardBag.this, CaptureActivity.class);
-//intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
         startActivityForResult(intent, REQUEST_CODE_SCAN);
     }
 

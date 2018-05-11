@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.FragmentAdapter;
 import com.sj.activity.base.ActivityBase;
-import com.sj.activity.base.FragmentBase;
 import com.sj.activity.fragment.FragmentMain;
-import com.sj.activity.fragment.FragmentMy;
+import com.sj.activity.fragment.FragmentMyNew;
 import com.sj.activity.fragment.FragmentOrder;
 import com.sj.service.JPushAliasService;
 import com.sj.widgets.NoScrollViewPager;
@@ -24,7 +24,7 @@ public class ActivityMain extends ActivityBase {
 
     NoScrollViewPager mPager;
     BottomNavigationView navigation;
-    private List<FragmentBase> mFragments = new ArrayList<>(3);
+    private List<Fragment> mFragments = new ArrayList<>(3);
     private FragmentAdapter mAdapter;
     private int index = 0;
 
@@ -85,8 +85,9 @@ public class ActivityMain extends ActivityBase {
     private void initViewPager() {
         mFragments.add(FragmentMain.newInstance());
         mFragments.add(FragmentOrder.newInstance());
-        mFragments.add(FragmentMy.newInstance());
+        mFragments.add(FragmentMyNew.newInstance());
         mAdapter = new FragmentAdapter(getSupportFragmentManager(), mFragments);
+        mPager.setOffscreenPageLimit(2);
         mPager.setPagerEnabled(false);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(index);

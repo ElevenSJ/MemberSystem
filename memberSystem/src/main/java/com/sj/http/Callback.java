@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.jady.retrofitclient.callback.HttpCallback;
 import com.lyp.membersystem.utils.Constant;
+import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.ActivityMain;
 import com.sj.utils.Utils;
 
@@ -23,7 +24,7 @@ public abstract class Callback extends HttpCallback<String> {
         try {
             BaseResponse baseResponse = JSON.parseObject(json, BaseResponse.class);
             if (baseResponse.success) {
-                if (baseResponse.object == null) {
+                if (baseResponse.object == null || (baseResponse.object instanceof String && ((String) baseResponse.object).length() == 0)) {
                     onSuccess(baseResponse.message);
                 } else {
                     onSuccessData(json);
@@ -40,7 +41,9 @@ public abstract class Callback extends HttpCallback<String> {
 
     @Override
     public void onFailed(String error_code, String error_message) {
-        onFinish();
+        if (enableShowToast()) {
+            ToastUtil.showLongMessage(error_message);
+        }
         onFailure(error_code, error_message);
         //其他设备登录统一处理
         if (error_code.equals(Constant.RELOGIN)) {
@@ -48,6 +51,7 @@ public abstract class Callback extends HttpCallback<String> {
             intent.putExtra("LoginOut", true);
             Utils.getContext().startActivity(intent);
         }
+        onFinish();
     }
 
     public abstract void onSuccess(String message);

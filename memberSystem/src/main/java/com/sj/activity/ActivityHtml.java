@@ -1,7 +1,6 @@
 package com.sj.activity;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -13,10 +12,6 @@ import com.lyp.membersystem.R;
 import com.sj.activity.base.ActivityBase;
 import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import okio.Utf8;
-
 /**
  * 创建时间: on 2018/4/26.
  * 创建人: 孙杰
@@ -25,8 +20,8 @@ import okio.Utf8;
 public class ActivityHtml extends ActivityBase {
 
     WebView webview;
-    @BindView(R.id.webview_layout)
     FrameLayout webviewLayout;
+    String title;
 
     @Override
     public int getContentLayout() {
@@ -35,11 +30,12 @@ public class ActivityHtml extends ActivityBase {
 
     @Override
     public void initView() {
-        setTitleTxt("注册协议");
+        title = getIntent().getStringExtra("title");
+        setTitleTxt(title);
 
         String url = getIntent().getStringExtra("url");
         String html = getIntent().getStringExtra("html");
-
+        webviewLayout = findViewById(R.id.webview_layout);
         webview = new WebView(this);
         webviewLayout.addView(webview);
         WebSettings settings = webview.getSettings();
