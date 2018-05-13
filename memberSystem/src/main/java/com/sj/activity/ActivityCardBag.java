@@ -51,7 +51,7 @@ public class ActivityCardBag extends ActivityBase {
     public void initView() {
         SharedPreferences mSharedPreferences = getSharedPreferences(com.lyp.membersystem.utils.Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenid = mSharedPreferences.getString(com.lyp.membersystem.utils.Constant.TOKEN_ID, "");
-        setRightImg(R.drawable.qr_code_white);
+        setRightImg(R.drawable.img_scan_qcde);
         pager = (ViewPager) findViewById(R.id.pager);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         titles[0] = "我的卡券";

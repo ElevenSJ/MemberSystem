@@ -118,10 +118,10 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
     }
 
     private void initData() {
-        if (mWaitDialog == null) {
-            mWaitDialog = new WaitDialog(getHoldingActivity(), R.string.loading_data);
-        }
-        mWaitDialog.show();
+//        if (mWaitDialog == null) {
+//            mWaitDialog = new WaitDialog(getHoldingActivity(), R.string.loading_data);
+//        }
+//        mWaitDialog.show();
         getData();
     }
 

@@ -3,10 +3,15 @@ package com.sj.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +32,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
+import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -45,6 +51,10 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
     String tokenid;
     ForumBean forumBean;
     ForumBean.ItemsBean itemsBean;
+
+    FrameLayout slidedetailsBehind;
+    WebView webview;
+
 
     @Override
     public int getContentLayout() {
@@ -79,6 +89,43 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
 
         amountView.setGoods_storage(0);
+
+        slidedetailsBehind = findViewById(R.id.slidedetails_behind);
+
+
+        webview = new WebView(this);
+        slidedetailsBehind.addView(webview);
+        WebSettings settings = webview.getSettings();
+        settings.setJavaScriptEnabled(true);//启用js
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);//js和android交互
+        settings.setAppCachePath(FileAccessor.IMESSAGE_FILE); //设置缓存的指定路径
+        settings.setAllowFileAccess(true); // 允许访问文件
+        settings.setAppCacheEnabled(true); //设置H5的缓存打开,默认关闭
+        settings.setUseWideViewPort(true);//设置webview自适应屏幕大小
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);//设置，可能的话使所有列的宽度不超过屏幕宽度
+        settings.setLoadWithOverviewMode(true);//设置webview自适应屏幕大小
+        settings.setDomStorageEnabled(true);//设置可以使用localStorage
+        settings.setSupportZoom(false);//关闭zoom按钮
+        settings.setBuiltInZoomControls(false);//关闭zoom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return false;
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+            }
+        });
+        webview.loadUrl("http://www.baidu.com");
         initData();
     }
 
@@ -269,6 +316,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        webview.destroy();
         UMShareAPI.get(this).release();
     }
 }

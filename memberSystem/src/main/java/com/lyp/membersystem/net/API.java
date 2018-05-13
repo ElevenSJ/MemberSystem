@@ -1,7 +1,7 @@
 package com.lyp.membersystem.net;
 
 public class API {
-    public static  final String ROOT_WEB = "http://115.239.252.186:8086/";
+    public static  final String ROOT_WEB = "http://115.239.252.186:8086";
 //    public static  final String ROOT_WEB = "https://forvips.cn";
     /*login interface*/
     public static final String API_LOGIN = ROOT_WEB + "/api/app/v1/appLogin";

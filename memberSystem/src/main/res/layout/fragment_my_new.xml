@@ -154,6 +154,19 @@
                         android:text="续费/升级"
                         android:textColor="@color/main_bg_color" />
 
+
+                    <TextView
+                        android:id="@+id/txt_renewal_time"
+                        style="@style/TxtGraySmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/txt_renewal"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/bt_renewal"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -182,7 +195,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="20dp"
-                        android:text="0"
+                        android:text="0元"
                         android:textColor="@color/red" />
                 </RelativeLayout>
 
@@ -280,7 +293,7 @@
                 android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="@+id/user_avater"
                 app:layout_constraintEnd_toEndOf="@+id/user_avater"
-                app:srcCompat="@drawable/edit_spec" />
+                app:srcCompat="@drawable/img_edit" />
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>

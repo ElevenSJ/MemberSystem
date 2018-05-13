@@ -61,12 +61,12 @@ android {
 }
 
 dependencies {
-    compile project(':takephoto_library')
+//    compile project(':takephoto_library')
     compile project(':bQMM_Lib')
     compile files('libs/alipaySdk-20170725.jar')
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/bugly_crash_release.jar')
-    compile files('libs/glide-3.6.1.jar')
+//    compile files('libs/glide-3.6.1.jar')
     compile files('libs/HwPush_SDK_NOMAP_V2705.jar')
     compile files('libs/jsoup-1.7.1.jar')
     compile files('libs/libpingpp-2.1.12.jar')
@@ -105,5 +105,7 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.9'
     //Zxing
     compile 'com.github.yuzhiqiang1993:zxing:2.1.6'
+
+    compile 'com.jph.takephoto:takephoto_library:4.0.3'
 
 }

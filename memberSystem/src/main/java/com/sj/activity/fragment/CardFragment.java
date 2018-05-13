@@ -83,7 +83,7 @@ public class CardFragment extends FragmentBase {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getHoldingActivity(), LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);
-        mAdapter = new CardRyvAdapter(getHoldingActivity());
+        mAdapter = new CardRyvAdapter(getHoldingActivity(),index);
         rylView.setAdapter(mAdapter);
     }
 

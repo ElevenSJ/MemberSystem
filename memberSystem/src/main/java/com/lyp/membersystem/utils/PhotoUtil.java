@@ -42,7 +42,7 @@ public class PhotoUtil {
 	public Uri takePhoto(int requestCode) {
 		File file = new FileStorage().createIconFile();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			imageUri = FileProvider.getUriForFile(activity, "com.lyp.fileprovider", file);// 通过FileProvider创建一个content类型的Uri
+			imageUri = FileProvider.getUriForFile(activity, "com.lyp.membersystem.provider", file);// 通过FileProvider创建一个content类型的Uri
 		} else {
 			imageUri = Uri.fromFile(file);
 		}
@@ -120,7 +120,7 @@ public class PhotoUtil {
 	public String startPhotoZoom(int requestCode, String imagePath) {
 		Uri imageUri = null;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.fileprovider", new File(imagePath));
+		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.membersystem.provider", new File(imagePath));
 		} else {
 			imageUri = Uri.parse("file://" + imagePath);
 		}
@@ -140,7 +140,7 @@ public class PhotoUtil {
 		;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			// cropImageUri = FileProvider.getUriForFile(activity,
-			// "com.lyp.fileprovider", file);//通过FileProvider创建一个content类型的Uri
+			// "com.lyp.membersystem.provider", file);//通过FileProvider创建一个content类型的Uri
 			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		} else {
 			// cropImageUri = Uri.fromFile(file);
@@ -165,7 +165,7 @@ public class PhotoUtil {
 	public String startSignPhotoZoom(int requestCode, String imagePath) {
 		Uri imageUri = null;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.fileprovider", new File(imagePath));
+		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.membersystem.provider", new File(imagePath));
 		} else {
 			imageUri = Uri.parse("file://" + imagePath);
 		}
@@ -176,7 +176,7 @@ public class PhotoUtil {
 	public String startBusinessCardPhotoZoom(int requestCode, String imagePath) {
 		Uri imageUri = null;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.fileprovider", new File(imagePath));
+		    imageUri = FileProvider.getUriForFile(activity, "com.lyp.membersystem.provider", new File(imagePath));
 		} else {
 			imageUri = Uri.parse("file://" + imagePath);
 		}
@@ -196,7 +196,7 @@ public class PhotoUtil {
 		;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			// cropImageUri = FileProvider.getUriForFile(activity,
-			// "com.lyp.fileprovider", file);//通过FileProvider创建一个content类型的Uri
+			// "com.lyp.membersystem.provider", file);//通过FileProvider创建一个content类型的Uri
 			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		} else {
 			// cropImageUri = Uri.fromFile(file);
@@ -230,7 +230,7 @@ public class PhotoUtil {
 		;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			// cropImageUri = FileProvider.getUriForFile(activity,
-			// "com.lyp.fileprovider", file);//通过FileProvider创建一个content类型的Uri
+			// "com.lyp.membersystem.provider", file);//通过FileProvider创建一个content类型的Uri
 			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		} else {
 			// cropImageUri = Uri.fromFile(file);

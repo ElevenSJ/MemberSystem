@@ -58,7 +58,7 @@ public class MessageActivity extends ActivityBase implements SwipeRefreshLayout.
 
     @Override
     public void initView() {
-        setTitleTxt("系统消息");
+        setTitleTxt("系统通知");
         rylView = findViewById(R.id.ryl_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);

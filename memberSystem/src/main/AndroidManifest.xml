@@ -101,8 +101,8 @@
             android:required="false" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.lyp.fileprovider"
+            android:name=".provider.SZLSystemProvider"
+            android:authorities="com.lyp.membersystem.provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -1017,7 +1017,10 @@
             android:name="com.sj.activity.MessageActivity"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name="com.sj.activity.ActivityEditUserInfo"
+            android:theme="@style/AppTheme.NoTitle"
+            android:screenOrientation="portrait" />
 
         <!-- 极光推送 绑定别名service-->
         <service android:name="com.sj.service.JPushAliasService" />
@@ -1043,16 +1046,6 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 

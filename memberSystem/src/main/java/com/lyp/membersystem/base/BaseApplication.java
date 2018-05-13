@@ -71,7 +71,7 @@ public class BaseApplication extends MultiDexApplication {
         HttpManager.init(this.getApplicationContext(), UrlConfig.BASE_URL);
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(this, "5af3fda6f43e483b3d0000bb", "main", UMConfigure.DEVICE_TYPE_PHONE, "");
-        PlatformConfig.setWeixin("wx194d9f8a263dd765", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wxb2d428034b3839b5", "3e3cfb7878f6985b826219c10d1ba3e9");
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
     }

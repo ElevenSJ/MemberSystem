@@ -59,7 +59,7 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
     @Override
     public void initView() {
         setTitleTxt("进修学习");
-        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.transparent_color));
+        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.half_transparent_color));
 
         SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenId = mSharedPreferences.getString(Constant.TOKEN_ID, "");

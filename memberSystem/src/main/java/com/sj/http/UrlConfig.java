@@ -31,4 +31,8 @@ public class UrlConfig {
     public static final String BANNER_LIST = "api/app/v1/getHomePageSlideshowDisplay";
     //进修学习轮播图
     public static final String BANNER_LIST_STUDY = "api/app/v1/getFurtherStudySlideshowDisplay";
+    //会员信息
+    public static final String MEMBER_INFO = "api/app/v1/getMemberPersonalInfo";
+    //修改会员信息
+    public static final String UPDATE_MEMBER_INFO = "api/app/v1/updateMemberPersonalInfo";
 }

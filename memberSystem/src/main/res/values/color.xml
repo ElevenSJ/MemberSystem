@@ -158,6 +158,7 @@
     
     <color name="ccp_alert_bg">#3F474A</color>
     <color name="transparent_color">#00ffffff</color>
+    <color name="half_transparent_color">#80000000</color>
     <color name="ccp_translucent_half">#b0000000</color>
     <color name="ccp_video_transparent">#f0000000</color>
     

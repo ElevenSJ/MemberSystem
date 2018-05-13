@@ -1,6 +1,7 @@
 package com.sj.activity.adapter;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,16 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.lyp.membersystem.R;
 import com.sj.activity.bean.CardBean;
+import com.sj.widgets.ImageDialog;
 
 
 public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean> {
     Context context;
-    public CardRyvAdapter(Context context) {
+    static int index;
+    public CardRyvAdapter(Context context,int index) {
         super(context);
         this.context = context;
+        this.index = index;
     }
 
     @Override
@@ -26,14 +30,19 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
     }
 
     private static class CardRyvHolder extends BaseViewHolder<CardBean.CpChiefBBSBean> {
+        private ConstraintLayout layoutMain;
         private ImageView imgIcon;
         private TextView txtTitle;
         private TextView txtTime;
         private TextView txtCreatTime;
         private ImageView imgCode;
+        ImageDialog imageDialog;
+        Context context;
 
         public CardRyvHolder(ViewGroup parent, Context context) {
             super(parent, R.layout.card_item);
+            this.context = context;
+            layoutMain= $(R.id.layout_main);
             imgIcon = $(R.id.img_icon);
             txtTitle = $(R.id.txt_title);
             txtTime = $(R.id.txt_time);
@@ -44,6 +53,11 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
         @Override
         public void setData(final CardBean.CpChiefBBSBean data) {
             super.setData(data);
+            if (index == 0){
+                layoutMain.setBackgroundResource(R.drawable.img_card_bg);
+            }else{
+                layoutMain.setBackgroundResource(R.drawable.img_card_bg_used);
+            }
 //            ImageUtils.loadImageWithError(data.getPreviewUrl(),R.drawable.ic_launcher,imgIcon);
             txtTitle.setText(data.getBbsName());
             txtTime.setText(data.getIndate());
@@ -52,7 +66,10 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(data.getQrCode())){
-
+                        if (imageDialog == null){
+                            imageDialog = new ImageDialog(context);
+                        }
+                        imageDialog.show(data.getQrCode());
                     }
                 }
             });

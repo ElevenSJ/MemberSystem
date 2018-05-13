@@ -83,7 +83,7 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
     }
 
     private void initView() {
-        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.transparent_color));
+        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.half_transparent_color));
         banner = (Banner) findViewById(R.id.banner);
         tvTitle = (TextView) findViewById(R.id.tv_title);
         right = (ImageView) findViewById(R.id.right);
