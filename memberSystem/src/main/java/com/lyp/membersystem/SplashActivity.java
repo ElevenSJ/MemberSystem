@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.splash);
+//		setContentView(R.layout.splash);
 		ConnectivityManager connManger = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo[] infos = connManger.getAllNetworkInfo(); // 获取所有的连接对象信息
 		NetworkInfo active_info = connManger.getActiveNetworkInfo(); // 获取可用的连接对象信息

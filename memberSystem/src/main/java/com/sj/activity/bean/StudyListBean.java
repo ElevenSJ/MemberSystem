@@ -7,7 +7,7 @@ import java.util.List;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ForumListBean<T> {
+public class StudyListBean<T extends  StudyBean> {
     List<T> infoList;
 
     public List<T> getInfoList() {

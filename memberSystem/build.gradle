@@ -36,10 +36,7 @@ android {
         }
 
         sourceSets {
-            main {
-                jniLibs.srcDirs = ['libs']
-            }
-
+            main.jniLibs.srcDirs = ['libs']
         }
 
         manifestPlaceholders = [
@@ -61,12 +58,11 @@ android {
 }
 
 dependencies {
-//    compile project(':takephoto_library')
     compile project(':bQMM_Lib')
     compile files('libs/alipaySdk-20170725.jar')
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/bugly_crash_release.jar')
-//    compile files('libs/glide-3.6.1.jar')
+    //    compile files('libs/bugly_crash_release.jar')
+    //    compile files('libs/glide-3.6.1.jar')
     compile files('libs/HwPush_SDK_NOMAP_V2705.jar')
     compile files('libs/jsoup-1.7.1.jar')
     compile files('libs/libpingpp-2.1.12.jar')
@@ -100,12 +96,16 @@ dependencies {
     implementation 'com.umeng.sdk:share-wechat:latest.integration'
     implementation 'com.umeng.sdk:shareboard-widget:latest.integration'
     implementation files('libs/umeng-common-1.5.1.jar')
-    //極光推送
-    compile 'cn.jiguang.sdk:jpush:3.1.1'
-    compile 'cn.jiguang.sdk:jcore:1.1.9'
+    // 极光推送
+    implementation 'cn.jiguang.sdk:jpush:3.1.1'
+    implementation 'cn.jiguang.sdk:jcore:1.1.9'
     //Zxing
-    compile 'com.github.yuzhiqiang1993:zxing:2.1.6'
-
-    compile 'com.jph.takephoto:takephoto_library:4.0.3'
-
+    implementation 'com.github.yuzhiqiang1993:zxing:2.1.6'
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
+    //bugly异常上报
+    implementation 'com.tencent.bugly:crashreport:2.6.6'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1234_43608_sharewithdownload_withoutGame_obfs_20180510_111111.jar')
 }

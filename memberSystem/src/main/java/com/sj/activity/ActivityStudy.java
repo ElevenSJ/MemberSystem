@@ -18,6 +18,7 @@ import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.Bannerbean;
+import com.sj.activity.bean.ForumBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
@@ -59,8 +60,8 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
     @Override
     public void initView() {
         setTitleTxt("进修学习");
-        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.half_transparent_color));
-
+//        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.half_transparent_color));
+        findViewById(R.id.layout_title).setBackgroundColor(getResources().getColor(R.color.transparent_color));
         SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenId = mSharedPreferences.getString(Constant.TOKEN_ID, "");
 
@@ -159,14 +160,38 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        ToastUtil.showMessage(((TextView) v).getText().toString());
+        String title = ((TextView) v).getText().toString();
         Intent intent = new Intent();
+        intent.setClass(this, ActivityStudyCommon.class);
+        intent.putExtra("title",title);
+        intent.putExtra("type",id);
         switch (id) {
+            case R.id.txt_read_book:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_morning_meetting:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_good_time:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_train:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_teacher:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_MDRT:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
             case R.id.txt_forum:
-                intent.setClass(this, ActivityForum.class);
-                startActivity(intent);
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                break;
+            case R.id.txt_class:
+                intent.putExtra("url",UrlConfig.FORUM_LIST);
                 break;
         }
+        startActivity(intent);
     }
 
     public class GlideImageLoader extends ImageLoader {

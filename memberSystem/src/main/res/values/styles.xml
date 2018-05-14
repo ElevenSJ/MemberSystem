@@ -941,4 +941,15 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+       <!--隐藏标题栏 -->
+        <item name="windowNoTitle">true</item>
+        <!--隐藏状态栏-->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="SplashTheme" parent="AppTheme.Fullscreen">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
 </resources>

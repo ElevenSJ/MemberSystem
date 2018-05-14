@@ -12,10 +12,12 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.easyrecyclerview.decoration.DividerDecoration;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
-import com.sj.activity.adapter.ForumRyvAdapter;
 import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
+import com.sj.activity.bean.ForumBean;
 import com.sj.activity.bean.ForumListBean;
+import com.sj.activity.bean.StudyBean;
+import com.sj.activity.bean.StudyListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
@@ -27,21 +29,30 @@ import java.util.Map;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnMoreListener {
+public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnMoreListener {
     EasyRecyclerView rylView;
 
     StudyRyvAdapter mAdapter;
     int pageNum = 1;
     String tokenid;
+    String title;
+    String url;
+    int type;
+
+    StudyBean studyBean;
 
     @Override
     public int getContentLayout() {
-        return R.layout.activity_forum;
+        return R.layout.activity_study_common;
     }
 
     @Override
     public void initView() {
-        setTitleTxt("首席论坛");
+        title = getIntent().getStringExtra("title");
+        url = getIntent().getStringExtra("url");
+        type = getIntent().getIntExtra("type", 0);
+        setTitleTxt(title);
+
         rylView = findViewById(R.id.ryl_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);
@@ -60,6 +71,9 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
         super.onCreate(savedInstanceState);
         SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
+        if (type == 0) {
+            return;
+        }
         onRefresh();
     }
 
@@ -69,21 +83,25 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
         parameters.put("token_id", tokenid);
         parameters.put("pageNum", pageNum);
         parameters.put("pageSize", "10");
-        HttpManager.get(UrlConfig.FORUM_LIST, parameters, new Callback() {
+        HttpManager.get(url, parameters, new Callback() {
             @Override
             public void onSuccess(String message) {
             }
 
             @Override
             public void onSuccessData(String json) {
-                ForumListBean forumListBean = new GsonResponsePasare<ForumListBean>() {
-                }.deal(json);
-                if (forumListBean != null && forumListBean.getInfoList() != null) {
-                    if (pageNum == 1 && mAdapter.getCount() > 0) {
-                        mAdapter.clear();
-                    }
-                    mAdapter.addAll(forumListBean.getInfoList());
-                }
+//                switch (type) {
+//                    case R.id.txt_forum:
+                        StudyListBean<ForumBean> studyListBean = new GsonResponsePasare<StudyListBean<ForumBean>>() {
+                        }.deal(json);
+                        if (studyListBean != null && studyListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(studyListBean.getInfoList());
+                        }
+//                        break;
+//                }
                 pageNum++;
             }
 

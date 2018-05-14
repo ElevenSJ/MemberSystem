@@ -13,29 +13,30 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.lyp.membersystem.R;
 import com.sj.activity.ActivityForumDetail;
 import com.sj.activity.bean.ForumBean;
+import com.sj.activity.bean.StudyBean;
 import com.sj.utils.ImageUtils;
 
 
-public class ForumRyvAdapter extends RecyclerArrayAdapter<ForumBean> {
+public class StudyRyvAdapter extends RecyclerArrayAdapter<StudyBean> {
     Context context;
-    public ForumRyvAdapter(Context context) {
+    public StudyRyvAdapter(Context context) {
         super(context);
         this.context = context;
     }
 
     @Override
-    public ForumRyvHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ForumRyvHolder(parent,context);
+    public StudyRyvHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+        return new StudyRyvHolder(parent,context);
     }
 
-    private static class ForumRyvHolder extends BaseViewHolder<ForumBean> {
+    private static class StudyRyvHolder extends BaseViewHolder<StudyBean> {
         private ImageView imgIcon;
         private TextView txtName;
         private TextView txtTime;
         private TextView txtPrice;
         private Button btBuy;
 
-        public ForumRyvHolder(ViewGroup parent, Context context) {
+        public StudyRyvHolder(ViewGroup parent, Context context) {
             super(parent, R.layout.study_item);
             imgIcon = $(R.id.img_icon);
             txtName = $(R.id.txt_name);
@@ -45,7 +46,7 @@ public class ForumRyvAdapter extends RecyclerArrayAdapter<ForumBean> {
         }
 
         @Override
-        public void setData(final ForumBean data) {
+        public void setData(final StudyBean data) {
             super.setData(data);
             ImageUtils.loadImageWithError(data.getPreviewUrl(),R.drawable.ic_launcher,imgIcon);
             txtName.setText(data.getName());
@@ -54,8 +55,11 @@ public class ForumRyvAdapter extends RecyclerArrayAdapter<ForumBean> {
             btBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),ActivityForumDetail.class);
-                    intent.putExtra("data",data);
+                    Intent intent = new Intent();
+                    if (data  instanceof ForumBean){
+                        intent.setClass(v.getContext(), ActivityForumDetail.class);
+                        intent.putExtra("data",data);
+                    }
                     v.getContext().startActivity(intent);
                 }
             });

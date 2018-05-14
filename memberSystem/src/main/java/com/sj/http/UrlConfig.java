@@ -27,6 +27,8 @@ public class UrlConfig {
     public static final String CARD_LIST = "api/app/v1/getMemberCouponListById";
     //首席论坛购买
     public static final String FORUM_BUY_LIST = "api/app/v1/buyCpChiefbbs";
+    //首席论坛详情
+    public static final String FORUM_DETAIL_HTML = "api/app/v1/getChiefbbsDetailDisplay";
     //首页轮播图
     public static final String BANNER_LIST = "api/app/v1/getHomePageSlideshowDisplay";
     //进修学习轮播图

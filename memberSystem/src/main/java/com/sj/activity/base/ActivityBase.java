@@ -3,6 +3,7 @@ package com.sj.activity.base;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public abstract class ActivityBase extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		ViewManager.getInstance().addActivity(this);
 		setContentView(getContentLayout());
 		txtTitle = findViewById(R.id.tv_title);

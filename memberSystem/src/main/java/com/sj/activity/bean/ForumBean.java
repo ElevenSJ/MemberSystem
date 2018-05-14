@@ -8,7 +8,7 @@ import java.util.List;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ForumBean implements Serializable{
+public class ForumBean extends StudyBean{
 
     /**
      * id : 1
@@ -22,47 +22,10 @@ public class ForumBean implements Serializable{
      * items : [{"id":1,"areaName":"东南区","price":1000,"total":10,"status":1},{"id":2,"areaName":"东北区","price":2000,"total":10,"status":1},{"id":3,"areaName":"西南区","price":3000,"total":20,"status":1},{"id":4,"areaName":"西北区","price":4000,"total":20,"status":1}]
      */
 
-    private int id;
-    private String name;
-    private String intro;
-    private String indate;
     private String daynum;
     private int status;
-    private String previewUrl;
     private List<String> slideshowUrl;
     private List<ItemsBean> items;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
-    }
-
-    public String getIndate() {
-        return indate;
-    }
-
-    public void setIndate(String indate) {
-        this.indate = indate;
-    }
 
     public String getDaynum() {
         return daynum;
@@ -78,14 +41,6 @@ public class ForumBean implements Serializable{
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public String getPreviewUrl() {
-        return previewUrl;
-    }
-
-    public void setPreviewUrl(String previewUrl) {
-        this.previewUrl = previewUrl;
     }
 
     public List<String> getSlideshowUrl() {

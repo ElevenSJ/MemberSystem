@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.jady.retrofitclient.HttpManager;
+import com.lyp.membersystem.BuildConfig;
 import com.lyp.membersystem.log.LogUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -20,6 +22,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.sj.http.UrlConfig;
 import com.sj.utils.Utils;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.yuntongxun.ecdemo.common.CCPAppManager;
@@ -31,14 +35,17 @@ import com.yuntongxun.ecdemo.ui.huawei.PustDemoActivity;
 
 import java.io.File;
 import java.io.InvalidClassException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import cn.jpush.android.api.JPushInterface;
 
+import static com.umeng.socialize.utils.DeviceConfig.context;
+
 public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication instance;
-    public static Context applicationContext;
     // 存储某种情况下需要被干掉的activity
     private static Stack<Activity> activityStack;
     // 存储所有活着的activity
@@ -71,9 +78,60 @@ public class BaseApplication extends MultiDexApplication {
         HttpManager.init(this.getApplicationContext(), UrlConfig.BASE_URL);
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(this, "5af3fda6f43e483b3d0000bb", "main", UMConfigure.DEVICE_TYPE_PHONE, "");
-        PlatformConfig.setWeixin("wxb2d428034b3839b5", "3e3cfb7878f6985b826219c10d1ba3e9");
+        PlatformConfig.setWeixin("wx194d9f8a263dd765", "ef4ccdfddd9fcbc3b1ccbea12a865321");
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        initX5WebKit();
+        initBuglyCrash();
+    }
+
+    private void initX5WebKit() {
+        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+
+            @Override
+            public void onViewInitFinished(boolean arg0) {
+                // TODO Auto-generated method stub
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                Log.d("app", " onViewInitFinished is " + arg0);
+            }
+
+            @Override
+            public void onCoreInitFinished() {
+                // TODO Auto-generated method stub
+            }
+        };
+        //x5内核初始化接口
+        QbSdk.initX5Environment(getApplicationContext(),  cb);
+    }
+
+    private void initBuglyCrash() {
+        // 获取当前包名
+        String packageName = instance.getPackageName();
+        // 获取当前进程名
+        String processName = Utils.getProcessName(android.os.Process.myPid());
+        // 设置是否为上报进程
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(instance);
+        strategy.setUploadProcess(processName == null || processName.equals(packageName));
+        strategy.setCrashHandleCallback(new CrashReport.CrashHandleCallback() {
+
+            public Map<String, String> onCrashHandleStart(int crashType, String errorType, String errorMessage, String errorStack) {
+                LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+                String x5CrashInfo = com.tencent.smtt.sdk.WebView.getCrashExtraMessage(instance);
+                map.put("x5crashInfo", x5CrashInfo);
+                return map;
+            }
+
+            @Override
+            public byte[] onCrashHandleStart2GetExtraDatas(int crashType, String errorType, String errorMessage, String errorStack) {
+                try {
+                    return "Extra data.".getBytes("UTF-8");
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        });
+        // 初始化Bugly
+        CrashReport.initCrashReport(instance, "6e0dfc9e9d", BuildConfig.DEBUG, strategy);
     }
 
     public static BaseApplication getInstance() {
