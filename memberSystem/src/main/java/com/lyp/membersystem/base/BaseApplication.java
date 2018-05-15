@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.sj.http.HttpUtils;
 import com.sj.http.UrlConfig;
 import com.sj.utils.Utils;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -83,6 +84,7 @@ public class BaseApplication extends MultiDexApplication {
         JPushInterface.init(this);
         initX5WebKit();
         initBuglyCrash();
+
     }
 
     private void initX5WebKit() {

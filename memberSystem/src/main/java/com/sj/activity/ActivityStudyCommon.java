@@ -74,11 +74,11 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
         if (type == 0) {
             return;
         }
+        showProgress();
         onRefresh();
     }
 
     private void getData() {
-        showProgress();
         Map<String, Object> parameters = new ArrayMap<>(3);
         parameters.put("token_id", tokenid);
         parameters.put("pageNum", pageNum);

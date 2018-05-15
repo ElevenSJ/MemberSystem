@@ -1029,6 +1029,10 @@
             android:name="com.sj.activity.ActivityStudyCommon"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivitySetting"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
 
         <!-- 极光推送 绑定别名service-->
         <service android:name="com.sj.service.JPushAliasService" />

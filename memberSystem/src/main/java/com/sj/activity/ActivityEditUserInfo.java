@@ -25,9 +25,13 @@ import com.lyp.membersystem.R;
 import com.lyp.membersystem.net.API;
 import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.UserInfoRyvAdapter;
+import com.sj.activity.base.ActivityBase;
 import com.sj.activity.base.ActivityTakePhotoBase;
 import com.sj.activity.bean.UserBean;
 import com.sj.http.Callback;
+import com.sj.http.FileCallback;
+import com.sj.http.GsonResponsePasare;
+import com.sj.http.HttpUtils;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.yuntongxun.ecdemo.common.utils.ToastUtil;
@@ -129,6 +133,7 @@ public class ActivityEditUserInfo extends ActivityTakePhotoBase implements OnCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                showProgress();
                 updateUserInfo(key, which + "");
             }
         });
@@ -149,6 +154,7 @@ public class ActivityEditUserInfo extends ActivityTakePhotoBase implements OnCli
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 String value = et.getText().toString();
+                showProgress();
                 updateUserInfo(key, value);
             }
         });
@@ -185,7 +191,6 @@ public class ActivityEditUserInfo extends ActivityTakePhotoBase implements OnCli
     }
 
     private void updateUserInfo(final String key, final String value) {
-        showProgress();
         Map<String, Object> parameters = new ArrayMap<>(2);
         parameters.put("token_id", tokenId);
         parameters.put(key, value);
@@ -210,7 +215,6 @@ public class ActivityEditUserInfo extends ActivityTakePhotoBase implements OnCli
             @Override
             public void onFinish() {
                 super.onFinish();
-                setTitleRightTxt("修改");
                 hideProgress();
             }
         });
@@ -266,11 +270,23 @@ public class ActivityEditUserInfo extends ActivityTakePhotoBase implements OnCli
         showProgress();
         Uri.Builder builder = Uri.parse(API.API_UPLOAD_AVATER).buildUpon();
         builder.appendQueryParameter("token_id", tokenId);
-        HttpManager.uploadFile(builder.toString(), path, "", new FileResponseResult() {
+        HttpUtils.getInstance().uploadFileFullPath(builder.toString(), path, "", new FileCallback() {
+            @Override
+            public void onNext(String result) {
+                List<String> imgPaths = new GsonResponsePasare<List<String>>() {
+                }.deal(result);
+                if (imgPaths == null || imgPaths.isEmpty()) {
+                    ToastUtil.showMessage("未获取到图片地址");
+                    hideProgress();
+                } else {
+                    ImageUtils.loadImageWithError(imgPaths.get(0), R.drawable.personal, imgUserHeader);
+                    updateUserInfo("avatar", imgPaths.get(0));
+                }
+            }
+
             @Override
             public void onSuccess() {
-                hideProgress();
-                ImageUtils.loadImageWithError(path, R.drawable.personal, imgUserHeader);
+
             }
 
             @Override

@@ -28,17 +28,22 @@ import com.lyp.membersystem.log.LogUtils;
 import com.lyp.membersystem.manager.ImageManager;
 import com.lyp.membersystem.net.API;
 import com.lyp.membersystem.net.Errors;
+import com.lyp.membersystem.ui.MemberActivity;
 import com.lyp.membersystem.ui.NoticeActivity;
 import com.lyp.membersystem.ui.SettingsActivity;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.view.CustomPopupWindow;
 import com.sj.activity.ActivityCardBag;
 import com.sj.activity.ActivityEditUserInfo;
+import com.sj.activity.ActivitySetting;
 import com.sj.activity.MessageActivity;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.UserBean;
+import com.sj.http.BaseResponse;
 import com.sj.http.Callback;
+import com.sj.http.FileCallback;
 import com.sj.http.GsonResponsePasare;
+import com.sj.http.HttpUtils;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.ImageDialog;
@@ -49,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -112,21 +118,22 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
     }
 
     private void initView() {
-        back = (ImageView) view.findViewById(R.id.back);
-        tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        right = (ImageView) view.findViewById(R.id.right);
-        imgUserHeader = (ImageView) view.findViewById(R.id.user_avater);
-        txtUserName = (TextView) view.findViewById(R.id.txt_user_name);
-        imgUserQHeader = (ImageView) view.findViewById(R.id.q_iv);
-        imgUserSign = (ImageView) view.findViewById(R.id.iv_signature);
-        tvRenewalTime = (TextView) view.findViewById(R.id.txt_renewal_time);
-        tvWalletValue = (TextView) view.findViewById(R.id.txt_my_wallet_value);
+        back = view.findViewById(R.id.back);
+        tvTitle = view.findViewById(R.id.tv_title);
+        right = view.findViewById(R.id.right);
+        imgUserHeader = view.findViewById(R.id.user_avater);
+        txtUserName = view.findViewById(R.id.txt_user_name);
+        imgUserQHeader = view.findViewById(R.id.q_iv);
+        imgUserSign =  view.findViewById(R.id.iv_signature);
+        tvRenewalTime = view.findViewById(R.id.txt_renewal_time);
+        tvWalletValue =  view.findViewById(R.id.txt_my_wallet_value);
 
         view.findViewById(R.id.user_avater).setOnClickListener(this);
         view.findViewById(R.id.img_edit).setOnClickListener(this);
         view.findViewById(R.id.img_qcode).setOnClickListener(this);
 
 
+        view.findViewById(R.id.bt_renewal).setOnClickListener(this);
         view.findViewById(R.id.layout_card_bag).setOnClickListener(this);
         view.findViewById(R.id.layout_system_message).setOnClickListener(this);
         view.findViewById(R.id.layout_custom).setOnClickListener(this);
@@ -146,23 +153,23 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         txtUserName.setText(TextUtils.isEmpty(userBean.getName()) ? userBean.getPhone() : userBean.getName());
         ImageUtils.loadImageWithError(userBean.getQgraph(), R.drawable.default_q_icon, imgUserQHeader);
         ImageUtils.loadImageView(userBean.getSignature(), imgUserSign);
-        if(userBean.getType()==1){
+        if (userBean.getType() == 1) {
             String status = "";
-            switch (userBean.getStatus()){
+            switch (userBean.getStatus()) {
                 case 1:
-                    status="正常";
+                    status = "正常";
                     break;
                 case 2:
-                    status="即将到期，请续费";
+                    status = "即将到期，请续费";
                     break;
                 case 3:
-                    status="已到期";
+                    status = "已到期";
                     break;
-                    default:
+                default:
             }
             tvRenewalTime.setText(status);
         }
-        tvWalletValue.setText(userBean.getBalance()+"元");
+        tvWalletValue.setText(userBean.getBalance() + "元");
     }
 
 
@@ -196,30 +203,34 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         Intent intent = new Intent();
         switch (id) {
             case R.id.right:
-                intent.setClass(v.getContext(), SettingsActivity.class);
+                intent.setClass(v.getContext(), ActivitySetting.class);
                 startActivity(intent);
                 break;
             case R.id.user_avater:
                 uploadAvater(v);
                 break;
             case R.id.img_edit:
-                if (userBean == null){
+                if (userBean == null) {
                     ToastUtil.showMessage("未获取到用户信息");
                     break;
                 }
                 intent.setClass(v.getContext(), ActivityEditUserInfo.class);
-                intent.putExtra("data",userBean);
+                intent.putExtra("data", userBean);
                 startActivity(intent);
                 break;
             case R.id.img_qcode:
-                if (userBean == null||TextUtils.isEmpty(userBean.getQrCode())){
+                if (userBean == null || TextUtils.isEmpty(userBean.getQrCode())) {
                     ToastUtil.showMessage("暂无二维码");
                     return;
                 }
-                if (imageDialog == null){
+                if (imageDialog == null) {
                     imageDialog = new ImageDialog(getActivity());
                 }
                 imageDialog.show(userBean.getQrCode());
+                break;
+            case R.id.bt_renewal:
+                intent.setClass(v.getContext(), MemberActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_card_bag:
                 intent.setClass(v.getContext(), ActivityCardBag.class);
@@ -271,11 +282,23 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         ((ActivityBase) getActivity()).showProgress();
         Uri.Builder builder = Uri.parse(API.API_UPLOAD_AVATER).buildUpon();
         builder.appendQueryParameter("token_id", tokenId);
-        HttpManager.uploadFile(builder.toString(), path, "", new FileResponseResult() {
+        HttpUtils.getInstance().uploadFileFullPath(builder.toString(), path, "", new FileCallback() {
+            @Override
+            public void onNext(String result) {
+               List<String> imgPaths = new GsonResponsePasare< List<String>>() {
+                }.deal(result);
+               if (imgPaths==null||imgPaths.isEmpty()){
+                   ToastUtil.showMessage("未获取到图片地址");
+                   ((ActivityBase) getActivity()).hideProgress();
+               }else{
+                   ImageUtils.loadImageWithError(imgPaths.get(0), R.drawable.personal, imgUserHeader);
+                   updateUserInfo("avatar",imgPaths.get(0));
+               }
+            }
+
             @Override
             public void onSuccess() {
-                ((ActivityBase) getActivity()).hideProgress();
-                ImageUtils.loadImageWithError(path, R.drawable.personal, imgUserHeader);
+
             }
 
             @Override
@@ -285,40 +308,29 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
             }
         });
     }
-
-    /**
-     * to parse upload avater from network
-     */
-    private void parseUploadInfo(String result) {
-        if (Errors.ERROR_NET.equals(result) || Errors.ERROR_SERVER.equals(result)) {
-            ToastUtil.showMessage(R.string.network_error);
-            ((ActivityBase) getActivity()).hideProgress();
-            return;
-        }
-        try {
-            JSONObject json = new JSONObject(result);
-            LogUtils.d("Json: " + json);
-            boolean success = json.getBoolean("success");
-            if (!success) {
-                String message = json.getString("message");
+    private void updateUserInfo(final String key, final String value) {
+        Map<String, Object> parameters = new ArrayMap<>(2);
+        parameters.put("token_id", tokenId);
+        parameters.put(key, value);
+        HttpManager.get(UrlConfig.UPDATE_MEMBER_INFO, parameters, new Callback() {
+            @Override
+            public void onSuccess(String message) {
                 ToastUtil.showMessage(message);
-                if (json.getString("resCode").equals(Constant.RELOGIN)) {
-                    ((ActivityBase) getActivity()).backLogin();
-                }
-                return;
             }
-            JSONArray jsonArray = json.getJSONArray("object");
-            if (jsonArray.length() > 0) {
-                String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
-                String saleId = mSharedPreferences.getString(Constant.ID, "");
-                ImageManager.loadImage(jsonArray.getString(0), imgUserHeader, R.drawable.avater_login);
+            @Override
+            public void onSuccessData(String json) {
             }
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-            return;
-        } finally {
-            ((ActivityBase) getActivity()).hideProgress();
-        }
+            @Override
+            public void onFailure(String error_code, String error_message) {
+                Log.d(TAG, "onSuccessData: ");
+                ToastUtil.showMessage(error_message);
+            }
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                ((ActivityBase) getActivity()).hideProgress();
+            }
+        });
     }
 
     private void getPhoto(int i, TakePhoto takePhoto) {
@@ -368,13 +380,13 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
     @Override
     public void takeCancel() {
         super.takeCancel();
-        ToastUtil.showMessage("取消操作");
+//        ToastUtil.showMessage("取消操作");
     }
 
     @Override
     public void takeFail(TResult result, String msg) {
         super.takeFail(result, msg);
-        ToastUtil.showMessage(msg);
+//        ToastUtil.showMessage(msg);
     }
 
     @Override

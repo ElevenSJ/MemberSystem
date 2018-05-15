@@ -33,7 +33,7 @@
     <string name="network_error">网络有问题，请检查网络是否正常！</string>
     <string name="exit">退出</string>
     <string name="enter">进入</string>
-    <string name="add">增加</string>
+    <string name="add_more">增加</string>
     <string name="selected">已选</string>
     <string name="select">选择</string>
     <string name="buy">购买</string>
