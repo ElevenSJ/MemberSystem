@@ -26,6 +26,7 @@ import com.sj.http.Callback;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.AmountView;
+import com.sj.widgets.SlideDetailsLayout;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.sdk.DownloadListener;
@@ -41,6 +42,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
+import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -60,6 +62,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
     ForumBean forumBean;
     ForumBean.ItemsBean itemsBean;
 
+    SlideDetailsLayout slideDetailsLayout;
     FrameLayout slidedetailsBehind;
     WebView webview;
 
@@ -97,6 +100,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
 
         amountView.setGoods_storage(0);
 
+        slideDetailsLayout = findViewById(R.id.slidedetails);
         slidedetailsBehind = findViewById(R.id.slidedetails_behind);
 
 
@@ -104,6 +108,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         slidedetailsBehind.addView(webview, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT));
+
         initWebSetting();
 
     }
@@ -264,6 +269,37 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
 //        if (!TextUtils.isEmpty(url)) {
 //        webview.loadUrl("http://www.baidu.com");
 //        }
+
+//        android.webkit.WebSettings settings = webview.getSettings();
+//        settings.setJavaScriptEnabled(true);//启用js
+//        settings.setJavaScriptCanOpenWindowsAutomatically(true);//js和android交互
+//        settings.setAppCachePath(FileAccessor.IMESSAGE_FILE); //设置缓存的指定路径
+//        settings.setAllowFileAccess(true); // 允许访问文件
+//        settings.setAppCacheEnabled(true); //设置H5的缓存打开,默认关闭
+//        settings.setUseWideViewPort(true);//设置webview自适应屏幕大小
+//        settings.setLayoutAlgorithm(android.webkit.WebSettings.LayoutAlgorithm.NARROW_COLUMNS);//设置，可能的话使所有列的宽度不超过屏幕宽度
+//        settings.setLoadWithOverviewMode(true);//设置webview自适应屏幕大小
+//        settings.setDomStorageEnabled(true);//设置可以使用localStorage
+//        settings.setSupportZoom(false);//关闭zoom按钮
+//        settings.setBuiltInZoomControls(false);//关闭zoom
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        }
+//        webview.setWebViewClient(new android.webkit.WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+//                view.loadUrl(url);
+//                return false;
+//            }
+//
+//            @Override
+//            public void onLoadResource(android.webkit.WebView view, String url) {
+//            }
+//
+//            @Override
+//            public void onPageFinished(android.webkit.WebView view, String url) {
+//            }
+//        });
         initData();
     }
 

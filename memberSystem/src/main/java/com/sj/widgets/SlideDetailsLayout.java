@@ -10,17 +10,15 @@ import android.os.Parcelable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.lyp.membersystem.R;
-
 
 /**
  * <b>Project:</b> SlideDetailsLayout<br>
@@ -46,13 +44,9 @@ public class SlideDetailsLayout extends ViewGroup {
     }
 
     public enum Status {
-        /**
-         * Panel is closed
-         */
+        /** Panel is closed */
         CLOSE,
-        /**
-         * Panel is opened
-         */
+        /** Panel is opened */
         OPEN;
 
         public static Status valueOf(int stats) {
@@ -68,6 +62,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
     private static final float DEFAULT_PERCENT = 0.2f;
     private static final int DEFAULT_DURATION = 300;
+    private static final float DEFAULT_MAX_VELOCITY = 2500f;
 
     private View mFrontView;
     private View mBehindView;
@@ -84,6 +79,7 @@ public class SlideDetailsLayout extends ViewGroup {
     private float mPercent = DEFAULT_PERCENT;
     private long mDuration = DEFAULT_DURATION;
     private int mDefaultPanel = 0;
+    private VelocityTracker mVelocityTracker;
 
     private OnSlideDetailsListener mOnSlideDetailsListener;
 
@@ -222,6 +218,7 @@ public class SlideDetailsLayout extends ViewGroup {
         int bottom;
 
         final int offset = (int) mSlideOffset;
+
         View child;
         for (int i = 0; i < getChildCount(); i++) {
             child = getChildAt(i);
@@ -239,6 +236,7 @@ public class SlideDetailsLayout extends ViewGroup {
                 top = offset;
                 bottom = b + offset;
             }
+
             child.layout(left, top, right, bottom);
         }
     }
@@ -259,6 +257,13 @@ public class SlideDetailsLayout extends ViewGroup {
         boolean shouldIntercept = false;
         switch (aciton) {
             case MotionEvent.ACTION_DOWN: {
+                if (null == mVelocityTracker) {
+                    mVelocityTracker = VelocityTracker.obtain();
+                } else {
+                    mVelocityTracker.clear();
+                }
+                mVelocityTracker.addMovement(ev);
+
                 mInitMotionX = ev.getX();
                 mInitMotionY = ev.getY();
                 shouldIntercept = false;
@@ -300,6 +305,13 @@ public class SlideDetailsLayout extends ViewGroup {
         return shouldIntercept;
     }
 
+    private void recycleVelocityTracker(){
+        if(null != mVelocityTracker){
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         ensureTarget();
@@ -310,6 +322,7 @@ public class SlideDetailsLayout extends ViewGroup {
         if (!isEnabled()) {
             return false;
         }
+
 
         boolean wantTouch = true;
         final int action = MotionEventCompat.getActionMasked(ev);
@@ -324,6 +337,8 @@ public class SlideDetailsLayout extends ViewGroup {
             }
 
             case MotionEvent.ACTION_MOVE: {
+                mVelocityTracker.addMovement(ev);
+                mVelocityTracker.computeCurrentVelocity(1000);
                 final float y = ev.getY();
                 final float yDiff = y - mInitMotionY;
                 if (canChildScrollVertically(((int) yDiff))) {
@@ -338,6 +353,7 @@ public class SlideDetailsLayout extends ViewGroup {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL: {
                 finishTouchEvent();
+                recycleVelocityTracker();
                 wantTouch = false;
                 break;
             }
@@ -396,9 +412,10 @@ public class SlideDetailsLayout extends ViewGroup {
         final float offset = mSlideOffset;
 
         boolean changed = false;
+        final float yVelocity = mVelocityTracker.getYVelocity();
 
         if (Status.CLOSE == mStatus) {
-            if (offset <= -percent) {
+            if (offset <= -percent || yVelocity <= -DEFAULT_MAX_VELOCITY) {
                 mSlideOffset = -pHeight;
                 mStatus = Status.OPEN;
                 changed = true;
@@ -407,7 +424,7 @@ public class SlideDetailsLayout extends ViewGroup {
                 mSlideOffset = 0;
             }
         } else if (Status.OPEN == mStatus) {
-            if ((offset + pHeight) >= percent) {
+            if ((offset + pHeight) >= percent || yVelocity >= DEFAULT_MAX_VELOCITY) {
                 mSlideOffset = 0;
                 mStatus = Status.CLOSE;
                 changed = true;
@@ -490,28 +507,33 @@ public class SlideDetailsLayout extends ViewGroup {
      * Check child view can srcollable in vertical direction.
      *
      * @param direction Negative to check scrolling up, positive to check scrolling down.
+     *
      * @return true if this view can be scrolled in the specified direction, false otherwise.
      */
     protected boolean canChildScrollVertically(int direction) {
-        if (mTarget instanceof AbsListView) {
-            return canListViewSroll((AbsListView) mTarget);
-        } else if (mTarget instanceof FrameLayout ||
-                mTarget instanceof RelativeLayout ||
-                mTarget instanceof LinearLayout) {
+        return innerCanChildScrollVertically(mTarget, -direction);
+    }
+
+    private boolean innerCanChildScrollVertically(View view, int direction) {
+        if (view instanceof ViewGroup) {
+            final ViewGroup vGroup = (ViewGroup) view;
             View child;
-            for (int i = 0; i < ((ViewGroup) mTarget).getChildCount(); i++) {
-                child = ((ViewGroup) mTarget).getChildAt(i);
-                if (child instanceof AbsListView) {
-                    return canListViewSroll((AbsListView) child);
+            boolean result;
+            for (int i = 0; i < vGroup.getChildCount(); i++) {
+                child = vGroup.getChildAt(i);
+                if (child instanceof View) {
+                    result = ViewCompat.canScrollVertically(child, direction);
+                } else {
+                    result = innerCanChildScrollVertically(child, direction);
+                }
+
+                if (result) {
+                    return true;
                 }
             }
         }
 
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            return ViewCompat.canScrollVertically(mTarget, -direction) || mTarget.getScrollY() > 0;
-        } else {
-            return ViewCompat.canScrollVertically(mTarget, -direction);
-        }
+        return ViewCompat.canScrollVertically(view, direction);
     }
 
     protected boolean canListViewSroll(AbsListView absListView) {
@@ -583,14 +605,12 @@ public class SlideDetailsLayout extends ViewGroup {
             out.writeInt(status);
         }
 
-        public static final Creator<SavedState> CREATOR =
-                new Creator<SavedState>() {
-                    @Override
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
                     public SavedState createFromParcel(Parcel in) {
                         return new SavedState(in);
                     }
 
-                    @Override
                     public SavedState[] newArray(int size) {
                         return new SavedState[size];
                     }
