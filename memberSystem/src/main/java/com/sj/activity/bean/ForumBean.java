@@ -1,6 +1,10 @@
 package com.sj.activity.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +12,7 @@ import java.util.List;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ForumBean extends StudyBean{
+public class ForumBean implements Parcelable {
 
     /**
      * id : 1
@@ -22,6 +26,11 @@ public class ForumBean extends StudyBean{
      * items : [{"id":1,"areaName":"东南区","price":1000,"total":10,"status":1},{"id":2,"areaName":"东北区","price":2000,"total":10,"status":1},{"id":3,"areaName":"西南区","price":3000,"total":20,"status":1},{"id":4,"areaName":"西北区","price":4000,"total":20,"status":1}]
      */
 
+    private String id;
+    private String name;
+    private String indate;
+    private String previewUrl;
+    private String intro;
     private String daynum;
     private int status;
     private List<String> slideshowUrl;
@@ -57,6 +66,46 @@ public class ForumBean extends StudyBean{
 
     public void setItems(List<ItemsBean> items) {
         this.items = items;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIndate() {
+        return indate;
+    }
+
+    public void setIndate(String indate) {
+        this.indate = indate;
+    }
+
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
+
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public static class ItemsBean implements Serializable{
@@ -114,4 +163,50 @@ public class ForumBean extends StudyBean{
             this.status = status;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.indate);
+        dest.writeString(this.previewUrl);
+        dest.writeString(this.intro);
+        dest.writeString(this.daynum);
+        dest.writeInt(this.status);
+        dest.writeStringList(this.slideshowUrl);
+        dest.writeList(this.items);
+    }
+
+    public ForumBean() {
+    }
+
+    protected ForumBean(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.indate = in.readString();
+        this.previewUrl = in.readString();
+        this.intro = in.readString();
+        this.daynum = in.readString();
+        this.status = in.readInt();
+        this.slideshowUrl = in.createStringArrayList();
+        this.items = new ArrayList<ItemsBean>();
+        in.readList(this.items, ItemsBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ForumBean> CREATOR = new Parcelable.Creator<ForumBean>() {
+        @Override
+        public ForumBean createFromParcel(Parcel source) {
+            return new ForumBean(source);
+        }
+
+        @Override
+        public ForumBean[] newArray(int size) {
+            return new ForumBean[size];
+        }
+    };
 }

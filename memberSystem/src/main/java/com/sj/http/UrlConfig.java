@@ -37,4 +37,12 @@ public class UrlConfig {
     public static final String MEMBER_INFO = "api/app/v1/getMemberPersonalInfo";
     //修改会员信息
     public static final String UPDATE_MEMBER_INFO = "api/app/v1/updateMemberPersonalInfo";
+
+    //早会题材列表
+    public static final String MORNING_MEETING_LIST = "api/app/v1/getMorningMeetingList";
+    //精粹时光列表
+    public static final String BRIEFING_TIME_LIST = "api/app/v1/getBriefingTimeList";
+
+//    //精粹时光列表
+//    public static final String BRIEFING_TIME_LIST = "api/app/v1/getBriefingTimeList";
 }

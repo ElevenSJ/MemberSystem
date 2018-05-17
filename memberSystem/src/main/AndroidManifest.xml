@@ -1030,6 +1030,12 @@
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.sj.activity.ActivityStudyHtml"
+            android:theme="@style/AppNewTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
             android:name="com.sj.activity.ActivitySetting"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />

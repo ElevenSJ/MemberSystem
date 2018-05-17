@@ -15,12 +15,10 @@ import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.ForumBean;
-import com.sj.activity.bean.ForumListBean;
 import com.sj.activity.bean.StudyBean;
-import com.sj.activity.bean.StudyListBean;
+import com.sj.activity.bean.StudyCommonListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
-import com.sj.http.UrlConfig;
 
 import java.util.Map;
 
@@ -38,8 +36,6 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
     String title;
     String url;
     int type;
-
-    StudyBean studyBean;
 
     @Override
     public int getContentLayout() {
@@ -90,18 +86,14 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
 
             @Override
             public void onSuccessData(String json) {
-//                switch (type) {
-//                    case R.id.txt_forum:
-                        StudyListBean<ForumBean> studyListBean = new GsonResponsePasare<StudyListBean<ForumBean>>() {
-                        }.deal(json);
-                        if (studyListBean != null && studyListBean.getInfoList() != null) {
-                            if (pageNum == 1 && mAdapter.getCount() > 0) {
-                                mAdapter.clear();
-                            }
-                            mAdapter.addAll(studyListBean.getInfoList());
-                        }
-//                        break;
-//                }
+                StudyCommonListBean<StudyBean> studyListBean = new GsonResponsePasare<StudyCommonListBean<StudyBean>>() {
+                }.deal(json);
+                if (studyListBean != null && studyListBean.getInfoList() != null) {
+                    if (pageNum == 1 && mAdapter.getCount() > 0) {
+                        mAdapter.clear();
+                    }
+                    mAdapter.addAll(studyListBean.getInfoList());
+                }
                 pageNum++;
             }
 

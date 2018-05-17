@@ -12,6 +12,7 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.lyp.membersystem.R;
 import com.sj.activity.ActivityForumDetail;
+import com.sj.activity.ActivityStudyHtml;
 import com.sj.activity.bean.ForumBean;
 import com.sj.activity.bean.StudyBean;
 import com.sj.utils.ImageUtils;
@@ -19,6 +20,7 @@ import com.sj.utils.ImageUtils;
 
 public class StudyRyvAdapter extends RecyclerArrayAdapter<StudyBean> {
     Context context;
+
     public StudyRyvAdapter(Context context) {
         super(context);
         this.context = context;
@@ -26,7 +28,7 @@ public class StudyRyvAdapter extends RecyclerArrayAdapter<StudyBean> {
 
     @Override
     public StudyRyvHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new StudyRyvHolder(parent,context);
+        return new StudyRyvHolder(parent, context);
     }
 
     private static class StudyRyvHolder extends BaseViewHolder<StudyBean> {
@@ -48,18 +50,16 @@ public class StudyRyvAdapter extends RecyclerArrayAdapter<StudyBean> {
         @Override
         public void setData(final StudyBean data) {
             super.setData(data);
-            ImageUtils.loadImageWithError(data.getPreviewUrl(),R.drawable.ic_launcher,imgIcon);
-            txtName.setText(data.getName());
-            txtTime.setText(data.getIndate());
-            txtPrice.setText(data.getIntro());
+            ImageUtils.loadImageWithError(data.getThumbnail(), R.drawable.ic_launcher, imgIcon);
+            txtName.setText(data.getTitle());
+            txtTime.setText(data.getCreateTime());
+            txtPrice.setVisibility(View.GONE);
             btBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    if (data  instanceof ForumBean){
-                        intent.setClass(v.getContext(), ActivityForumDetail.class);
-                        intent.putExtra("data",data);
-                    }
+                    intent.setClass(v.getContext(), ActivityStudyHtml.class);
+                    intent.putExtra("data", data);
                     v.getContext().startActivity(intent);
                 }
             });

@@ -7,8 +7,13 @@ import java.util.List;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class StudyListBean<T extends  StudyBean> {
+public class StudyCommonListBean<T> {
     List<T> infoList;
+
+    int pageNum;
+    int pageSize;
+    int totalCount;
+    String defaultPageNum;
 
     public List<T> getInfoList() {
         return infoList;

@@ -15,6 +15,7 @@ import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.ForumRyvAdapter;
 import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
+import com.sj.activity.bean.ForumBean;
 import com.sj.activity.bean.ForumListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnMoreListener {
     EasyRecyclerView rylView;
 
-    StudyRyvAdapter mAdapter;
+    ForumRyvAdapter mAdapter;
     int pageNum = 1;
     String tokenid;
 
@@ -48,7 +49,7 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
         DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.item_line_color), 1, 16, 16);
         dividerDecoration.setDrawLastItem(false);
         rylView.addItemDecoration(dividerDecoration);
-        mAdapter = new StudyRyvAdapter(this);
+        mAdapter = new ForumRyvAdapter(this);
         mAdapter.setMore(R.layout.layout_load_more, this);
         mAdapter.setNoMore(R.layout.layout_load_no_more);
         rylView.setAdapterWithProgress(mAdapter);
@@ -76,7 +77,7 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
 
             @Override
             public void onSuccessData(String json) {
-                ForumListBean forumListBean = new GsonResponsePasare<ForumListBean>() {
+                ForumListBean<ForumBean> forumListBean = new GsonResponsePasare<ForumListBean<ForumBean>>() {
                 }.deal(json);
                 if (forumListBean != null && forumListBean.getInfoList() != null) {
                     if (pageNum == 1 && mAdapter.getCount() > 0) {

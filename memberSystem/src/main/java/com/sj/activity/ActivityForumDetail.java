@@ -75,7 +75,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
     public void initView() {
         SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
-        forumBean = (ForumBean) getIntent().getSerializableExtra("data");
+        forumBean = getIntent().getParcelableExtra("data");
         setTitleTxt("首席论坛");
         setTitleRightTxt("分享");
         txtName = findViewById(R.id.txt_name);

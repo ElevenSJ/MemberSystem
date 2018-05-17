@@ -170,10 +170,10 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
                 intent.putExtra("url",UrlConfig.FORUM_LIST);
                 break;
             case R.id.txt_morning_meetting:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.MORNING_MEETING_LIST);
                 break;
             case R.id.txt_good_time:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.BRIEFING_TIME_LIST);
                 break;
             case R.id.txt_train:
                 intent.putExtra("url",UrlConfig.FORUM_LIST);
@@ -185,6 +185,7 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
                 intent.putExtra("url",UrlConfig.FORUM_LIST);
                 break;
             case R.id.txt_forum:
+                intent.setClass(this, ActivityForum.class);
                 intent.putExtra("url",UrlConfig.FORUM_LIST);
                 break;
             case R.id.txt_class:
