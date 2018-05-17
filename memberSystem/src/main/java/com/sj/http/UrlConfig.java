@@ -42,7 +42,13 @@ public class UrlConfig {
     public static final String MORNING_MEETING_LIST = "api/app/v1/getMorningMeetingList";
     //精粹时光列表
     public static final String BRIEFING_TIME_LIST = "api/app/v1/getBriefingTimeList";
+    //培训课程列表
+    public static final String TRAIN_COURSE_LIST = "api/app/v1/getTrainCourseList";
+    //讲师介绍列表
+    public static final String LECTURER_LIST = "api/app/v1/getLecturerList";
+    //MDRT秘籍列表
+    public static final String MDRT_LIST = "api/app/v1/getMdrtList";
+    //小课堂列表
+    public static final String SMALL_CLASS_LIST = "api/app/v1/getSmallClassList";
 
-//    //精粹时光列表
-//    public static final String BRIEFING_TIME_LIST = "api/app/v1/getBriefingTimeList";
 }

@@ -16,6 +16,7 @@ import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.StudyBean;
+import com.sj.activity.bean.StudyHtmlCommonBean;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.sdk.DownloadListener;
@@ -36,7 +37,7 @@ public class ActivityStudyHtml extends ActivityBase {
     ProgressBar progressBar;
 
 
-    StudyBean studyBean;
+    StudyHtmlCommonBean studyHtmlCommonBean;
 
     @Override
     public int getContentLayout() {
@@ -59,9 +60,9 @@ public class ActivityStudyHtml extends ActivityBase {
 
     @Override
     public void initView() {
-        studyBean = getIntent().getParcelableExtra("data");
-        setTitleTxt(studyBean.getTitle());
-        if (studyBean.getAttachs() != null && !studyBean.getAttachs().isEmpty()) {
+        studyHtmlCommonBean = (StudyHtmlCommonBean) getIntent().getSerializableExtra("data");
+        setTitleTxt(studyHtmlCommonBean.getTitle());
+        if (studyHtmlCommonBean.getAttachs() != null && !studyHtmlCommonBean.getAttachs().isEmpty()) {
             setTitleRightTxt("下载");
         }
         webviewLayout = findViewById(R.id.webview_layout);
@@ -215,7 +216,7 @@ public class ActivityStudyHtml extends ActivityBase {
         // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
 
-        webview.loadUrl(studyBean.getDetailUrl());
+        webview.loadUrl(studyHtmlCommonBean.getDetailUrl());
     }
 
     @Override

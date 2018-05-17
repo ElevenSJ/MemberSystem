@@ -42,7 +42,6 @@ import com.umeng.socialize.media.UMWeb;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
-import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
 import java.util.ArrayList;
 import java.util.Map;

@@ -14,9 +14,11 @@ import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
-import com.sj.activity.bean.ForumBean;
-import com.sj.activity.bean.StudyBean;
+import com.sj.activity.bean.MDRTBean;
 import com.sj.activity.bean.StudyCommonListBean;
+import com.sj.activity.bean.StudyHtmlCommonBean;
+import com.sj.activity.bean.TeacherIntroduceBean;
+import com.sj.activity.bean.TrainClassBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 
@@ -58,7 +60,7 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
         mAdapter = new StudyRyvAdapter(this);
         mAdapter.setMore(R.layout.layout_load_more, this);
         mAdapter.setNoMore(R.layout.layout_load_no_more);
-        rylView.setAdapterWithProgress(mAdapter);
+        rylView.setAdapter(mAdapter);
         rylView.setRefreshListener(this);
     }
 
@@ -86,14 +88,54 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
 
             @Override
             public void onSuccessData(String json) {
-                StudyCommonListBean<StudyBean> studyListBean = new GsonResponsePasare<StudyCommonListBean<StudyBean>>() {
-                }.deal(json);
-                if (studyListBean != null && studyListBean.getInfoList() != null) {
-                    if (pageNum == 1 && mAdapter.getCount() > 0) {
-                        mAdapter.clear();
-                    }
-                    mAdapter.addAll(studyListBean.getInfoList());
+                switch (type) {
+                    case R.id.txt_read_book:
+                        break;
+                    case R.id.txt_morning_meetting:
+                    case R.id.txt_good_time:
+                    case R.id.txt_class:
+                        StudyCommonListBean<StudyHtmlCommonBean> studyHtmlListBean = new GsonResponsePasare<StudyCommonListBean<StudyHtmlCommonBean>>() {
+                        }.deal(json);
+                        if (studyHtmlListBean != null && studyHtmlListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(studyHtmlListBean.getInfoList());
+                        }
+                        break;
+                    case R.id.txt_train:
+                        StudyCommonListBean<TrainClassBean> trainClassListBean = new GsonResponsePasare<StudyCommonListBean<TrainClassBean>>() {
+                        }.deal(json);
+                        if (trainClassListBean != null && trainClassListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(trainClassListBean.getInfoList());
+                        }
+                        break;
+                    case R.id.txt_teacher:
+                        StudyCommonListBean<TeacherIntroduceBean> teacherIntroduceListBean = new GsonResponsePasare<StudyCommonListBean<TeacherIntroduceBean>>() {
+                        }.deal(json);
+                        if (teacherIntroduceListBean != null && teacherIntroduceListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(teacherIntroduceListBean.getInfoList());
+                        }
+                        break;
+                    case R.id.txt_MDRT:
+                        StudyCommonListBean<MDRTBean> mdrtListBean = new GsonResponsePasare<StudyCommonListBean<MDRTBean>>() {
+                        }.deal(json);
+                        if (mdrtListBean != null && mdrtListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(mdrtListBean.getInfoList());
+                        }
+                        break;
+                        default:
                 }
+
                 pageNum++;
             }
 

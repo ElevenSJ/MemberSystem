@@ -176,20 +176,20 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
                 intent.putExtra("url",UrlConfig.BRIEFING_TIME_LIST);
                 break;
             case R.id.txt_train:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.TRAIN_COURSE_LIST);
                 break;
             case R.id.txt_teacher:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.LECTURER_LIST);
                 break;
             case R.id.txt_MDRT:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.MDRT_LIST);
                 break;
             case R.id.txt_forum:
                 intent.setClass(this, ActivityForum.class);
                 intent.putExtra("url",UrlConfig.FORUM_LIST);
                 break;
             case R.id.txt_class:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.SMALL_CLASS_LIST);
                 break;
         }
         startActivity(intent);

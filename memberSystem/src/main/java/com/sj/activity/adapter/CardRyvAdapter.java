@@ -45,7 +45,7 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
             layoutMain= $(R.id.layout_main);
             imgIcon = $(R.id.img_icon);
             txtTitle = $(R.id.txt_title);
-            txtTime = $(R.id.txt_time);
+            txtTime = $(R.id.txt_desc);
             txtCreatTime = $(R.id.txt_creat_time);
             imgCode = $(R.id.img_code);
         }

@@ -146,14 +146,14 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
-    
+
     <style name="VoiceAccountTitle">
         <item name="android:textSize">16.0sp</item>
         <item name="android:textColor">@color/voice_pref_title</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
     </style>
-    
+
     <style name="CCPTitle">
         <item name="android:textSize">19.0dip</item>
         <item name="android:textColor">#ffffffff</item>
@@ -163,7 +163,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
     </style>
-    
+
     <style name="CCPTitleButton">
         <item name="android:gravity">center</item>
         <item name="android:background">@null</item>
@@ -279,6 +279,7 @@
     <style name="CCPSmallGreenButton" parent="@style/CCPSmallButton">
         <item name="android:background">@drawable/btn_style_green</item>
     </style>
+
     <style name="CCPSmallGreyButton" parent="@style/CCPSmallButton">
         <item name="android:textColor">@color/grey_btn_text_color</item>
         <item name="android:background">@drawable/btn_style_grey</item>
@@ -327,6 +328,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
     </style>
+
     <style name="CCPAlertdialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/ccp_trans</item>
         <item name="android:windowFrame">@null</item>
@@ -352,7 +354,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
     </style>
-    
+
     <style name="CCPButton">
         <item name="android:textSize">16.0dip</item>
         <item name="android:textColor">@color/ccp_button_text</item>
@@ -399,6 +401,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="CCPLabel" parent="@style/CCPBriefText">
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -468,10 +471,10 @@
     </style>
 
     <style name="smallCustomProgressBar" parent="@android:style/Widget.ProgressBar.Small">
-    <item name="android:indeterminateDrawable">@drawable/progress_small_holo</item>
-    <item name="android:paddingLeft">6.0dip</item>
-    <item name="android:paddingRight">6.0dip</item>
-</style>
+        <item name="android:indeterminateDrawable">@drawable/progress_small_holo</item>
+        <item name="android:paddingLeft">6.0dip</item>
+        <item name="android:paddingRight">6.0dip</item>
+    </style>
 
     <style name="ChattingUIVoiceLength">
         <item name="android:textSize">@dimen/HintTextSize</item>
@@ -827,7 +830,7 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">12sp</item>
     </style>
-    
+
     <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
 
         <!-- 背景透明 -->
@@ -846,7 +849,7 @@
         <!-- Dialog进入及退出动画 -->
         <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
     </style>
-    
+
     <!-- ActionSheet进出动画 -->
     <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
@@ -885,69 +888,90 @@
     </style>
 
     <!-- 字体风格 -->
-    <style name="TxtBlackBig" >
+    <style name="TxtBlackBig">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
     </style>
-    <style name="TxtBlackNormal" >
+
+    <style name="TxtBlackNormal">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
-    <style name="TxtBlackSmall" >
+
+    <style name="TxtBlackSmall">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">14sp</item>
     </style>
-    <style name="TxtBlackMin" >
+
+    <style name="TxtBlackMin">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">12sp</item>
     </style>
 
 
-    <style name="TxtGrayBig" >
+    <style name="TxtGrayBig">
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">20sp</item>
     </style>
-    <style name="TxtGrayNormal" >
+
+    <style name="TxtGrayNormal">
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">16sp</item>
     </style>
-    <style name="TxtGraySmall" >
+
+    <style name="TxtGraySmall">
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">14sp</item>
     </style>
-    <style name="TxtGrayMin" >
+
+    <style name="TxtGrayMin">
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="TxtWhiteBig" >
+    <style name="TxtWhiteBig">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
-    <style name="TxtWhiteNormal" >
+
+    <style name="TxtWhiteNormal">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
     </style>
-    <style name="TxtWhiteSmall" >
+
+    <style name="TxtWhiteSmall">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
-    <style name="TxtWhiteMin" >
+
+    <style name="TxtWhiteMin">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">12sp</item>
     </style>
-    <style name="TxtRedMin" >
+
+    <style name="TxtWhiteMinest">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="TxtRedMin">
         <item name="android:textColor">@color/red</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TxtRedBig">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
     <style name="AppTheme.Fullscreen" parent="AppTheme">
-       <!--隐藏标题栏 -->
+        <!--隐藏标题栏 -->
         <item name="windowNoTitle">true</item>
         <!--隐藏状态栏-->
         <item name="android:windowFullscreen">true</item>
     </style>
+
     <style name="SplashTheme" parent="AppTheme.Fullscreen">
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
