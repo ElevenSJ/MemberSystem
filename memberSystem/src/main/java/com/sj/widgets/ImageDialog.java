@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
 import com.lyp.membersystem.R;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.photoview.PhotoView;
@@ -22,7 +24,7 @@ public class ImageDialog extends Dialog {
     private boolean isCancelable = false;
     private boolean isCanceledOnTouchOutside = false;
 
-    PhotoView photoView;
+    ImageView photoView;
     Context mContext;
     public ImageDialog(Context context) {
         this(context, R.style.dialog);
@@ -45,7 +47,8 @@ public class ImageDialog extends Dialog {
         setCancelable(isCancelable);
         setCanceledOnTouchOutside(isCanceledOnTouchOutside);
 
-        photoView = new PhotoView(false,context);
+//        photoView = new PhotoView(false,context);
+        photoView = new ImageView(context);
         setContentView(photoView);
     }
 

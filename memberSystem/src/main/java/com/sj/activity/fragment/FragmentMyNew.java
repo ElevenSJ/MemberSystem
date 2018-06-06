@@ -24,15 +24,18 @@ import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.model.TakePhotoOptions;
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.adapter.ExpressAddressAdapter;
 import com.lyp.membersystem.log.LogUtils;
 import com.lyp.membersystem.manager.ImageManager;
 import com.lyp.membersystem.net.API;
 import com.lyp.membersystem.net.Errors;
 import com.lyp.membersystem.ui.MemberActivity;
 import com.lyp.membersystem.ui.NoticeActivity;
+import com.lyp.membersystem.ui.SetExpressActivity;
 import com.lyp.membersystem.ui.SettingsActivity;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.view.CustomPopupWindow;
+import com.nodeprogress.nodeprogress.ExpressActivity;
 import com.sj.activity.ActivityCardBag;
 import com.sj.activity.ActivityEditUserInfo;
 import com.sj.activity.ActivitySetting;
@@ -137,6 +140,7 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         view.findViewById(R.id.layout_card_bag).setOnClickListener(this);
         view.findViewById(R.id.layout_system_message).setOnClickListener(this);
         view.findViewById(R.id.layout_custom).setOnClickListener(this);
+        view.findViewById(R.id.layout_express).setOnClickListener(this);
 
         tvTitle.setText("我的");
         right.setImageResource(R.drawable.bqmm_setting2x);
@@ -151,7 +155,7 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         }
         ImageUtils.loadImageWithError(userBean.getAvatar(), R.drawable.personal, imgUserHeader);
         txtUserName.setText(TextUtils.isEmpty(userBean.getName()) ? userBean.getPhone() : userBean.getName());
-        ImageUtils.loadImageWithError(userBean.getQgraph(), R.drawable.default_q_icon, imgUserQHeader);
+        ImageUtils.loadImageWithError(userBean.getQgraphbasemap(), R.drawable.default_q_icon, imgUserQHeader);
         ImageUtils.loadImageView(userBean.getSignature(), imgUserSign);
         if (userBean.getType() == 1) {
             String status = "";
@@ -186,6 +190,9 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
             public void onSuccessData(String json) {
                 userBean = new GsonResponsePasare<UserBean>() {
                 }.deal(json);
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putBoolean(Constant.IS_VIP, userBean.getType()==1);
+                editor.commit();
                 updateUserView();
             }
 
@@ -242,6 +249,10 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
                 break;
             case R.id.layout_custom:
                 intent.setClass(v.getContext(), NoticeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.layout_express:
+                intent.setClass(v.getContext(), SetExpressActivity.class);
                 startActivity(intent);
                 break;
 

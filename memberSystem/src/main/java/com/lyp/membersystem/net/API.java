@@ -37,7 +37,7 @@ public class API {
     public static final String API_GET_NOTICE_LIST = ROOT_WEB + "/api/app/v1/getSystemRuleList";
     
     /*change notice state infor interface*/
-    public static final String API_CHANGE_NOTICE_STATE = ROOT_WEB + "/api/app/v1/haveReadNotice";
+    public static final String API_CHANGE_NOTICE_STATE = ROOT_WEB + "/api/app/v1/createFsOrderCharge";
     
     /*change notice state infor interface*/
     public static final String API_DELETE_NOTICE = ROOT_WEB + "/api/app/v1/delNotice";
@@ -131,6 +131,9 @@ public class API {
     
     /*ping++ pay order infor interface*/
     public static final String API_PING_PAY_ORDER_RENEWAL_FEE = ROOT_WEB + "/api/app/v1/renewalFeeCharge";
+
+    /*ping++ pay order infor interface*/
+    public static final String API_PING_PAY_ORDER_STUDY = ROOT_WEB + "/api/app/v1/renewalFeeCharge";
     
     public static final String API_GET_RENEWAL_FEE_INFO = ROOT_WEB + "/api/app/v1/renewalFeeInfo";
     public static final String API_RENEWAL_FEE = ROOT_WEB + "/api/app/v1/addRenewalFeeOrder";

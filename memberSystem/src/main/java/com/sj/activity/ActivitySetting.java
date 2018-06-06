@@ -38,23 +38,24 @@ public class ActivitySetting extends ActivityTakePhotoBase implements View.OnCli
     String keyName = "";
 
     String tokenId;
+
     @Override
     public void onClick(View v) {
-        int id  = v.getId();
-        switch (id){
+        int id = v.getId();
+        switch (id) {
             case R.id.txt_q_img:
                 position = 0;
                 keyName = "qrCode";
                 break;
             case R.id.txt_sign_img:
-                position =1;
+                position = 1;
                 keyName = "signature";
                 break;
             case R.id.txt_card_img:
-                position =2;
+                position = 2;
                 keyName = "businesscard";
                 break;
-                default:
+            default:
         }
         showTakePhotoDialog();
     }
@@ -131,13 +132,16 @@ public class ActivitySetting extends ActivityTakePhotoBase implements View.OnCli
             @Override
             public void onSuccess(String message) {
             }
+
             @Override
             public void onSuccessData(String json) {
 
             }
+
             @Override
             public void onFailure(String error_code, String error_message) {
             }
+
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -145,6 +149,7 @@ public class ActivitySetting extends ActivityTakePhotoBase implements View.OnCli
             }
         });
     }
+
     @Override
     public int getContentLayout() {
         return R.layout.activity_setting;
@@ -154,12 +159,15 @@ public class ActivitySetting extends ActivityTakePhotoBase implements View.OnCli
     public void initView() {
         SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         tokenId = mSharedPreferences.getString(Constant.TOKEN_ID, "");
-
-        findViewById(R.id.txt_q_img).setOnClickListener(this);
-        findViewById(R.id.txt_sign_img).setOnClickListener(this);
-        findViewById(R.id.txt_card_img).setOnClickListener(this);
+        if (mSharedPreferences.getBoolean(Constant.IS_VIP, false)) {
+            findViewById(R.id.linearLayout2).setVisibility(View.VISIBLE);
+            findViewById(R.id.txt_q_img).setOnClickListener(this);
+            findViewById(R.id.txt_sign_img).setOnClickListener(this);
+            findViewById(R.id.txt_card_img).setOnClickListener(this);
+        }
     }
-    public void exitApp(View view){
+
+    public void exitApp(View view) {
         Intent intent = new Intent(this, ActivityMain.class);
         intent.putExtra("LoginOut", true);
         startActivity(intent);

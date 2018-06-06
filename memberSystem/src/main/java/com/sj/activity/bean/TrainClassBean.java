@@ -7,9 +7,12 @@ package com.sj.activity.bean;
 public class TrainClassBean extends StudyBean{
     String price;
     String schoolTime;
+    String schooltime;
     String schoolLocation;
     String applicationStartTime;
     String applicationEndTime;
+    String detailUrl;
+    String lecturerId;
 
     public String getPrice() {
         return price;
@@ -25,6 +28,11 @@ public class TrainClassBean extends StudyBean{
 
     public void setSchoolTime(String schoolTime) {
         this.schoolTime = schoolTime;
+        this.schooltime = schoolTime;
+    }
+    public void setSchooltime(String schooltime) {
+        this.schoolTime = schooltime;
+        this.schooltime = schooltime;
     }
 
     public String getSchoolLocation() {
@@ -49,5 +57,21 @@ public class TrainClassBean extends StudyBean{
 
     public void setApplicationEndTime(String applicationEndTime) {
         this.applicationEndTime = applicationEndTime;
+    }
+
+    public String getDetailUrl() {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
+    }
+
+    public String getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(String lecturerId) {
+        this.lecturerId = lecturerId;
     }
 }

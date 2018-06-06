@@ -167,7 +167,7 @@ public class ActivityStudy extends ActivityBase implements View.OnClickListener{
         intent.putExtra("type",id);
         switch (id) {
             case R.id.txt_read_book:
-                intent.putExtra("url",UrlConfig.FORUM_LIST);
+                intent.putExtra("url",UrlConfig.STORY_TELLING_LIST);
                 break;
             case R.id.txt_morning_meetting:
                 intent.putExtra("url",UrlConfig.MORNING_MEETING_LIST);

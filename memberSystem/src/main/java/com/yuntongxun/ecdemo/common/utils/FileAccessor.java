@@ -17,10 +17,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.lyp.membersystem.BuildConfig;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.base.BaseApplication;
+import com.lyp.membersystem.provider.SZLSystemProvider;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -42,9 +48,77 @@ public class FileAccessor {
     public static final String IMESSAGE_IMAGE = getExternalStorePath() + "/membersystem/image";
     public static final String IMESSAGE_AVATAR = getExternalStorePath() + "/membersystem/avatar";
     public static final String IMESSAGE_FILE = getExternalStorePath() + "/membersystem/file";
+    public static final String APP_AUDIO = getExternalStorePath() + "/membersystem/audio";
     public static final String IMESSAGE_RICH_TEXT = getExternalStorePath() + "/membersystem/richtext";
     public static final String LOCAL_PATH = APPS_ROOT_DIR + "/config.txt";
 
+    //建立一个文件类型与文件后缀名的匹配表
+    private static final String[][] MATCH_ARRAY={
+            //{后缀名，    文件类型}
+            {".3gp",    "video/3gpp"},
+            {".apk",    "application/vnd.android.package-archive"},
+            {".asf",    "video/x-ms-asf"},
+            {".avi",    "video/x-msvideo"},
+            {".bin",    "application/octet-stream"},
+            {".bmp",      "image/bmp"},
+            {".c",        "text/plain"},
+            {".class",    "application/octet-stream"},
+            {".conf",    "text/plain"},
+            {".cpp",    "text/plain"},
+            {".doc",    "application/msword"},
+            {".exe",    "application/octet-stream"},
+            {".gif",    "image/gif"},
+            {".gtar",    "application/x-gtar"},
+            {".gz",        "application/x-gzip"},
+            {".h",        "text/plain"},
+            {".htm",    "text/html"},
+            {".html",    "text/html"},
+            {".jar",    "application/java-archive"},
+            {".java",    "text/plain"},
+            {".jpeg",    "image/jpeg"},
+            {".jpg",    "image/jpeg"},
+            {".js",        "application/x-javascript"},
+            {".log",    "text/plain"},
+            {".m3u",    "audio/x-mpegurl"},
+            {".m4a",    "audio/mp4a-latm"},
+            {".m4b",    "audio/mp4a-latm"},
+            {".m4p",    "audio/mp4a-latm"},
+            {".m4u",    "video/vnd.mpegurl"},
+            {".m4v",    "video/x-m4v"},
+            {".mov",    "video/quicktime"},
+            {".mp2",    "audio/x-mpeg"},
+            {".mp3",    "audio/x-mpeg"},
+            {".mp4",    "video/mp4"},
+            {".mpc",    "application/vnd.mpohun.certificate"},
+            {".mpe",    "video/mpeg"},
+            {".mpeg",    "video/mpeg"},
+            {".mpg",    "video/mpeg"},
+            {".mpg4",    "video/mp4"},
+            {".mpga",    "audio/mpeg"},
+            {".msg",    "application/vnd.ms-outlook"},
+            {".ogg",    "audio/ogg"},
+            {".pdf",    "application/pdf"},
+            {".png",    "image/png"},
+            {".pps",    "application/vnd.ms-powerpoint"},
+            {".ppt",    "application/vnd.ms-powerpoint"},
+            {".prop",    "text/plain"},
+            {".rar",    "application/x-rar-compressed"},
+            {".rc",        "text/plain"},
+            {".rmvb",    "audio/x-pn-realaudio"},
+            {".rtf",    "application/rtf"},
+            {".sh",        "text/plain"},
+            {".tar",    "application/x-tar"},
+            {".tgz",    "application/x-compressed"},
+            {".txt",    "text/plain"},
+            {".wav",    "audio/x-wav"},
+            {".wma",    "audio/x-ms-wma"},
+            {".wmv",    "audio/x-ms-wmv"},
+            {".wps",    "application/vnd.ms-works"},
+            {".xml",    "text/plain"},
+            {".z",        "application/x-compress"},
+            {".zip",    "application/zip"},
+            {"",        "*/*"}
+    };
 
     /**
      * 初始化应用文件夹目录
@@ -55,9 +129,9 @@ public class FileAccessor {
             rootDir.mkdir();
         }
 
-        File imessageDir = new File(IMESSAGE_VOICE);
-        if (!imessageDir.exists()) {
-            imessageDir.mkdir();
+        File voiceDir = new File(IMESSAGE_VOICE);
+        if (!voiceDir.exists()) {
+            voiceDir.mkdir();
         }
 
         File imageDir = new File(IMESSAGE_IMAGE);
@@ -76,6 +150,10 @@ public class FileAccessor {
         File richTextDir = new File(IMESSAGE_RICH_TEXT);
         if (!richTextDir.exists()) {
             richTextDir.mkdir();
+        }
+        File audioDir = new File(APP_AUDIO);
+        if (!audioDir.exists()) {
+            audioDir.mkdir();
         }
 
     }
@@ -377,5 +455,45 @@ public class FileAccessor {
             localFile = null;
         }
         return localFile;
+    }
+
+    /**
+     * 根据路径打开文件
+     * @param context 上下文
+     * @param path 文件路径
+     */
+    public static void openFileByPath(Context context, String path) {
+        if(context==null||path==null) {
+            ToastUtil.showMessage("文件不存在！");
+            return;
+        }
+        Intent intent = new Intent();
+        //设置intent的Action属性
+        intent.setAction(Intent.ACTION_VIEW);
+        //文件的类型
+        String type = "";
+        for(int i =0;i<MATCH_ARRAY.length;i++){
+            //判断文件的格式
+            if(path.toString().contains(MATCH_ARRAY[i][0].toString())){
+                type = MATCH_ARRAY[i][1];
+                break;
+            }
+        }
+        try {
+            //判断是否是AndroidN以及更高的版本
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri contentUri = SZLSystemProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", new File(path));
+                intent.setDataAndType(contentUri, type);
+            } else {
+                intent.setDataAndType(Uri.fromFile(new File(path)), type);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            //跳转
+            context.startActivity(intent);
+        } catch (Exception e) { //当系统没有携带文件打开软件，提示
+            ToastUtil.showMessage("无法打开该格式文件!");
+            e.printStackTrace();
+        }
     }
 }

@@ -180,6 +180,12 @@ public abstract class ActivityBase extends AppCompatActivity {
 		}
 	}
 
+	public String getTitleTxt() {
+		if (txtTitle != null&&txtTitle.getVisibility()==View.VISIBLE) {
+			return txtTitle.getText().toString();
+		}
+		return "";
+	}
 	public void setTitleTxt(String titleTxt) {
 		if (txtTitle != null) {
 			txtTitle.setVisibility(TextUtils.isEmpty(titleTxt) ? View.INVISIBLE : View.VISIBLE);
@@ -214,4 +220,5 @@ public abstract class ActivityBase extends AppCompatActivity {
 	public void onBack(View view) {
 		finish();
 	}
+
 }

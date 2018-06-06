@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lyp.membersystem"
-    android:versionCode="7"
-    android:versionName="1.6.0" >
+    android:versionCode="10"
+    android:versionName="2.0.1" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -978,7 +978,7 @@
         <activity
             android:name="com.sj.activity.ActivityMain"
             android:theme="@style/AppTheme.NoTitle"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -1036,7 +1036,21 @@
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity
+            android:name="com.sj.activity.ActivityStoryDetail"
+            android:theme="@style/AppNewTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
             android:name="com.sj.activity.ActivitySetting"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivityMessageDetail"
+            android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivityTeacherIntroduceDetail"
             android:theme="@style/AppNewTheme"
             android:screenOrientation="portrait" />
 

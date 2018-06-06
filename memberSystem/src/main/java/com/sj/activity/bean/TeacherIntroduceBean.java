@@ -1,36 +1,29 @@
 package com.sj.activity.bean;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by SunJ on 2018/5/14.
  */
 
 public class TeacherIntroduceBean extends StudyBean{
-    @SerializedName("name")
-    protected String title;
-    @SerializedName("avatar")
-    protected String thumbnail;
+    protected String name;
+    protected String avatar;
     protected String briefIntro;
+    protected String detailUrl;
 
-    @Override
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String getThumbnail() {
-        return thumbnail;
+    public String getAvatar() {
+        return avatar;
     }
 
-    @Override
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getBriefIntro() {
@@ -39,5 +32,13 @@ public class TeacherIntroduceBean extends StudyBean{
 
     public void setBriefIntro(String briefIntro) {
         this.briefIntro = briefIntro;
+    }
+
+    public String getDetailUrl() {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
     }
 }

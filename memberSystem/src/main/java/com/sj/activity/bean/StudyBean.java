@@ -13,6 +13,8 @@ public class StudyBean implements Serializable {
     protected String title;
     protected String thumbnail;
 
+    protected String detailUrl;
+
     public String getId() {
         return id;
     }
@@ -37,4 +39,11 @@ public class StudyBean implements Serializable {
         this.thumbnail = thumbnail;
     }
 
+    public String getDetailUrl() {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
+    }
 }

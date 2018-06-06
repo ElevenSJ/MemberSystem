@@ -175,9 +175,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout1"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_empty="@layout/layout_view_empty"
         app:scrollbarStyle="insideOverlay"
         app:scrollbars="none" />
+    <!--app:layout_empty="@layout/layout_view_empty"-->
     <!--app:layout_error="@layout/layout_load_error"-->
     <!--app:layout_progress="@layout/layout_load_progress"-->
 

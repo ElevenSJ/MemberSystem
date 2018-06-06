@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 
 import com.jady.retrofitclient.HttpManager;
 import com.jude.easyrecyclerview.EasyRecyclerView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.ActivityCardBag;
 import com.sj.activity.adapter.CardRyvAdapter;
 import com.sj.activity.base.FragmentBase;
 import com.sj.activity.bean.CardBean;
-import com.sj.activity.bean.ForumListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
@@ -31,7 +31,7 @@ import java.util.Map;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class CardFragment extends FragmentBase {
+public class CardFragment extends FragmentBase implements SwipeRefreshLayout.OnRefreshListener{
 
     EasyRecyclerView rylView;
     CardRyvAdapter mAdapter;
@@ -66,14 +66,14 @@ public class CardFragment extends FragmentBase {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getUserVisibleHint()){
-            getData();
+            onRefresh();
         }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser&&rylView!=null&&mAdapter!=null&&mAdapter.getCount()==0){
-            getData();
+           onRefresh();
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -83,6 +83,7 @@ public class CardFragment extends FragmentBase {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getHoldingActivity(), LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);
+        rylView.setRefreshListener(CardFragment.this);
         mAdapter = new CardRyvAdapter(getHoldingActivity(),index);
         rylView.setAdapter(mAdapter);
     }
@@ -118,4 +119,11 @@ public class CardFragment extends FragmentBase {
         });
     }
 
+    @Override
+    public void onRefresh() {
+        if (mAdapter!=null&&mAdapter.getCount()!=0){
+            mAdapter.clear();
+        }
+        getData();
+    }
 }

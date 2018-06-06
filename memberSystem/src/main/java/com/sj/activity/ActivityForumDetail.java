@@ -18,11 +18,14 @@ import android.widget.TextView;
 
 import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.pay.PayActivity;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.base.ActivityBase;
+import com.sj.activity.bean.BuyResultBean;
 import com.sj.activity.bean.ForumBean;
 import com.sj.http.Callback;
+import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.sj.widgets.AmountView;
@@ -82,6 +85,7 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         txtPrice = findViewById(R.id.txt_price);
         txtArea = findViewById(R.id.txt_area);
         amountView = findViewById(R.id.amount_view);
+        amountView.clearFocus();
 
         findViewById(R.id.layout_area).setOnClickListener(this);
         findViewById(R.id.bt_buy).setOnClickListener(this);
@@ -418,12 +422,17 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         HttpManager.get(UrlConfig.FORUM_BUY_LIST, parameters, new Callback() {
             @Override
             public void onSuccess(String message) {
-                ToastUtil.showMessage("购买成功");
             }
 
             @Override
             public void onSuccessData(String json) {
-                ToastUtil.showMessage("购买成功");
+                BuyResultBean buyResultBean = new GsonResponsePasare<BuyResultBean>() {
+                }.deal(json);
+                Intent i = new Intent(ActivityForumDetail.this, PayActivity.class);
+                i.putExtra("order_id", buyResultBean.getOrderId());
+                i.putExtra("type", "study");
+                i.putExtra("order_amount", buyResultBean.getOrderPrice());
+                startActivity(i);
             }
 
             @Override

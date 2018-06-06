@@ -17,7 +17,7 @@ import com.sj.widgets.ImageDialog;
 
 public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean> {
     Context context;
-    static int index;
+    int index;
     public CardRyvAdapter(Context context,int index) {
         super(context);
         this.context = context;
@@ -26,7 +26,7 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
 
     @Override
     public CardRyvHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CardRyvHolder(parent,context);
+        return new CardRyvHolder(parent,context,index);
     }
 
     private static class CardRyvHolder extends BaseViewHolder<CardBean.CpChiefBBSBean> {
@@ -38,10 +38,11 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
         private ImageView imgCode;
         ImageDialog imageDialog;
         Context context;
-
-        public CardRyvHolder(ViewGroup parent, Context context) {
+        int index;
+        public CardRyvHolder(ViewGroup parent,Context context, int index) {
             super(parent, R.layout.card_item);
             this.context = context;
+            this.index = index;
             layoutMain= $(R.id.layout_main);
             imgIcon = $(R.id.img_icon);
             txtTitle = $(R.id.txt_title);

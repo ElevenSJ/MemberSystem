@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 
 import com.jady.retrofitclient.HttpManager;
 import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.jude.easyrecyclerview.decoration.DividerDecoration;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.ui.MallFragmentActivity;
 import com.lyp.membersystem.ui.MyCustomerActivity;
@@ -24,8 +28,13 @@ import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.ActivityHtml;
 import com.sj.activity.ActivityStudy;
 import com.sj.activity.MessageActivity;
+import com.sj.activity.adapter.ForumRyvAdapter;
+import com.sj.activity.adapter.MainRyvAdapter;
 import com.sj.activity.base.FragmentBase;
 import com.sj.activity.bean.Bannerbean;
+import com.sj.activity.bean.DataListBean;
+import com.sj.activity.bean.ForumBean;
+import com.sj.activity.bean.SystemNotice;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
@@ -43,7 +52,7 @@ import java.util.Map;
  * 创建人: 孙杰
  * 功能描述:
  */
-public class FragmentMain extends FragmentBase implements View.OnClickListener {
+public class FragmentMain extends FragmentBase implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnMoreListener {
 
     Banner banner;
     TextView tvTitle;
@@ -57,6 +66,9 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
     SharedPreferences mSharedPreferences;
     String tokenId;
     List<Bannerbean> bannerList;
+
+    MainRyvAdapter mAdapter;
+    int pageNum = 1;
 
     public static FragmentMain newInstance() {
         return new FragmentMain();
@@ -92,7 +104,6 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         txtGiftShop = (TextView) findViewById(R.id.txt_gift_shop);
         txtStudy = (TextView) findViewById(R.id.txt_study);
         txtReservation = (TextView) findViewById(R.id.txt_reservation);
-        rylView = (EasyRecyclerView) findViewById(R.id.ryl_view);
 
         tvTitle.setText(getResources().getString(R.string.app_name));
         right.setImageResource(R.drawable.img_notice);
@@ -124,6 +135,19 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
+        rylView = (EasyRecyclerView) findViewById(R.id.ryl_view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getHoldingActivity(), LinearLayoutManager.VERTICAL, false);
+        rylView.setLayoutManager(layoutManager);
+        DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.item_line_color), 1, 16, 16);
+        dividerDecoration.setDrawLastItem(false);
+        rylView.addItemDecoration(dividerDecoration);
+        mAdapter = new MainRyvAdapter(getHoldingActivity());
+        mAdapter.setMore(R.layout.layout_load_more, this);
+        mAdapter.setNoMore(R.layout.layout_load_no_more);
+        rylView.setAdapterWithProgress(mAdapter);
+        rylView.setRefreshListener(this);
     }
 
 
@@ -134,7 +158,40 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         initView();
         if (getUserVisibleHint()) {
             getBannerData();
+            onRefresh();
         }
+    }
+
+    private void getSystemNotice() {
+        Map<String, Object> parameters = new ArrayMap<>(3);
+        parameters.put("token_id", tokenId);
+        parameters.put("pageNum", pageNum);
+        parameters.put("pageSize", "10");
+        HttpManager.get(UrlConfig.SYSTEM_NOTICE, parameters, new Callback() {
+            @Override
+            public void onSuccess(String message) {
+                Log.d(TAG, "onSuccess: ");
+            }
+
+            @Override
+            public void onSuccessData(String json) {
+                DataListBean<SystemNotice> systemNoticeList = new GsonResponsePasare<DataListBean<SystemNotice>>() {
+                }.deal(json);
+                if (systemNoticeList != null && systemNoticeList.getInfoList() != null) {
+                    if (pageNum == 1 && mAdapter.getCount() > 0) {
+                        mAdapter.clear();
+                    }
+                    mAdapter.addAll(systemNoticeList.getInfoList());
+                }
+                pageNum++;
+            }
+
+            @Override
+            public void onFailure(String error_code, String error_message) {
+                Log.d(TAG, "onSuccessData: ");
+
+            }
+        });
     }
 
     @Override
@@ -152,6 +209,9 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
         }
         if (isVisibleToUser && banner != null && banner.getChildCount() == 0) {
             getBannerData();
+        }
+        if (isVisibleToUser && mAdapter != null && mAdapter.getCount() == 0) {
+            onRefresh();
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -216,6 +276,22 @@ public class FragmentMain extends FragmentBase implements View.OnClickListener {
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        pageNum = 1;
+        getSystemNotice();
+    }
+
+    @Override
+    public void onMoreShow() {
+        getSystemNotice();
+    }
+
+    @Override
+    public void onMoreClick() {
+
     }
 
     public class GlideImageLoader extends ImageLoader {

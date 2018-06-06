@@ -2,21 +2,34 @@ package com.sj.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.lyp.membersystem.R;
+import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.sj.activity.base.ActivityBase;
+import com.sj.activity.bean.MDRTBean;
 import com.sj.activity.bean.StudyBean;
 import com.sj.activity.bean.StudyHtmlCommonBean;
+import com.sj.activity.bean.TrainClassBean;
+import com.sj.http.UrlConfig;
+import com.sj.widgets.downloadview.DownloadDialog;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.sdk.DownloadListener;
@@ -24,6 +37,8 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
+import java.io.IOException;
 
 /**
  * 创建时间: on 2018/4/26.
@@ -35,13 +50,22 @@ public class ActivityStudyHtml extends ActivityBase {
     WebView webview;
     FrameLayout webviewLayout;
     ProgressBar progressBar;
+    TextView titleTxt;
+    TextView timeTxt;
+    TextView readTxt;
+    TextView txtBuy;
 
+    StudyBean studyBean;
+    String tokenid;
 
-    StudyHtmlCommonBean studyHtmlCommonBean;
+    DownloadDialog downloadDialog;
+
+    String title = "";
+    boolean needBuy = false;
 
     @Override
     public int getContentLayout() {
-        return R.layout.activity_register_html;
+        return R.layout.activity_study_html;
     }
 
     @Override
@@ -60,11 +84,48 @@ public class ActivityStudyHtml extends ActivityBase {
 
     @Override
     public void initView() {
-        studyHtmlCommonBean = (StudyHtmlCommonBean) getIntent().getSerializableExtra("data");
-        setTitleTxt(studyHtmlCommonBean.getTitle());
-        if (studyHtmlCommonBean.getAttachs() != null && !studyHtmlCommonBean.getAttachs().isEmpty()) {
-            setTitleRightTxt("下载");
+        SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
+        tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
+        needBuy = getIntent().getBooleanExtra("needBuy", false);
+        studyBean = (StudyBean) getIntent().getSerializableExtra("data");
+        title = getIntent().getStringExtra("title");
+        setTitleTxt(title);
+
+        if (studyBean instanceof StudyHtmlCommonBean) {
+            titleTxt = findViewById(R.id.txt_title);
+            timeTxt = findViewById(R.id.txt_time);
+            readTxt = findViewById(R.id.txt_read_count);
+            titleTxt.setVisibility(View.VISIBLE);
+            timeTxt.setVisibility(View.VISIBLE);
+            readTxt.setVisibility(View.VISIBLE);
+            titleTxt.setText(studyBean.getTitle());
+            timeTxt.setText(((StudyHtmlCommonBean) studyBean).getCreateTime());
+            readTxt.setText(((StudyHtmlCommonBean) studyBean).getReadQuantity());
+            if (((StudyHtmlCommonBean) studyBean).getAttachs() != null && !((StudyHtmlCommonBean) studyBean).getAttachs().isEmpty()) {
+                setTitleRightTxt("下载");
+            }
         }
+        if (needBuy && studyBean instanceof TrainClassBean) {
+            txtBuy = findViewById(R.id.txt_buy);
+            txtBuy.setVisibility(View.VISIBLE);
+            txtBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PayManager.doBuy(ActivityStudyHtml.this, UrlConfig.BUY_TRAIN_COURSE, studyBean.getId(), new PayManager.PayResultListener() {
+                        @Override
+                        public void success() {
+                            txtBuy.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void fail() {
+
+                        }
+                    });
+                }
+            });
+        }
+
         webviewLayout = findViewById(R.id.webview_layout);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(100);
@@ -216,10 +277,16 @@ public class ActivityStudyHtml extends ActivityBase {
         // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
 
-        webview.loadUrl(studyHtmlCommonBean.getDetailUrl());
+        String url = studyBean.getDetailUrl() + "?token_id=" + tokenid;
+        if (studyBean instanceof MDRTBean) {
+            if (((MDRTBean) studyBean).getBuyStatus() != 0 || ((MDRTBean) studyBean).getFreeStatus() == 1) {
+                url = ((MDRTBean) studyBean).getChargeContentUrl()+ "?token_id=" + tokenid;
+
+            }
+        }
+        webview.loadUrl(url);
     }
 
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -235,12 +302,26 @@ public class ActivityStudyHtml extends ActivityBase {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webview.destroy();
+        if (webview != null) {
+            webview.destroy();
+        }
     }
 
     @Override
     public void onRightTxt(View view) {
         super.onRightTxt(view);
-        ToastUtil.showMessage("附件下载列表，选择文件开始下载");
+        if (studyBean instanceof StudyHtmlCommonBean) {
+
+            ToastUtil.showMessage("附件下载列表，选择文件开始下载");
+            if (downloadDialog == null) {
+                downloadDialog = new DownloadDialog(this);
+            }
+            if (!downloadDialog.isShowing()) {
+                downloadDialog.show(((StudyHtmlCommonBean) studyBean).getAttachs());
+            } else {
+                downloadDialog.setData(((StudyHtmlCommonBean) studyBean).getAttachs());
+            }
+        }
     }
+
 }

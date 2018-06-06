@@ -12,6 +12,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lyp.membersystem.BuildConfig;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.base.BaseActivity;
 import com.lyp.membersystem.base.BaseApplication;
@@ -132,18 +133,13 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		isService = getIntent().getBooleanExtra("isService", false);
 		setContentView(R.layout.pay_layout);
 		initView();
-		if (!"member".equals(type)) {
+		if (!"member".equals(type)&&!"study".equals(type)) {
 			initData();
 		}
 	}
 
 	private void initView() {
-		df = new DecimalFormat("0");
-		Pingpp.DEBUG = true;
 		pay_amount = (TextView) findViewById(R.id.pay_amount);
-		Double amount = Double.valueOf(mOrderAmount);
-		mOrderAmount = df.format(amount);
-		pay_amount.setText(mOrderAmount);
 		pay_layout = (LinearLayout) findViewById(R.id.pay_layout);
 		service_card_pay = (RelativeLayout) findViewById(R.id.service_card_pay);
 		service_card_num = (TextView) findViewById(R.id.service_card_num);
@@ -169,7 +165,7 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		});
 		cash_card_pay = (RelativeLayout) findViewById(R.id.cash_card_pay);
 		payBtn = (Button) findViewById(R.id.pay_btn);
-		if (type != null && type.equals("member")) {
+		if (type != null && (type.equals("member")||type.equals("study"))) {
 			service_card_pay.setVisibility(View.GONE);
 			cash_card_pay.setVisibility(View.GONE);
 			payBtn.setVisibility(View.GONE);
@@ -180,6 +176,21 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		alipay.setOnClickListener(this);
 		upmp = (RelativeLayout) findViewById(R.id.union_pay);
 		upmp.setOnClickListener(this);
+
+		pay_amount.setText(mOrderAmount);
+
+
+		Pingpp.DEBUG = BuildConfig.DEBUG;
+
+//		df = new DecimalFormat("0");
+//		try {
+//			Double amount = Double.valueOf(mOrderAmount);
+//			mOrderAmount = df.format(amount);
+//		}catch (Exception e){
+//			ToastUtil.showMessage("请输入正确价格");
+//			finish();
+//			return;
+//		}
 	}
 
 	private void initData() {
@@ -420,7 +431,9 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 				params.put("orderId", paymentRequest.orderId);
 				if (type != null && type.equals("member")) {
 					data = HttpSession.getRequestResult(API.API_PING_PAY_ORDER_RENEWAL_FEE, params);
-				} else if (isService) {
+				} else if(type != null && type.equals("study")){
+					data = HttpSession.getRequestResult(API.API_PING_PAY_ORDER_STUDY, params);
+				}else if (isService) {
 					params.put("cashCardMoney", df.format(cashCardPay * 100));
 					params.put("serviceCardMoney", df.format(serviceCardPay * 100));
 					data = HttpSession.getRequestResult(API.API_PING_PAY_ORDER_SERVICE, params);
@@ -440,6 +453,10 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		 */
 		@Override
 		protected void onPostExecute(String data) {
+			// 按键点击之后的禁用，防止重复点击
+			wechat_pay.setOnClickListener(PayActivity.this);
+			alipay.setOnClickListener(PayActivity.this);
+			upmp.setOnClickListener(PayActivity.this);
 			if (null == data) {
 				showMsg("请求出错", "请检查URL", "URL无法获取charge");
 				return;

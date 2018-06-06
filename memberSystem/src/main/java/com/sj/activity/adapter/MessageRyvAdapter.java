@@ -1,6 +1,7 @@
 package com.sj.activity.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -31,20 +32,23 @@ public class MessageRyvAdapter extends RecyclerArrayAdapter<MessageBean> {
         TextView txtTitle;
         TextView txtdetail;
         TextView txtTime;
+        TextView txtReadStatus;
 
         public MessageRyvHolder(ViewGroup parent) {
             super(parent, R.layout.message_item);
             txtTitle = $(R.id.txt_message_title);
             txtdetail = $(R.id.txt_message_detail);
             txtTime = $(R.id.txt_message_time);
+            txtReadStatus= $(R.id.txt_read_status);
         }
 
         @Override
         public void setData(final MessageBean data) {
             super.setData(data);
-            txtTitle.setText("订单号:"+data.getOrderId());
-            txtdetail.setText(data.getNews());
-            txtTime.setText(data.getCreatetime());
+            txtTitle.setText(data.getTitle());
+            txtdetail.setText(data.getBriefIntro());
+            txtTime.setText(data.getCreateTime());
+            txtReadStatus.setVisibility(data.getReadStatus()==0? View.VISIBLE:View.GONE);
         }
     }
 }

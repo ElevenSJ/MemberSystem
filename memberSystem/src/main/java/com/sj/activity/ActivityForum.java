@@ -13,10 +13,9 @@ import com.jude.easyrecyclerview.decoration.DividerDecoration;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.ForumRyvAdapter;
-import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.ForumBean;
-import com.sj.activity.bean.ForumListBean;
+import com.sj.activity.bean.DataListBean;
 import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
@@ -77,7 +76,7 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
 
             @Override
             public void onSuccessData(String json) {
-                ForumListBean<ForumBean> forumListBean = new GsonResponsePasare<ForumListBean<ForumBean>>() {
+                DataListBean<ForumBean> forumListBean = new GsonResponsePasare<DataListBean<ForumBean>>() {
                 }.deal(json);
                 if (forumListBean != null && forumListBean.getInfoList() != null) {
                     if (pageNum == 1 && mAdapter.getCount() > 0) {

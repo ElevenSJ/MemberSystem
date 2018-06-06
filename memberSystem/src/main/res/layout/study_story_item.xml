@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_teacher_name"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name"
+        app:srcCompat="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/txt_name"
+        style="@style/TxtBlackNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <TextView
+        android:id="@+id/txt_desc"
+        style="@style/TxtGrayMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:maxLines="3"
+        android:minLines="3"
+        android:ellipsize="end"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txt_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+    <com.lyp.membersystem.view.CircleImageView
+        android:id="@+id/img_teacher_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@+id/txt_desc"
+        app:layout_constraintTop_toBottomOf="@+id/txt_desc"
+        app:srcCompat="@drawable/default_image" />
+
+
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/TxtRedMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/img_teacher_icon"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/img_teacher_icon" />
+
+
+    <Button
+        android:id="@+id/buyBtn"
+        android:layout_width="80dip"
+        android:layout_height="26dip"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/btn_sm_green_outline"
+        android:focusable="false"
+        android:gravity="center"
+        android:text="@string/buy"
+        android:textColor="@color/main_bg_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/detailBtn"
+        app:layout_constraintStart_toEndOf="@+id/detailBtn"
+        app:layout_constraintTop_toTopOf="@+id/detailBtn" />
+
+    <Button
+        android:id="@+id/detailBtn"
+        android:layout_width="80dip"
+        android:layout_height="26dip"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_sm_green_outline"
+        android:focusable="false"
+        android:gravity="center"
+        android:text="查看"
+        android:textColor="@color/main_bg_color"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/img_teacher_icon"
+        app:layout_constraintTop_toBottomOf="@+id/img_teacher_icon" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/TxtWhiteMinest"
+        android:layout_width="40dp"
+        android:layout_height="12dp"
+        android:background="@drawable/btn_sm_green"
+        android:gravity="center"
+        android:text="会员免费"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_price"
+        app:layout_constraintEnd_toEndOf="@+id/txt_desc"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
+    <TextView
+        android:id="@+id/txt_teacher_name"
+        style="@style/TxtBlackMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        android:singleLine="true"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/img_teacher_icon"
+        app:layout_constraintEnd_toStartOf="@+id/txt_price"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/img_teacher_icon"
+        app:layout_constraintTop_toTopOf="@+id/img_teacher_icon" />
+</android.support.constraint.ConstraintLayout>

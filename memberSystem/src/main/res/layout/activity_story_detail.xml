@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/activity_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_title" />
+
+    <FrameLayout
+        android:id="@+id/webview_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_audio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_price">
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/half_transparent_color"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/bt_play"
+            style="@style/TxtBlackBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:padding="4dp"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/img_stop"/>
+
+        <ImageView
+            android:id="@+id/bt_down"
+            style="@style/TxtBlackBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:padding="8dp"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/img_down"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_title"
+        style="@style/TxtBlackBig"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_price"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title"
+        app:srcCompat="@drawable/default_image" />
+
+
+    <com.lyp.membersystem.view.CircleImageView
+        android:id="@+id/img_teacher_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title"
+        app:srcCompat="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/txt_teacher_name"
+        style="@style/TxtBlackMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
+        android:singleLine="true"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/img_teacher_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/img_teacher_icon"
+        app:layout_constraintTop_toTopOf="@+id/img_teacher_icon" />
+
+    <TextView
+        android:id="@+id/txt_desc"
+        style="@style/TxtGrayMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/txt_teacher_name"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/img_teacher_icon" />
+
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/TxtRedMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/buyBtn"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/TxtWhiteMinest"
+        android:layout_width="40dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/btn_sm_green"
+        android:gravity="center"
+        android:text="会员免费"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_price"
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
+    <Button
+        android:id="@+id/buyBtn"
+        android:layout_width="80dip"
+        android:layout_height="26dip"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_sm_green_outline"
+        android:focusable="false"
+        android:gravity="center"
+        android:text="@string/buy"
+        android:textColor="@color/main_bg_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_desc"
+        app:layout_constraintTop_toBottomOf="@+id/txt_desc" />
+</android.support.constraint.ConstraintLayout>

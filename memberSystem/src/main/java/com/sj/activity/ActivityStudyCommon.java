@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.ArrayMap;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import com.jady.retrofitclient.HttpManager;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -15,6 +17,7 @@ import com.lyp.membersystem.utils.Constant;
 import com.sj.activity.adapter.StudyRyvAdapter;
 import com.sj.activity.base.ActivityBase;
 import com.sj.activity.bean.MDRTBean;
+import com.sj.activity.bean.StorytellingBean;
 import com.sj.activity.bean.StudyCommonListBean;
 import com.sj.activity.bean.StudyHtmlCommonBean;
 import com.sj.activity.bean.TeacherIntroduceBean;
@@ -38,6 +41,7 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
     String title;
     String url;
     int type;
+
 
     @Override
     public int getContentLayout() {
@@ -90,6 +94,14 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
             public void onSuccessData(String json) {
                 switch (type) {
                     case R.id.txt_read_book:
+                        StudyCommonListBean<StorytellingBean> storytellingListBean = new GsonResponsePasare<StudyCommonListBean<StorytellingBean>>() {
+                        }.deal(json);
+                        if (storytellingListBean != null && storytellingListBean.getInfoList() != null) {
+                            if (pageNum == 1 && mAdapter.getCount() > 0) {
+                                mAdapter.clear();
+                            }
+                            mAdapter.addAll(storytellingListBean.getInfoList());
+                        }
                         break;
                     case R.id.txt_morning_meetting:
                     case R.id.txt_good_time:
@@ -133,7 +145,7 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
                             mAdapter.addAll(mdrtListBean.getInfoList());
                         }
                         break;
-                        default:
+                    default:
                 }
 
                 pageNum++;

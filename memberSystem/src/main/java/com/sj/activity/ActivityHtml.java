@@ -3,14 +3,20 @@ package com.sj.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.lyp.membersystem.R;
@@ -26,12 +32,15 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.smtt.utils.TbsLog;
 import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
+import java.io.IOException;
+
 /**
  * 创建时间: on 2018/4/26.
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ActivityHtml extends ActivityBase {
+public class ActivityHtml extends ActivityBase  {
+
 
     WebView webview;
     FrameLayout webviewLayout;
@@ -40,6 +49,7 @@ public class ActivityHtml extends ActivityBase {
 
     String url;
     String html;
+
 
     @Override
     public int getContentLayout() {
@@ -67,6 +77,7 @@ public class ActivityHtml extends ActivityBase {
 
         url = getIntent().getStringExtra("url");
         html = getIntent().getStringExtra("html");
+
         webviewLayout = findViewById(R.id.webview_layout);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(100);
@@ -81,6 +92,7 @@ public class ActivityHtml extends ActivityBase {
         initWebSetting();
 
     }
+
 
     private void initWebSetting() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -104,7 +116,7 @@ public class ActivityHtml extends ActivityBase {
             @Override
             public void onProgressChanged(WebView webView, int i) {
                 progressBar.setProgress(i);
-                if (100<=i){
+                if (100 <= i) {
                     progressBar.setVisibility(View.GONE);
                 }
                 super.onProgressChanged(webView, i);
@@ -241,7 +253,9 @@ public class ActivityHtml extends ActivityBase {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webview.destroy();
+        if (webview != null) {
+            webview.destroy();
+        }
     }
 
 }

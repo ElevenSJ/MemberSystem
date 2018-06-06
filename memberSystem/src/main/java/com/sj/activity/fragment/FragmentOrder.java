@@ -94,6 +94,14 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
         initData();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser&&mOrderAdapter!=null&&mOrderAdapter.getCount()==0){
+            getData();
+        }
+    }
+
     private void initView() {
         mPullRefreshListView = getHoldingActivity().findViewById(R.id.pull_refresh_listview);
         lv_order = mPullRefreshListView.getRefreshableView();
@@ -234,7 +242,7 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
             mPullRefreshListView.onRefreshComplete();
             mOrderAdapter.notifyDataSetChanged();
             if (mTotal <= 0) {
-                ToastUtil.showShort(getHoldingActivity(), R.string.not_data);
+//                ToastUtil.showShort(getHoldingActivity(), R.string.not_data);
             } else if (mTotal > mRow) {
                 mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
             }

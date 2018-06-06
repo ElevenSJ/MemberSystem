@@ -6,8 +6,11 @@ package com.sj.activity.bean;
 
 public class MDRTBean extends StudyBean{
     String price;
-    String freeStatus;
+    int freeStatus;
     String createTime;
+    int buyStatus;
+    String detailUrl;
+    String chargeContentUrl;
 
     public String getPrice() {
         return price;
@@ -17,11 +20,11 @@ public class MDRTBean extends StudyBean{
         this.price = price;
     }
 
-    public String getFreeStatus() {
+    public int getFreeStatus() {
         return freeStatus;
     }
 
-    public void setFreeStatus(String freeStatus) {
+    public void setFreeStatus(int freeStatus) {
         this.freeStatus = freeStatus;
     }
 
@@ -31,5 +34,29 @@ public class MDRTBean extends StudyBean{
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public int getBuyStatus() {
+        return buyStatus;
+    }
+
+    public void setBuyStatus(int buyStatus) {
+        this.buyStatus = buyStatus;
+    }
+
+    public String getDetailUrl() {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
+    }
+
+    public String getChargeContentUrl() {
+        return chargeContentUrl;
+    }
+
+    public void setChargeContentUrl(String chargeContentUrl) {
+        this.chargeContentUrl = chargeContentUrl;
     }
 }

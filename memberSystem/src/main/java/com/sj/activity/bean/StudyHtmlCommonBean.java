@@ -9,18 +9,18 @@ import java.util.List;
 
 public class StudyHtmlCommonBean  extends StudyBean{
 
-    private int readQuantity;
+    private String readQuantity;
     private String createTime;
     private int attachStatus;
     private String detailUrl;
     private List<AttachsBean> attachs;
 
 
-    public int getReadQuantity() {
+    public String getReadQuantity() {
         return readQuantity;
     }
 
-    public void setReadQuantity(int readQuantity) {
+    public void setReadQuantity(String readQuantity) {
         this.readQuantity = readQuantity;
     }
 
@@ -89,5 +89,7 @@ public class StudyHtmlCommonBean  extends StudyBean{
         public void setFileUrl(String fileUrl) {
             this.fileUrl = fileUrl;
         }
+
+
     }
 }

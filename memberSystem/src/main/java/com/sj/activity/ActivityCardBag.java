@@ -1,5 +1,6 @@
 package com.sj.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
@@ -139,21 +141,35 @@ public class ActivityCardBag extends ActivityBase {
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                doChangeCard(content);
+                final String content = data.getStringExtra(Constant.CODED_CONTENT);
+                String[] item = { "不需要","放进我的卡包"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("找到一张卡券");
+                builder.setItems(item, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == 1){
+                            doTransferCard(content);
+                        }
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
             }
         }
     }
 
-    private void doChangeCard(String id) {
+    private void doTransferCard(String id) {
         showProgress();
-        Map<String, Object> parameters = new ArrayMap<>(3);
+        Map<String, Object> parameters = new ArrayMap<>(2);
         parameters.put("token_id", tokenid);
-        parameters.put("itemId", id);
-        HttpManager.get(UrlConfig.FORUM_BUY_LIST, parameters, new Callback() {
+        parameters.put("qrCodeId", id);
+        HttpManager.get(UrlConfig.TRANSFER_CARD, parameters, new Callback() {
             @Override
             public void onSuccess(String message) {
-                ToastUtil.showMessage("购买成功");
+                ToastUtil.showMessage("请刷新我的卡包");
             }
 
             @Override

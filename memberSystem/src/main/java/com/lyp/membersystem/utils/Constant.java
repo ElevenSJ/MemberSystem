@@ -32,4 +32,6 @@ public class Constant {
 	public static final String IS_SET_ALIAS = "is_set_alias";
 
 	public static final String USER_ACCOUNT = "user_account";
+
+	public static final String IS_VIP = "is_vip";
 }
