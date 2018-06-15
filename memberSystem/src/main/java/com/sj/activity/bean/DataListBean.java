@@ -10,11 +10,39 @@ import java.util.List;
 public class DataListBean<T> {
     List<T> infoList;
 
+    int  pageNum;
+    int  pageSize;
+    int  totalCount;
+
     public List<T> getInfoList() {
         return infoList;
     }
 
     public void setInfoList(List<T> infoList) {
         this.infoList = infoList;
+    }
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

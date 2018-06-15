@@ -51,8 +51,11 @@ public class API {
     /*add order infor interface*/
     public static final String API_ADD_ORDER = ROOT_WEB + "/api/app/v1/addOrder";
 
+//    /*get order list infor interface*/old
+//    public static final String API_GET_ORDER_LIST = ROOT_WEB + "/api/app/v1/getOrderList";
+
     /*get order list infor interface*/
-    public static final String API_GET_ORDER_LIST = ROOT_WEB + "/api/app/v1/getOrderList";
+    public static final String API_GET_ORDER_LIST = ROOT_WEB + "/api/app/v1/getMemberOrderList";
     
     /*get order detail infor interface*/
     public static final String API_GET_ORDER_DETAIL = ROOT_WEB + "/api/app/v1/getOrderDetail";

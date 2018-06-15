@@ -1,3 +1,2 @@
 include ':bQMM_Lib'
 include ':memberSystem'
-//include ':takephoto_library'

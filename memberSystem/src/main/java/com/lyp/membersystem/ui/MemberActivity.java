@@ -182,24 +182,24 @@ public class MemberActivity extends BaseActivity {
 			member_type.setText(obj.getString("typeName"));
 			expiry_date.setText(obj.getString("validEndTime"));
 			typeId = obj.getString("typeId");
-			JSONArray array = obj.getJSONArray("memeberType");
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject job = array.getJSONObject(i);
-				String id = job.getString("id");
+//			JSONArray array = obj.getJSONArray("memeberType");
+//			for (int i = 0; i < array.length(); i++) {
+//				JSONObject job = array.getJSONObject(i);
+				String id = obj.getString("id");
 				if (id.equals("1")) {
-					id1 = job.getString("id");
-					money1 = job.getString("price");
-					radio0.setText(job.getString("name"));
-					timeRadio1.setText(job.getString("continueTime"));
-					valid_endtime.setText(job.getString("preValidEndTime"));
+					id1 = obj.getString("id");
+					money1 = obj.getString("price");
+					radio0.setText(obj.getString("name"));
+					timeRadio1.setText(obj.getString("continueTime"));
+					valid_endtime.setText(obj.getString("preValidEndTime"));
 				} else if (id.equals("2")) {
-					id2 = job.getString("id");
-					money2 = job.getString("price");
-					radio1.setText(job.getString("name"));
-					timeRadio1.setText(job.getString("continueTime"));
-					valid_endtime.setText(job.getString("preValidEndTime"));
+					id2 = obj.getString("id");
+					money2 = obj.getString("price");
+					radio1.setText(obj.getString("name"));
+					timeRadio1.setText(obj.getString("continueTime"));
+					valid_endtime.setText(obj.getString("preValidEndTime"));
 				}
-			}
+//			}
 //			if (typeId.equals("1")) {
 //				checkId = R.id.radio0;
 //				price1.setText(money1);

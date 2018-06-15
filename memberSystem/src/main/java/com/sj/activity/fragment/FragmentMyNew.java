@@ -38,6 +38,7 @@ import com.lyp.membersystem.view.CustomPopupWindow;
 import com.nodeprogress.nodeprogress.ExpressActivity;
 import com.sj.activity.ActivityCardBag;
 import com.sj.activity.ActivityEditUserInfo;
+import com.sj.activity.ActivityHtml;
 import com.sj.activity.ActivitySetting;
 import com.sj.activity.MessageActivity;
 import com.sj.activity.base.ActivityBase;
@@ -141,6 +142,7 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
         view.findViewById(R.id.layout_system_message).setOnClickListener(this);
         view.findViewById(R.id.layout_custom).setOnClickListener(this);
         view.findViewById(R.id.layout_express).setOnClickListener(this);
+        view.findViewById(R.id.layout_help).setOnClickListener(this);
 
         tvTitle.setText("我的");
         right.setImageResource(R.drawable.bqmm_setting2x);
@@ -171,9 +173,10 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
                     break;
                 default:
             }
-            tvRenewalTime.setText(status);
+            tvRenewalTime.setText(status+"("+userBean.getValidEndTime()+")");
         }
-        tvWalletValue.setText(userBean.getBalance() + "元");
+//        tvWalletValue.setText(userBean.getBalance() + "元");
+        tvWalletValue.setText(userBean.getBalance());
     }
 
 
@@ -253,6 +256,12 @@ public class FragmentMyNew extends TakePhotoFragment implements View.OnClickList
                 break;
             case R.id.layout_express:
                 intent.setClass(v.getContext(), SetExpressActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.layout_help:
+                intent.setClass(v.getContext(), ActivityHtml.class);
+                intent.putExtra("title","帮助中心");
+                intent.putExtra("url",UrlConfig.BASE_URL+UrlConfig.HELP_CENTER);
                 startActivity(intent);
                 break;
 

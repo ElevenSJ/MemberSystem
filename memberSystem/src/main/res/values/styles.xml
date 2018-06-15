@@ -998,4 +998,14 @@
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
 
+    <style name="ratingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>
+    <style name="ratingBarBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars_big</item>
+        <item name="android:minHeight">44dip</item>
+        <item name="android:maxHeight">44dip</item>
+    </style>
 </resources>

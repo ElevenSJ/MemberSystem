@@ -76,8 +76,13 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
         if (type == 0) {
             return;
         }
-        showProgress();
-        onRefresh();
+        rylView.post(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        });
+
     }
 
     private void getData() {
@@ -155,10 +160,6 @@ public class ActivityStudyCommon extends ActivityBase implements SwipeRefreshLay
             public void onFailure(String error_code, String error_message) {
             }
 
-            @Override
-            public void onFinish() {
-                hideProgress();
-            }
         });
 
     }

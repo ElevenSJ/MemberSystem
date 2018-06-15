@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import android.widget.ListView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.adapter.OrderAdapter;
 import com.lyp.membersystem.bean.GoodBean;
 import com.lyp.membersystem.bean.OrderBean;
 import com.lyp.membersystem.log.LogUtils;
+import com.lyp.membersystem.net.API;
 import com.lyp.membersystem.net.Errors;
 import com.lyp.membersystem.net.MessageContants;
 import com.lyp.membersystem.net.NetProxyManager;
@@ -30,12 +34,18 @@ import com.lyp.membersystem.view.CustomPopupWindow;
 import com.lyp.membersystem.view.contactsort.ContactSortModel;
 import com.lyp.membersystem.view.dialog.WaitDialog;
 import com.sj.activity.base.FragmentBase;
+import com.sj.activity.bean.DataListBean;
+import com.sj.activity.bean.UserBean;
+import com.sj.http.Callback;
+import com.sj.http.GsonResponsePasare;
+import com.sj.http.UrlConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 创建时间: on 2018/5/4.
@@ -49,7 +59,7 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
     private WaitDialog mWaitDialog;
     private CustomPopupWindow mPopWin;
     private SharedPreferences mSharedPreferences;
-    private List<OrderBean> orderList;
+    private List<com.sj.activity.bean.OrderBean> orderList;
     private OrderAdapter mOrderAdapter;
     private int mPage = 1;
     private int mRow = 10;
@@ -109,7 +119,7 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
         lv_order.setSelector(android.R.color.transparent);
         mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
         mPullRefreshListView.setOnRefreshListener(this);
-        orderList = new ArrayList<OrderBean>();
+        orderList = new ArrayList<com.sj.activity.bean.OrderBean>();
         mOrderAdapter = new OrderAdapter(orderList, this.getContext());
         lv_order.setAdapter(mOrderAdapter);
         lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,8 +147,50 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
         mSharedPreferences = getHoldingActivity().getSharedPreferences(Constant.SHARED_PREFERENCE, getHoldingActivity().MODE_PRIVATE);
         String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
         String saleId = mSharedPreferences.getString(Constant.ID, "");
-        NetProxyManager.getInstance().toGetOrderList(mHandler, tokenid, saleId, mPage + (orderList.size() / mRow),
-                mRow);
+//        all
+//        NetProxyManager.getInstance().toGetOrderList(mHandler, tokenid, saleId, mPage + (orderList.size() / mRow),
+//                mRow);
+        Map<String, Object> parameters = new ArrayMap<>(1);
+        parameters.put("token_id", tokenid);
+        parameters.put("pageNum",  mPage + (orderList.size() / mRow));
+        parameters.put("pageSize", mRow);
+        HttpManager.get(API.API_GET_ORDER_LIST, parameters, new Callback() {
+            @Override
+            public void onSuccess(String message) {
+                Log.d(TAG, "onSuccess: ");
+            }
+
+            @Override
+            public void onSuccessData(String json) {
+               DataListBean<com.sj.activity.bean.OrderBean> orderBeanDataListBean = new GsonResponsePasare<DataListBean<com.sj.activity.bean.OrderBean>>() {
+                }.deal(json);
+                mTotal = orderBeanDataListBean.getTotalCount();
+                if (orderBeanDataListBean.getInfoList()!=null&&!orderBeanDataListBean.getInfoList().isEmpty()){
+                    for (com.sj.activity.bean.OrderBean orderBean:orderBeanDataListBean.getInfoList()){
+                        orderList.add(orderBean);
+                    }
+                }
+                mOrderAdapter.notifyDataSetChanged();
+                if (mTotal <= 0) {
+//                ToastUtil.showShort(getHoldingActivity(), R.string.not_data);
+                } else if (mTotal > mRow) {
+                    mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
+                }
+//                updateUserView();
+            }
+
+            @Override
+            public void onFailure(String error_code, String error_message) {
+                Log.d(TAG, "onSuccessData: ");
+
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mPullRefreshListView.onRefreshComplete();
+            }
+        });
     }
 
     private void parseOrderList(String result) {
@@ -237,7 +289,7 @@ public class FragmentOrder extends FragmentBase implements PullToRefreshBase.OnR
                 orderBean.setOrderPrice(jb.getDouble("totalPrice"));
                 if (jb.has("orderStatus"))
                     orderBean.setOrderState(jb.getString("orderStatus"));
-                orderList.add(orderBean);
+//                orderList.add(orderBean);
             }
             mPullRefreshListView.onRefreshComplete();
             mOrderAdapter.notifyDataSetChanged();

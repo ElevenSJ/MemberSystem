@@ -3,10 +3,12 @@ package com.lyp.membersystem.ui;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.base.BaseActivity;
 import com.lyp.membersystem.database.CustomerDao;
@@ -30,6 +32,10 @@ import com.lyp.membersystem.view.CircleImageView;
 import com.lyp.membersystem.view.CustomPopupWindow;
 import com.lyp.membersystem.view.contactsort.ContactSortModel;
 import com.lyp.membersystem.view.dialog.WaitDialog;
+import com.sj.http.Callback;
+import com.sj.http.GsonResponsePasare;
+import com.sj.http.UrlConfig;
+import com.sj.widgets.TagsDialog;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -42,6 +48,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -67,6 +74,7 @@ public class ModifyCustomerActivity extends BaseActivity {
 	private TextView tv_name;
 	private TextView tv_birthday;
 	private TextView tv_area;
+	private TextView tv_tags;
 	private String areaStr;
 	private EditText et_address;
 	private EditText tv_phone;
@@ -107,6 +115,12 @@ public class ModifyCustomerActivity extends BaseActivity {
 	private List<String> specList;
 	private EditText tv_nickname;
 
+	String tokenid;
+	List<ContactSortModel.TaglistBean> tagList;
+	List<ContactSortModel.TaglistBean> chooseTagList = new ArrayList<>();
+
+	TagsDialog tagsDialog;
+
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -130,6 +144,8 @@ public class ModifyCustomerActivity extends BaseActivity {
 		setTranslucentStatus();
 		setContentView(R.layout.add_or_modify_customer_layout);
 		id = getIntent().getStringExtra("id");
+		mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
+		tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
 		initView();
 		initData();
 	}
@@ -148,6 +164,7 @@ public class ModifyCustomerActivity extends BaseActivity {
 		tv_birthday = (TextView) findViewById(R.id.tv_birthday);
 		et_address = (EditText) findViewById(R.id.et_address);
 		tv_area = (TextView) findViewById(R.id.tv_area);
+		tv_tags= (TextView) findViewById(R.id.tv_tags);
 		tv_phone = (EditText) findViewById(R.id.tv_phone);
 		tv_cemail = (EditText) findViewById(R.id.tv_cemail);
 		tv_policy_no = (EditText) findViewById(R.id.tv_policy_no);
@@ -229,7 +246,9 @@ public class ModifyCustomerActivity extends BaseActivity {
 		if (contact.getCphone() != null) {
 			tv_phone.setText(contact.getCphone());
 		}
-
+		if (contact.getTags() != null) {
+			tv_tags.setText(contact.getTags());
+		}
 		if (contact.getBirthday() != null) {
 			birthday = contact.getBirthday();
 			// tv_birthday.setText(DateUtil.stringToStr6(birthday));
@@ -543,14 +562,21 @@ public class ModifyCustomerActivity extends BaseActivity {
 		if (spec != null) {
 			contact.setSpecialday(spec);
 		}
-		mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
-		String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
+		String ids =null;
+		if (!chooseTagList.isEmpty()){
+			List<String> tagIds = new ArrayList<>();
+			for (ContactSortModel.TaglistBean bean :chooseTagList){
+				tagIds.add(bean.getTagId());
+			}
+			ids = tagIds.isEmpty()?null:TextUtils.join(",",tagIds.toArray());
+		}
+
 		String salemanId = mSharedPreferences.getString(Constant.ID, "");
 		if (mWaitDialog == null) {
 			mWaitDialog = new WaitDialog(this, R.string.loading_press);
 		}
 		mWaitDialog.show();
-		NetProxyManager.getInstance().toUpdateCustomer(mHandler, tokenid, salemanId, contact);
+		NetProxyManager.getInstance().toUpdateCustomer(mHandler, tokenid, salemanId, contact,ids);
 	}
 
 	public void setAddress(View view) {
@@ -586,6 +612,70 @@ public class ModifyCustomerActivity extends BaseActivity {
 
 	public void onBack(View view) {
 		finish();
+	}
+
+	public void setTags(View view) {
+		if(tagList==null) {
+			getTagData();
+		}else{
+			showTags();
+		}
+	}
+
+	private void showTags() {
+		if (tagsDialog == null){
+			tagsDialog = new TagsDialog(this);
+			tagsDialog.setCancelable(true);
+			tagsDialog.setCanceledOnTouchOutside(true);
+		}
+		tagsDialog.setData(this.tagList, chooseTagList, new TagsDialog.ClickResult() {
+			@Override
+			public void getAllResult(List<ContactSortModel.TaglistBean> tagsList) {
+				chooseTagList .clear();
+				if (tagsList!=null&&!tagsList.isEmpty()){
+					chooseTagList.addAll(tagsList);
+				}
+				List<String> strs = new ArrayList<>();
+				for (ContactSortModel.TaglistBean bean :tagsList){
+					strs.add(bean.getTagName());
+				}
+				tv_tags.setText(TextUtils.join(",",strs.toArray()));
+				contact.setTags(TextUtils.join(",",strs.toArray()));
+			}
+		});
+	}
+
+	private void getTagData() {
+		if (mWaitDialog == null) {
+			mWaitDialog = new WaitDialog(this, R.string.loading_press);
+		}
+		mWaitDialog.show();
+			Map<String, Object> parameters = new ArrayMap<>(4);
+			parameters.put("token_id", tokenid);
+			HttpManager.get(UrlConfig.CUSTOM_TAG_LIST, parameters, new Callback() {
+				@Override
+				public void onSuccess(String message) {
+				}
+
+				@Override
+				public void onSuccessData(String json) {
+					tagList = new GsonResponsePasare<List<ContactSortModel.TaglistBean>>() {
+					}.deal(json);
+					showTags();
+				}
+
+				@Override
+				public void onFailure(String error_code, String error_message) {
+				}
+
+				@Override
+				public void onFinish() {
+					super.onFinish();
+					if (mWaitDialog != null) {
+						mWaitDialog.dismiss();
+					}
+				}
+			});
 	}
 
 	public void setBirthday(View view) {

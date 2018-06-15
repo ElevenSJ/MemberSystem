@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <me.next.tagview.TagCloudView
+        android:id="@+id/tag_cloud_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/txt_open_or_close"
+        android:layout_marginRight="8dp"
+        app:tcvItemBorderHorizontal="8dp"
+        app:tcvItemBorderVertical="6dp"
+        app:tcvBorder="8dp"
+        app:tcvTextColor="@drawable/textcolor_tag_selector"
+        app:tcvBackground="@drawable/background_tag_selector"
+        app:tcvSingleLine="false"
+        app:tcvCanTagClick="true"
+        app:tcvShowEndText="false"
+        app:tcvShowRightImg="false"
+        />
+</android.support.constraint.ConstraintLayout>

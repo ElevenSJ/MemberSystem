@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.jady.retrofitclient.HttpManager;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.adapter.MyCustomerAdapter;
 import com.lyp.membersystem.base.BaseActivity;
@@ -27,6 +30,12 @@ import com.lyp.membersystem.view.contactsort.PinyinComparator;
 import com.lyp.membersystem.view.contactsort.PinyinUtils;
 import com.lyp.membersystem.view.contactsort.SideBar;
 import com.lyp.membersystem.view.dialog.WaitDialog;
+import com.sj.activity.bean.DataListBean;
+import com.sj.activity.bean.ReplayBean;
+import com.sj.http.BaseResponse;
+import com.sj.http.Callback;
+import com.sj.http.GsonResponsePasare;
+import com.sj.http.UrlConfig;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +43,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,6 +56,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import me.next.tagview.TagCloudView;
 
 public class MyCustomerActivity extends BaseActivity {
 
@@ -55,7 +69,7 @@ public class MyCustomerActivity extends BaseActivity {
 	private TextView dialog, mTvTitle;
 	private MyCustomerAdapter adapter;
 	// private EditTextWithDel mEtSearchName;
-	private List<ContactSortModel> mCustomerList;
+	private List<ContactSortModel> mCustomerList= new CopyOnWriteArrayList<>();;
 	private RelativeLayout select_mode;
 	private CheckBox customer_select_all;
 	private WaitDialog mWaitDialog;
@@ -65,6 +79,15 @@ public class MyCustomerActivity extends BaseActivity {
 	private int deletePosition = -1;
 	private CustomPopupWindow mGengerSelectPopWin;
 	private TextView genger_select;
+
+	private TagCloudView tagCloudView;
+	private TextView txtOpenOrClose;
+	String tokenid;
+	String saleId;
+
+	List<String> selectedTags = new ArrayList<>();
+
+	List<ContactSortModel> mCustomerListTmp = new CopyOnWriteArrayList<>();
 
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -89,11 +112,16 @@ public class MyCustomerActivity extends BaseActivity {
 		setTranslucentStatus();
 		setContentView(R.layout.my_customer_layout);
 		ToastUtil.showLongMessage("长按对应的条目可以删除！");
+		mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
+		tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
+		saleId = mSharedPreferences.getString(Constant.ID, "");
+
 		initViews();
 	}
 
 	private void initViews() {
 		// mEtSearchName = (EditTextWithDel) findViewById(R.id.et_search);
+		tagCloudView=findViewById(R.id.tag_cloud_view);
 		sideBar = (SideBar) findViewById(R.id.sidrbar);
 		dialog = (TextView) findViewById(R.id.dialog);
 		mTvTitle = (TextView) findViewById(R.id.tv_title);
@@ -112,12 +140,109 @@ public class MyCustomerActivity extends BaseActivity {
 		}
 		mWaitDialog.show();
 		genger_select = (TextView) findViewById(R.id.genger_select);
+
+		txtOpenOrClose = findViewById(R.id.txt_open_or_close);
+		txtOpenOrClose.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				for (int i =1;i<tagCloudView.getChildCount();i++){
+					TextView textView = (TextView) tagCloudView.getChildAt(i);
+					for (String tags:selectedTags){
+						if (tags.equals(textView.getText().toString())){
+							textView.setSelected(true);
+						}else{
+							textView.setSelected(false);
+						}
+					}
+				}
+				updateData(1);
+				if (txtOpenOrClose.getText().equals("展开")) {
+					tagCloudView.singleLine(false);
+					txtOpenOrClose.setText("收起");
+				}else{
+					tagCloudView.singleLine(true);
+					txtOpenOrClose.setText("展开");
+				}
+
+			}
+		});
+		tagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
+			@Override
+			public void onTagClick(int position) {
+				TextView tagTextView = (TextView) tagCloudView.getChildAt(position);
+				if (tagTextView.isSelected()){
+					tagTextView.setSelected(false);
+					tagTextView.setTextColor(getResources().getColor(R.color.gray));
+					selectedTags.remove(tagTextView.getText().toString());
+				}else{
+					tagTextView.setSelected(true);
+					tagTextView.setTextColor(getResources().getColor(R.color.main_bg_color));
+					selectedTags.add(tagTextView.getText().toString());
+				}
+				updateData(position);
+
+			}
+		});
+		tagCloudView.post(new Runnable() {
+			@Override
+			public void run() {
+				getTagData();
+			}
+		});
+	}
+
+	private void updateData(int position) {
+		mCustomerList.clear();
+		mCustomerList.addAll(mCustomerListTmp);
+		if (position != 0&&!selectedTags.isEmpty()){
+			for (ContactSortModel model:mCustomerList){
+				for (String tags:selectedTags){
+					if (!model.getTags().equals(tags)){
+						mCustomerList.remove(model);
+					}
+				}
+			}
+		}
+		contactsSort();
+	}
+
+	private void getTagData() {
+		Map<String, Object> parameters = new ArrayMap<>(4);
+		parameters.put("token_id", tokenid);
+		HttpManager.get(UrlConfig.CUSTOM_TAG_LIST, parameters, new Callback() {
+			@Override
+			public void onSuccess(String message) {
+			}
+
+			@Override
+			public void onSuccessData(String json) {
+				List<ContactSortModel.TaglistBean> tagList = new GsonResponsePasare<List<ContactSortModel.TaglistBean>>() {
+				}.deal(json);
+				if (tagList != null) {
+					if (tagList != null&&!tagList.isEmpty()) {
+						initTag(tagList);
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String error_code, String error_message) {
+			}
+
+		});
+	}
+
+	private void initTag(List<ContactSortModel.TaglistBean> tagList) {
+		List<String> tags = new ArrayList<>();
+		tags.add("全部");
+		for (int i = 0; i < tagList.size(); i++) {
+			tags.add(tagList.get(i).getTagName());
+		}
+		tagCloudView.setTags(tags);
 	}
 
 	private void getCustomerData() {
-		mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
-		String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
-		String saleId = mSharedPreferences.getString(Constant.ID, "");
+
 		NetProxyManager.getInstance().toGetCustomerList(mHandler, tokenid, saleId, null, null, 0);
 	}
 	
@@ -128,8 +253,11 @@ public class MyCustomerActivity extends BaseActivity {
 		inflate.findViewById(R.id.btn1).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				selectedTags.clear();
 				mCustomerList.clear();
 				mCustomerList.addAll(mCustomerDao.getContactList());
+				mCustomerListTmp.clear();
+				mCustomerListTmp .addAll(mCustomerList);
 				contactsSort();
 				genger_select.setText("全部");
 				mGengerSelectPopWin.dismiss();
@@ -138,8 +266,11 @@ public class MyCustomerActivity extends BaseActivity {
 		inflate.findViewById(R.id.btn2).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				clearTagSelected();
 				mCustomerList.clear();
 				mCustomerList.addAll(mCustomerDao.getMaleContactList());
+				mCustomerListTmp.clear();
+				mCustomerListTmp .addAll(mCustomerList);
 				contactsSort();
 				genger_select.setText("男");
 				mGengerSelectPopWin.dismiss();
@@ -148,8 +279,11 @@ public class MyCustomerActivity extends BaseActivity {
 		inflate.findViewById(R.id.btn3).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				clearTagSelected();
 				mCustomerList.clear();
 				mCustomerList.addAll(mCustomerDao.getFeMaleContactList());
+				mCustomerListTmp.clear();
+				mCustomerListTmp .addAll(mCustomerList);
 				contactsSort();
 				genger_select.setText("女");
 				mGengerSelectPopWin.dismiss();
@@ -158,8 +292,11 @@ public class MyCustomerActivity extends BaseActivity {
 		inflate.findViewById(R.id.btn4).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				clearTagSelected();
 				mCustomerList.clear();
 				mCustomerList.addAll(mCustomerDao.getErTongContactList());
+				mCustomerListTmp.clear();
+				mCustomerListTmp .addAll(mCustomerList);
 				contactsSort();
 				genger_select.setText("儿童");
 				mGengerSelectPopWin.dismiss();
@@ -167,6 +304,13 @@ public class MyCustomerActivity extends BaseActivity {
 		});
 
 		mGengerSelectPopWin.showAsDropDown(view);
+	}
+	void clearTagSelected(){
+		selectedTags.clear();
+		for (int i =1;i<tagCloudView.getChildCount();i++){
+			TextView textView = (TextView) tagCloudView.getChildAt(i);
+			textView.setSelected(false);
+		}
 	}
 
 	private void parseCustomerList(String result) {
@@ -193,6 +337,7 @@ public class MyCustomerActivity extends BaseActivity {
 			JSONObject job = json.getJSONObject("object");
 			JSONArray jsonArray = job.getJSONArray("infoList");
 			mCustomerList.clear();
+			mCustomerListTmp.clear();
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				ContactSortModel contactSortModel = new ContactSortModel();
@@ -250,7 +395,18 @@ public class MyCustomerActivity extends BaseActivity {
 				if (jsonObject.has("profession")) {
 					contactSortModel.setProfession(jsonObject.getString("profession"));
 				}
+				List<ContactSortModel.TaglistBean> tags = new ArrayList<>();
+				JSONArray tagArray =jsonObject.getJSONArray("taglist");
+				for (int j = 0; j < tagArray.length(); j++) {
+					JSONObject jsontagObject = tagArray.getJSONObject(j);
+					ContactSortModel.TaglistBean taglistBean = new ContactSortModel.TaglistBean();
+					taglistBean.setTagId(jsontagObject.getString("tagId"));
+					taglistBean.setTagName(jsontagObject.getString("tagName"));
+					tags.add(taglistBean);
+				}
+				contactSortModel.setTags(TextUtils.join(",",tags.toArray()));
 				mCustomerList.add(contactSortModel);
+				mCustomerListTmp .add(contactSortModel);
 			}
 			contactsSort();
 			mCustomerDao.saveContactList(mCustomerList);
@@ -283,6 +439,7 @@ public class MyCustomerActivity extends BaseActivity {
 			}
 			mCustomerDao.deleteContact(mCustomerList.get(deletePosition).getId());
 			mCustomerList.remove(deletePosition);
+			mCustomerListTmp.remove(deletePosition);
 			adapter.notifyDataSetChanged();
 		} catch (Exception ex) {
 			LogUtils.e(ex.getMessage());
@@ -472,9 +629,10 @@ public class MyCustomerActivity extends BaseActivity {
 	private void initDatas() {
 		sideBar.setTextView(dialog);
 		mCustomerDao = new CustomerDao(this.getApplicationContext());
-		mCustomerList = mCustomerDao.getContactList();
-		if (mCustomerList == null)
-			mCustomerList = new ArrayList<ContactSortModel>();
+		mCustomerList.addAll(mCustomerDao.getContactList());
+		if (!mCustomerList.isEmpty()) {
+			mCustomerListTmp.addAll(mCustomerList);
+		}
 	}
 
 	/**

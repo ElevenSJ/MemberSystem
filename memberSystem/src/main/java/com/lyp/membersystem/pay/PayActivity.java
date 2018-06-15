@@ -129,6 +129,7 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		orderId = getIntent().getStringExtra("order_id");
 		notice_id = getIntent().getStringExtra("notice_id");
 		mOrderAmount = getIntent().getStringExtra("order_amount");
+		mOrderAmount.replace(",","");
 		type = getIntent().getStringExtra("type");
 		isService = getIntent().getBooleanExtra("isService", false);
 		setContentView(R.layout.pay_layout);
@@ -605,9 +606,15 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		// MODE_PRIVATE);
 		// String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
 		// String saleId = mSharedPreferences.getString(Constant.ID, "");
-		String payAmount = df.format(Double.valueOf(mOrderAmount) * 100);
-		if (unpaid != -1) {
-			payAmount = df.format(unpaid * 100);
+		String payAmount;
+		try	{
+			payAmount = df.format(Double.valueOf(mOrderAmount) * 100);
+			if (unpaid != -1) {
+				payAmount = df.format(unpaid * 100);
+			}
+		}catch (Exception e){
+			ToastUtil.showMessage("价格不正确");
+			return;
 		}
 		switch (v.getId()) {
 		case R.id.wenxin_pay:

@@ -5,16 +5,19 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -37,6 +40,11 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMWeb;
 
 import java.io.IOException;
 
@@ -53,6 +61,7 @@ public class ActivityStudyHtml extends ActivityBase {
     TextView titleTxt;
     TextView timeTxt;
     TextView readTxt;
+    ImageView imgShare;
     TextView txtBuy;
 
     StudyBean studyBean;
@@ -91,19 +100,35 @@ public class ActivityStudyHtml extends ActivityBase {
         title = getIntent().getStringExtra("title");
         setTitleTxt(title);
 
-        if (studyBean instanceof StudyHtmlCommonBean) {
+        if (studyBean.getAttachs() != null && !studyBean.getAttachs().isEmpty()) {
+            setTitleRightTxt("下载");
+        }
+
+        if (studyBean instanceof StudyHtmlCommonBean || studyBean instanceof MDRTBean) {
             titleTxt = findViewById(R.id.txt_title);
             timeTxt = findViewById(R.id.txt_time);
             readTxt = findViewById(R.id.txt_read_count);
+            imgShare = findViewById(R.id.img_share);
             titleTxt.setVisibility(View.VISIBLE);
             timeTxt.setVisibility(View.VISIBLE);
             readTxt.setVisibility(View.VISIBLE);
+            imgShare.setVisibility(View.VISIBLE);
             titleTxt.setText(studyBean.getTitle());
-            timeTxt.setText(((StudyHtmlCommonBean) studyBean).getCreateTime());
-            readTxt.setText(((StudyHtmlCommonBean) studyBean).getReadQuantity());
-            if (((StudyHtmlCommonBean) studyBean).getAttachs() != null && !((StudyHtmlCommonBean) studyBean).getAttachs().isEmpty()) {
-                setTitleRightTxt("下载");
+            if (studyBean instanceof StudyHtmlCommonBean) {
+                timeTxt.setText(((StudyHtmlCommonBean) studyBean).getCreateTime());
+                readTxt.setText(((StudyHtmlCommonBean) studyBean).getReadQuantity());
+            } else if (studyBean instanceof MDRTBean) {
+                timeTxt.setText(((MDRTBean) studyBean).getCreateTime());
+                readTxt.setVisibility(View.GONE);
             }
+            imgShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtil.showMessage("去分享");
+                    new ShareAction(ActivityStudyHtml.this).withText(studyBean.getTitle()).withMedia(new UMWeb(studyBean.getDetailUrl() + "?token_id=" + tokenid)).setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                            .setCallback(shareListener).open();
+                }
+            });
         }
         if (needBuy && studyBean instanceof TrainClassBean) {
             txtBuy = findViewById(R.id.txt_buy);
@@ -280,7 +305,7 @@ public class ActivityStudyHtml extends ActivityBase {
         String url = studyBean.getDetailUrl() + "?token_id=" + tokenid;
         if (studyBean instanceof MDRTBean) {
             if (((MDRTBean) studyBean).getBuyStatus() != 0 || ((MDRTBean) studyBean).getFreeStatus() == 1) {
-                url = ((MDRTBean) studyBean).getChargeContentUrl()+ "?token_id=" + tokenid;
+                url = ((MDRTBean) studyBean).getChargeContentUrl() + "?token_id=" + tokenid;
 
             }
         }
@@ -299,28 +324,65 @@ public class ActivityStudyHtml extends ActivityBase {
         return super.onKeyDown(keyCode, event);
     }
 
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            ToastUtil.showMessage("分享成功");
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtil.showMessage("分享失败");
+            Log.i("share", "onError: " + t.getMessage());
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtil.showMessage("取消分享");
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (webview != null) {
             webview.destroy();
         }
+        UMShareAPI.get(this).release();
     }
 
     @Override
     public void onRightTxt(View view) {
         super.onRightTxt(view);
-        if (studyBean instanceof StudyHtmlCommonBean) {
-
-            ToastUtil.showMessage("附件下载列表，选择文件开始下载");
-            if (downloadDialog == null) {
-                downloadDialog = new DownloadDialog(this);
-            }
-            if (!downloadDialog.isShowing()) {
-                downloadDialog.show(((StudyHtmlCommonBean) studyBean).getAttachs());
-            } else {
-                downloadDialog.setData(((StudyHtmlCommonBean) studyBean).getAttachs());
-            }
+        ToastUtil.showMessage("附件下载列表，选择文件开始下载");
+        if (downloadDialog == null) {
+            downloadDialog = new DownloadDialog(this);
+        }
+        if (!downloadDialog.isShowing()) {
+            downloadDialog.show(studyBean.getAttachs());
+        } else {
+            downloadDialog.setData(studyBean.getAttachs());
         }
     }
 

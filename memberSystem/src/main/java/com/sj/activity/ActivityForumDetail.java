@@ -316,6 +316,18 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
         txtPrice.setText("¥ " + forumBean.getIntro());
 //        getForumDetailHtml();
 
+        if (forumBean.getItems()!=null&&!forumBean.getItems().isEmpty()){
+            itemsBean = forumBean.getItems().get(0);
+            if (itemsBean != null) {
+                txtPrice.setText("¥ " + itemsBean.getPrice());
+                txtArea.setText(itemsBean.getAreaName());
+                if (amountView.getAmount() > itemsBean.getTotal()) {
+                    amountView.setAmount(itemsBean.getTotal());
+                }
+                amountView.setGoods_storage(itemsBean.getTotal());
+            }
+        }
+
         Uri.Builder builder = Uri.parse(UrlConfig.BASE_URL+UrlConfig.FORUM_DETAIL_HTML).buildUpon();
         builder.appendQueryParameter("token_id", tokenid);
         builder.appendQueryParameter("id", forumBean.getId());
@@ -409,7 +421,10 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
             return;
         }
         ToastUtil.showMessage("去分享");
-        new ShareAction(ActivityForumDetail.this).withText(forumBean.getName()).withMedia(new UMWeb(webview.getOriginalUrl())).setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+        Uri.Builder builder = Uri.parse(UrlConfig.BASE_URL+UrlConfig.FORUM_DETAIL_HTML).buildUpon();
+        builder.appendQueryParameter("token_id", tokenid);
+        builder.appendQueryParameter("id", forumBean.getId());
+        new ShareAction(ActivityForumDetail.this).withText(forumBean.getName()).withMedia(new UMWeb(builder.toString())).setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                 .setCallback(shareListener).open();
     }
 
@@ -426,17 +441,19 @@ public class ActivityForumDetail extends ActivityBase implements View.OnClickLis
 
             @Override
             public void onSuccessData(String json) {
-                BuyResultBean buyResultBean = new GsonResponsePasare<BuyResultBean>() {
-                }.deal(json);
-                Intent i = new Intent(ActivityForumDetail.this, PayActivity.class);
-                i.putExtra("order_id", buyResultBean.getOrderId());
-                i.putExtra("type", "study");
-                i.putExtra("order_amount", buyResultBean.getOrderPrice());
-                startActivity(i);
+//                BuyResultBean buyResultBean = new GsonResponsePasare<BuyResultBean>() {
+//                }.deal(json);
+//                Intent i = new Intent(ActivityForumDetail.this, PayActivity.class);
+//                i.putExtra("order_id", buyResultBean.getOrderId());
+//                i.putExtra("type", "study");
+//                i.putExtra("order_amount", buyResultBean.getOrderPrice());
+//                startActivity(i);
+                ToastUtil.showMessage("购买成功");
             }
 
             @Override
             public void onFailure(String error_code, String error_message) {
+                ToastUtil.showMessage("购买失败");
             }
 
             @Override

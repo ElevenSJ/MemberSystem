@@ -106,6 +106,7 @@
             android:orientation="horizontal" >
 
             <TextView
+                android:id="@+id/txt_card_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="top"
@@ -137,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dip"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/default_image" />
 
             <View

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	
 	private static String DATABASE_NAME = "member_system.db";
-	private static final int DATABASE_VERSION=4;
+	private static final int DATABASE_VERSION=5;
 	private static DBHelper instance;
 	private static final String CUSTOMER_TABLE_CREATE = "CREATE TABLE "
 			+ CustomerDao.TABLE_NAME + " ("
@@ -29,6 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ CustomerDao.COLUMN_NAME_AGE + " INTEGER, "
 			+ CustomerDao.COLUMN_NAME_POLICY_NO + " TEXT, "
 			+ CustomerDao.COLUMN_NAME_PROFESSION + " TEXT, "
+			+ CustomerDao.COLUMN_NAME_TAGS + " TEXT, "
 			+ CustomerDao.COLUMN_NAME_ID + " TEXT PRIMARY KEY);";
 
 	public DBHelper(Context context) {
@@ -69,6 +70,10 @@ public class DBHelper extends SQLiteOpenHelper {
 					" ADD COLUMN " +CustomerDao.COLUMN_NAME_POLICY_NO +" TEXT");
 		    db.execSQL("ALTER TABLE " + CustomerDao.TABLE_NAME + 
 				" ADD COLUMN " +CustomerDao.COLUMN_NAME_PROFESSION +" INTEGER");
+		}
+		if (oldVersion < 5) {
+			db.execSQL("ALTER TABLE " + CustomerDao.TABLE_NAME +
+					" ADD COLUMN " +CustomerDao.COLUMN_NAME_TAGS +" TEXT");
 		}
 		
 	}

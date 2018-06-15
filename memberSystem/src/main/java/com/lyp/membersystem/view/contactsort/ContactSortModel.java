@@ -22,7 +22,7 @@ public class ContactSortModel {
     private int age;
     private String policyNo;
     private String profession;
-    
+	private String tags;
 
     public String getName() {
         return name;
@@ -176,4 +176,37 @@ public class ContactSortModel {
 		this.profession = profession;
 	}
 
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public static class TaglistBean {
+		/**
+		 * tagName : 人工智能
+		 * tagId : 4
+		 */
+
+		private String tagName;
+		private String tagId;
+
+		public String getTagName() {
+			return tagName;
+		}
+
+		public void setTagName(String tagName) {
+			this.tagName = tagName;
+		}
+
+		public String getTagId() {
+			return tagId;
+		}
+
+		public void setTagId(String tagId) {
+			this.tagId = tagId;
+		}
+	}
 }

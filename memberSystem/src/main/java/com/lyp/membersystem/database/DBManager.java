@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 public class DBManager {
 	static private DBManager dbMgr = new DBManager();
@@ -26,7 +27,7 @@ public class DBManager {
 
 	/**
 	 * 保存客户list
-	 * 
+	 *
 	 * @param contactList
 	 */
 	synchronized public void saveContactList(List<ContactSortModel> contactList) {
@@ -70,6 +71,8 @@ public class DBManager {
 					values.put(CustomerDao.COLUMN_NAME_POLICY_NO, contactSortModel.getPolicyNo());
 				if (contactSortModel.getProfession() != null)
 					values.put(CustomerDao.COLUMN_NAME_PROFESSION, contactSortModel.getProfession());
+				if (contactSortModel.getTags() != null)
+					values.put(CustomerDao.COLUMN_NAME_TAGS, contactSortModel.getTags());
 				db.replace(CustomerDao.TABLE_NAME, null, values);
 			}
 		}
@@ -77,7 +80,7 @@ public class DBManager {
 
 	/**
 	 * 获取好友list
-	 * 
+	 *
 	 * @return
 	 */
 	synchronized public List<ContactSortModel> getContactList() {
@@ -101,7 +104,7 @@ public class DBManager {
 	 * 带占位符参数的select语句使用例子如下： Cursor cursor = db.rawQuery(
 	 * "select * from person where name like ? and age=?", new String[]{"%传智%",
 	 * "4"});
-	 * 
+	 *
 	 * @return
 	 */
 	synchronized public List<ContactSortModel> getContactList(String feteDay) {
@@ -110,7 +113,7 @@ public class DBManager {
 		if (db.isOpen()) {
 			Cursor cursor = db.rawQuery(
 					"select * from " + CustomerDao.TABLE_NAME + " where " + CustomerDao.COLUMN_NAME_FETE_DAY + " = ?",
-					new String[] { feteDay });
+					new String[]{feteDay});
 			if (cursor.moveToFirst()) {
 				do {
 					contactSortModels.add(getContact(cursor));
@@ -120,10 +123,10 @@ public class DBManager {
 		}
 		return contactSortModels;
 	}
-	
+
 	/**
 	 * 通过性别获得好友列表
-	 * @param feteDay
+	 *
 	 * @return
 	 */
 	synchronized public List<ContactSortModel> getGengerContactList(String genger) {
@@ -132,7 +135,7 @@ public class DBManager {
 		if (db.isOpen()) {
 			Cursor cursor = db.rawQuery(
 					"select * from " + CustomerDao.TABLE_NAME + " where " + CustomerDao.COLUMN_NAME_GENDER + " = ?",
-					new String[] { genger });
+					new String[]{genger});
 			if (cursor.moveToFirst()) {
 				do {
 					contactSortModels.add(getContact(cursor));
@@ -142,10 +145,10 @@ public class DBManager {
 		}
 		return contactSortModels;
 	}
-	
+
 	/**
 	 * 获得儿童列表
-	 * @param feteDay
+	 *
 	 * @return
 	 */
 	synchronized public List<ContactSortModel> getErTongContactList(String age) {
@@ -154,7 +157,7 @@ public class DBManager {
 		if (db.isOpen()) {
 			Cursor cursor = db.rawQuery(
 					"select * from " + CustomerDao.TABLE_NAME + " where " + CustomerDao.COLUMN_NAME_AGE + " <= ?",
-					new String[] { age });
+					new String[]{age});
 			if (cursor.moveToFirst()) {
 				do {
 					contactSortModels.add(getContact(cursor));
@@ -167,7 +170,7 @@ public class DBManager {
 
 	/**
 	 * 通过条件获取好友list
-	 * 
+	 *
 	 * @return
 	 */
 	synchronized public List<ContactSortModel> getContactList(QueryContactBean queryContactBean) {
@@ -198,8 +201,8 @@ public class DBManager {
 		}
 		if (queryContactBean.getAgeMax() != null) {
 			if (selectSql.contains("?")) {
-			    selectSql = selectSql + " and " + CustomerDao.COLUMN_NAME_AGE + "<=?";
-			    where = where + "," + queryContactBean.getAgeMax();
+				selectSql = selectSql + " and " + CustomerDao.COLUMN_NAME_AGE + "<=?";
+				where = where + "," + queryContactBean.getAgeMax();
 			} else {
 				selectSql = selectSql + CustomerDao.COLUMN_NAME_AGE + "<=?";
 				where = where + queryContactBean.getAgeMax();
@@ -207,8 +210,8 @@ public class DBManager {
 		}
 		if (queryContactBean.getAgeMin() != null) {
 			if (selectSql.contains("?")) {
-			    selectSql = selectSql + " and " + CustomerDao.COLUMN_NAME_AGE + ">=?";
-			    where = where + "," + queryContactBean.getAgeMin();
+				selectSql = selectSql + " and " + CustomerDao.COLUMN_NAME_AGE + ">=?";
+				where = where + "," + queryContactBean.getAgeMin();
 			} else {
 				selectSql = selectSql + CustomerDao.COLUMN_NAME_AGE + ">=?";
 				where = where + queryContactBean.getAgeMin();
@@ -218,20 +221,20 @@ public class DBManager {
 		if (where.contains(",")) {
 			String[] split = where.split(",");
 			switch (split.length) {
-			case 2:
-				whereArgs = new String[]{split[0], split[1]};
-				break;
-			case 3:
-				whereArgs = new String[]{split[0], split[1], split[2]};
-				break;
-			case 4:
-				whereArgs = new String[]{split[0], split[1], split[2], split[3]};
-				break;
-			case 5:
-				whereArgs = new String[]{split[0], split[1], split[2], split[3], split[4]};
-				break;
-			default:
-				break;
+				case 2:
+					whereArgs = new String[]{split[0], split[1]};
+					break;
+				case 3:
+					whereArgs = new String[]{split[0], split[1], split[2]};
+					break;
+				case 4:
+					whereArgs = new String[]{split[0], split[1], split[2], split[3]};
+					break;
+				case 5:
+					whereArgs = new String[]{split[0], split[1], split[2], split[3], split[4]};
+					break;
+				default:
+					break;
 			}
 		} else {
 			whereArgs = new String[]{where};
@@ -269,6 +272,7 @@ public class DBManager {
 		int age = cursor.getInt(cursor.getColumnIndex(CustomerDao.COLUMN_NAME_AGE));
 		String policyNo = cursor.getString(cursor.getColumnIndex(CustomerDao.COLUMN_NAME_POLICY_NO));
 		String profession = cursor.getString(cursor.getColumnIndex(CustomerDao.COLUMN_NAME_PROFESSION));
+		String tags = cursor.getString(cursor.getColumnIndex(CustomerDao.COLUMN_NAME_TAGS));
 		ContactSortModel contactSortModel = new ContactSortModel();
 		contactSortModel.setId(id);
 		contactSortModel.setName(name);
@@ -288,12 +292,13 @@ public class DBManager {
 		contactSortModel.setAge(age);
 		contactSortModel.setPolicyNo(policyNo);
 		contactSortModel.setProfession(profession);
+		contactSortModel.setTags(tags);
 		return contactSortModel;
 	}
 
 	/**
 	 * 获取好友list
-	 * 
+	 *
 	 * @return
 	 */
 	synchronized public ContactSortModel getContact(String id) {
@@ -302,7 +307,7 @@ public class DBManager {
 		if (db.isOpen()) {
 			Cursor cursor = db.rawQuery(
 					"select * from " + CustomerDao.TABLE_NAME + " where " + CustomerDao.COLUMN_NAME_ID + " = ?",
-					new String[] { id });
+					new String[]{id});
 			if (cursor.moveToFirst()) {
 				contactSortModel = getContact(cursor);
 			}
@@ -313,19 +318,19 @@ public class DBManager {
 
 	/**
 	 * 删除一个客户
-	 * 
+	 *
 	 * @param id
 	 */
 	synchronized public void deleteContact(String id) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		if (db.isOpen()) {
-			db.delete(CustomerDao.TABLE_NAME, CustomerDao.COLUMN_NAME_ID + " = ?", new String[] { id });
+			db.delete(CustomerDao.TABLE_NAME, CustomerDao.COLUMN_NAME_ID + " = ?", new String[]{id});
 		}
 	}
 
 	/**
 	 * 保存客户
-	 * 
+	 *
 	 * @param contact
 	 */
 	synchronized public void saveContact(ContactSortModel contactSortModel) {
@@ -367,6 +372,8 @@ public class DBManager {
 				values.put(CustomerDao.COLUMN_NAME_POLICY_NO, contactSortModel.getPolicyNo());
 			if (contactSortModel.getProfession() != null)
 				values.put(CustomerDao.COLUMN_NAME_PROFESSION, contactSortModel.getProfession());
+			if (contactSortModel.getTags() != null)
+				values.put(CustomerDao.COLUMN_NAME_TAGS, contactSortModel.getTags());
 			db.replace(CustomerDao.TABLE_NAME, null, values);
 		}
 	}
@@ -375,5 +382,24 @@ public class DBManager {
 		if (dbHelper != null) {
 			dbHelper.closeDB();
 		}
+	}
+
+	public List<ContactSortModel> getContactListByTags(List<String> selectedTags) {
+
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		List<ContactSortModel> contactSortModels = new ArrayList<ContactSortModel>();
+		if (db.isOpen()) {
+			for (String tag:selectedTags){
+				Cursor cursor = db.rawQuery(
+						"select * from " + CustomerDao.TABLE_NAME + " where " + CustomerDao.COLUMN_NAME_TAGS + " like '%"+tag+"%'",null);
+				if (cursor.moveToFirst()) {
+					do {
+						contactSortModels.add(getContact(cursor));
+					} while (cursor.moveToNext());
+				}
+				cursor.close();
+			}
+		}
+		return contactSortModels;
 	}
 }

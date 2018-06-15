@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.lyp.membersystem"
     android:versionCode="10"
     android:versionName="2.0.1" >
@@ -87,6 +88,7 @@
     <!-- IM 容联权限End -->
 
     <uses-sdk
+        tools:overrideLibrary="android.support.v7.appcompat"
         android:minSdkVersion="19"
         android:targetSdkVersion="24" />
 
@@ -124,7 +126,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:launchMode="standard"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -1052,6 +1054,11 @@
         <activity
             android:name="com.sj.activity.ActivityTeacherIntroduceDetail"
             android:theme="@style/AppNewTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.sj.activity.ActivityStoryReplayList"
+            android:theme="@style/AppNewTheme"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" />
 
         <!-- 极光推送 绑定别名service-->

@@ -77,4 +77,18 @@ public class UrlConfig {
     //讲师详情
     public static final String LECTURER_Detail = "api/app/v1/getLecturerDetailById";
 
+    //获取客户标签
+    public static final String CUSTOM_TAG_LIST = "api/app/v1/getCustomerTagList";
+    //作者说书评论
+    public static final String STORY_REPLAY_LIST = "api/app/v1/getStorytellingCommentList";
+
+    //作者说书回复评论
+    public static final String STORY_REPLAY = "api/app/v1/addAuthorStorytellingComment";
+
+    //帮助中心获取会员续费显示信息获取会员续费显示信息
+    public static final String HELP_CENTER = "api/app/v1/getHelpList";
+
+
+    //获取会员续费显示信息
+    public static final String RENEWAL_FEEINFO = "api/app/v1/getRenewalFeeInfo";
 }

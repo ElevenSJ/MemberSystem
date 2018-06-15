@@ -2,6 +2,7 @@ package com.lyp.membersystem.net;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,6 +10,7 @@ import java.util.concurrent.Executors;
 import com.lyp.membersystem.bean.NoticeBean;
 import com.lyp.membersystem.log.LogUtils;
 import com.lyp.membersystem.view.contactsort.ContactSortModel;
+import com.sj.http.UrlConfig;
 
 import android.os.Handler;
 import android.os.Message;
@@ -292,20 +294,21 @@ public class NetProxyManager {
 
 	/**
 	 * 修改客户接口
-	 * 
-	 * @param handler
-	 * @param tokenid
-	 * @param salemanId
-	 * @param cname
-	 * @param cphone
-	 * @param nickname
-	 * @param specialday
-	 * @param profiles
-	 * @param caddress
-	 * @param gender
-	 */
+     * @param cname
+     * @param cphone
+     * @param nickname
+     * @param specialday
+     * @param profiles
+     * @param caddress
+     * @param gender
+     * @param chooseTagList
+     * @param handler
+     * @param tokenid
+     * @param salemanId
+     * @param ids
+     */
 	public void toUpdateCustomer(final Handler handler, final String tokenid, final String salemanId,
-			final ContactSortModel contactSortModel) {
+                                 final ContactSortModel contactSortModel, final String tagIds) {
 		new Thread(new Runnable() {
 
 			@Override
@@ -316,6 +319,9 @@ public class NetProxyManager {
 				params.put("id", contactSortModel.getId());
 				params.put("district", contactSortModel.getDistrict());
 				params.put("maritalStatus", contactSortModel.getMarry());
+				if (contactSortModel.getHaveChildren() != null) {
+					params.put("haveChildren", contactSortModel.getHaveChildren());
+				}
 				if (contactSortModel.getHaveChildren() != null) {
 				    params.put("haveChildren", contactSortModel.getHaveChildren());
 				}
@@ -352,6 +358,9 @@ public class NetProxyManager {
 				}
 				if (contactSortModel.getPolicyNo() != null) {
 					params.put("policyNo", contactSortModel.getPolicyNo());
+				}
+				if (tagIds !=null){
+					params.put("tagIds", tagIds);
 				}
 				// 职业移除了
 //				if (contactSortModel.getProfession() != null) {
@@ -1788,7 +1797,7 @@ public class NetProxyManager {
 			@Override
 			public void run() {
 				StringBuffer sb = new StringBuffer();
-				sb.append(API.API_GET_RENEWAL_FEE_INFO);
+				sb.append(UrlConfig.RENEWAL_FEEINFO);
 				sb.append("?");
 				sb.append("token_id=");
 				sb.append(tokenid);

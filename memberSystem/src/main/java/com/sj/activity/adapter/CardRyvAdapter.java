@@ -15,7 +15,7 @@ import com.sj.activity.bean.CardBean;
 import com.sj.widgets.ImageDialog;
 
 
-public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean> {
+public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpBaseBean> {
     Context context;
     int index;
     public CardRyvAdapter(Context context,int index) {
@@ -29,7 +29,7 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
         return new CardRyvHolder(parent,context,index);
     }
 
-    private static class CardRyvHolder extends BaseViewHolder<CardBean.CpChiefBBSBean> {
+    private static class CardRyvHolder extends BaseViewHolder<CardBean.CpBaseBean> {
         private ConstraintLayout layoutMain;
         private ImageView imgIcon;
         private TextView txtTitle;
@@ -52,7 +52,7 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
         }
 
         @Override
-        public void setData(final CardBean.CpChiefBBSBean data) {
+        public void setData(final CardBean.CpBaseBean data) {
             super.setData(data);
             if (index == 0){
                 layoutMain.setBackgroundResource(R.drawable.img_card_bg);
@@ -60,9 +60,16 @@ public class CardRyvAdapter extends RecyclerArrayAdapter<CardBean.CpChiefBBSBean
                 layoutMain.setBackgroundResource(R.drawable.img_card_bg_used);
             }
 //            ImageUtils.loadImageWithError(data.getPreviewUrl(),R.drawable.ic_launcher,imgIcon);
-            txtTitle.setText(data.getBbsName());
+            if (data instanceof CardBean.CpChiefBBSBean){
+                CardBean.CpChiefBBSBean bean = (CardBean.CpChiefBBSBean)data;
+                txtTitle.setText(bean.getBbsName());
+                txtCreatTime.setText("时间："+bean.getDayNum());
+            }else if (data instanceof CardBean.CpCourse){
+                CardBean.CpCourse bean = (CardBean.CpCourse)data;
+                txtTitle.setText(bean.getCourseName());
+                txtCreatTime.setText("上课时间："+bean.getSchoolTime());
+            }
             txtTime.setText(data.getIndate());
-            txtCreatTime.setText("时间："+data.getDayNum());
             imgCode.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

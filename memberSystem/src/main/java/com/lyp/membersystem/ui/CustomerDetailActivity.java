@@ -53,6 +53,7 @@ public class CustomerDetailActivity extends BaseActivity {
 	private TextView tv_district;
 	private TextView tv_policy_no;
 	private TextView tv_profession;
+	private TextView tv_tags;
 	private String id;
 	private CustomPopupWindow mPopWin;
 	private boolean isUpdate = false;
@@ -108,6 +109,7 @@ public class CustomerDetailActivity extends BaseActivity {
 		tv_district = (TextView) findViewById(R.id.tv_district);
 		tv_policy_no = (TextView) findViewById(R.id.tv_policy_no);
 		tv_profession = (TextView) findViewById(R.id.tv_profession);
+		tv_tags= (TextView) findViewById(R.id.tv_tag);
 		specListView = (MyListView)findViewById(R.id.spec_list);
 		specDateList = new ArrayList<SpecDateBean>();
 //		specDateAdapter = new SpecDateAdapter(this, specDateList);
@@ -136,7 +138,9 @@ public class CustomerDetailActivity extends BaseActivity {
 			} 
 			
 		}
-
+		if (contact.getTags() != null) {
+			tv_tags.setText(contact.getTags());
+		}
 		if (contact.getCphone() != null) {
 			tv_phone.setText(contact.getCphone());
 		}

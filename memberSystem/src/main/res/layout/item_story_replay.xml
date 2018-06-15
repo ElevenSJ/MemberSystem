@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.lyp.membersystem.view.CircleImageView
+        android:id="@+id/img_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/txt_name"
+        style="@style/TxtBlackNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/txt_time"
+        app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+        app:layout_constraintStart_toEndOf="@+id/img_icon"
+        app:layout_constraintTop_toTopOf="@+id/img_icon"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/txt_time"
+        style="@style/TxtGraySmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/img_icon"
+        app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+        app:layout_constraintStart_toStartOf="@+id/txt_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginEnd="16dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:rating="3.5"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="@+id/img_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_icon" />
+
+    <cn.carbs.android.expandabletextview.library.ExpandableTextView
+        android:id="@+id/txt_comment"
+        style="@style/TxtGraySmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:etv_ToExpandHint="展开"
+        app:etv_ToShrinkHint="收起"
+        app:etv_MaxLinesOnShrink="3"
+        app:etv_ToExpandHintColor="@color/main_bg_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ratingBar"
+        app:layout_constraintStart_toStartOf="@+id/img_icon"
+        app:layout_constraintTop_toBottomOf="@+id/img_icon" />
+</android.support.constraint.ConstraintLayout>

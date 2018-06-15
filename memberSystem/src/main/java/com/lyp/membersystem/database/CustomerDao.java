@@ -1,5 +1,6 @@
 package com.lyp.membersystem.database;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.lyp.membersystem.bean.QueryContactBean;
@@ -27,6 +28,7 @@ public class CustomerDao {
 	public static final String COLUMN_NAME_AGE = "age";
 	public static final String COLUMN_NAME_POLICY_NO = "policyNo";
 	public static final String COLUMN_NAME_PROFESSION = "profession";
+	public static final String COLUMN_NAME_TAGS = "tags";
 	
     public CustomerDao(Context context) {
     	DBManager.getInstance().onInit(context);
@@ -65,7 +67,6 @@ public class CustomerDao {
 	
 	/**
 	 * 删除一个联系人
-	 * @param username
 	 */
 	public void deleteContact(String id){
 		DBManager.getInstance().deleteContact(id);
@@ -73,7 +74,6 @@ public class CustomerDao {
 	
 	/**
 	 * 保存一个联系人
-	 * @param user
 	 */
 	public void saveContact(ContactSortModel contactSortModel){
 		DBManager.getInstance().saveContact(contactSortModel);
@@ -122,5 +122,9 @@ public class CustomerDao {
 	 */
 	public List<ContactSortModel> getErTongContactList() {
 	    return DBManager.getInstance().getErTongContactList("12");
+	}
+
+	public List<ContactSortModel> getContactListByTags(List<String> selectedTags) {
+		return DBManager.getInstance().getContactListByTags(selectedTags);
 	}
 }

@@ -20,7 +20,6 @@ import com.lyp.membersystem.base.BaseActivity;
 import com.lyp.membersystem.bean.CardEnvelopBean;
 import com.lyp.membersystem.bean.GoodBean;
 import com.lyp.membersystem.bean.NoticeBean;
-import com.lyp.membersystem.bean.OrderBean;
 import com.lyp.membersystem.log.LogUtils;
 import com.lyp.membersystem.net.Errors;
 import com.lyp.membersystem.net.MessageContants;
@@ -33,6 +32,7 @@ import com.lyp.membersystem.utils.ToastUtil;
 import com.lyp.membersystem.view.CustomPopupWindow;
 import com.lyp.membersystem.view.contactsort.ContactSortModel;
 import com.lyp.membersystem.view.dialog.WaitDialog;
+import com.sj.activity.bean.OrderBean;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,7 +65,7 @@ public class OrderActivity extends BaseActivity implements OnRefreshListener2<Li
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case MessageContants.MSG_GET_ORDER_LIST: {
-				parseOrderList((String) msg.obj);
+//				parseOrderList((String) msg.obj);
 				break;
 			}
 			default:
@@ -126,122 +126,122 @@ public class OrderActivity extends BaseActivity implements OnRefreshListener2<Li
 		finish();
 	}
 
-	private void parseOrderList(String result) {
-		if (Errors.ERROR_NET.equals(result) || Errors.ERROR_SERVER.equals(result)) {
-			ToastUtil.showLong(this, R.string.network_error);
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
-			return;
-		}
-		// to parser json data
-		try {
-			JSONObject json = new JSONObject(result);
-			boolean success = json.getBoolean("success");
-			LogUtils.d("-----" + json);
-			if (!success) {
-				String message = json.getString("message");
-				ToastUtil.showShort(this, message);
-				if (json.getString("resCode").equals(Constant.RELOGIN)) {
-					backLogin();
-				}
-				return;
-			}
-			JSONObject job = json.getJSONObject("object");
-			JSONArray jsonArray = job.getJSONArray("infoList");
-			mTotal = job.getInt("totalCount");
-			// orderList.clear();
-			for (int i = 0; i < jsonArray.length(); i++) {
-				double orderPrice = 0d;
-				JSONObject jb = jsonArray.getJSONObject(i);
-				OrderBean orderBean = new OrderBean();
-				orderBean.setOrderId(jb.getString("orderId"));
-				String receiveType = "";
-				if (jb.has("receiveType")) {
-					receiveType = jb.getString("receiveType");
-					orderBean.setReceiveType(receiveType);
-				}
-				if (receiveType.equals("2")) {
-					orderBean.setLogisticsno(jb.getString("logisticsNo"));
-				}
-				orderBean.setOrderDate(DateUtil.stringToStr(jb.getString("orderTime")));
-				orderPrice = jb.getDouble("cardPrice");
-				// orderPrice = orderPrice + jb.getDouble("packPrice");
-
-				JSONArray jsonArray3 = jb.getJSONArray("customerList");
-				List<ContactSortModel> contactList = new ArrayList<ContactSortModel>();
-				List<GoodBean> goodlist = new ArrayList<GoodBean>();
-				List<String> goodIds = new ArrayList<String>();
-				for (int j = 0; j < jsonArray3.length(); j++) {
-					JSONObject contactJB = jsonArray3.getJSONObject(j);
-					ContactSortModel contactSortModel = new ContactSortModel();
-					if (contactJB.has("avatar") && !contactJB.isNull("avatar")) {
-						contactSortModel.setAvater(contactJB.getString("avatar"));
-					}
-					if (contactJB.has("customerAvatar") && !contactJB.isNull("customerAvatar")) {
-						contactSortModel.setAvater(contactJB.getString("customerAvatar"));
-					}
-					// contactSortModel.setId(contactJB.getString("customerId"));
-					contactList.add(contactSortModel);
-
-					if (receiveType.equals("1")) {
-						orderBean.setLogisticsno(contactJB.getString("logisticsNo"));
-					}
-					
-					JSONArray jsonArray2 = contactJB.getJSONArray("productList");
-					for (int k = 0; k < jsonArray2.length(); k++) {
-						JSONObject goodJB = jsonArray2.getJSONObject(k);
-						String pId = goodJB.getString("id");
-						if (goodIds.contains(pId)) {
-							continue;
-						}
-						goodIds.add(pId);
-						GoodBean goodBean = new GoodBean();
-						goodBean.setId(pId);
-						String goodPrice = goodJB.getString("price");
-						orderPrice = orderPrice + Double.valueOf(goodPrice);
-						goodBean.setPiprice(goodPrice);
-						if (goodJB.has("smallPicUrl")) {
-							String picUrls = goodJB.getString("smallPicUrl");
-							if (picUrls.contains(",")) {
-								goodBean.setPicUrls(picUrls.split(",")[0]);
-							} else if (picUrls.trim().length() > 2) {
-								goodBean.setPicUrls(picUrls);
-							}
-						}
-						if (goodJB.has("isService") && !goodJB.isNull("isService")) {
-							goodBean.setIsService(goodJB.getString("isService"));
-						}
-						goodBean.setPname(goodJB.getString("name"));
-						goodlist.add(goodBean);
-					}
-				}
-				orderBean.setGoodlist(goodlist);
-				orderPrice = orderPrice * jsonArray3.length();
-				orderBean.setCustomerList(contactList);
-				orderBean.setOrderPrice(jb.getDouble("totalPrice"));
-				if (jb.has("orderStatus"))
-					orderBean.setOrderState(jb.getString("orderStatus"));
-				orderList.add(orderBean);
-			}
-			mPullRefreshListView.onRefreshComplete();
-			mOrderAdapter.notifyDataSetChanged();
-			if (mTotal <= 0) {
-				ToastUtil.showShort(this, R.string.not_data);
-			} else if (mTotal > mRow) {
-				mPullRefreshListView.setMode(Mode.PULL_UP_TO_REFRESH);
-			}
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
-		} catch (Exception ex) {
-			LogUtils.e(ex.getMessage());
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
-			return;
-		}
-	}
+//	private void parseOrderList(String result) {
+//		if (Errors.ERROR_NET.equals(result) || Errors.ERROR_SERVER.equals(result)) {
+//			ToastUtil.showLong(this, R.string.network_error);
+//			if (mWaitDialog != null && mWaitDialog.isShowing()) {
+//				mWaitDialog.dismiss();
+//			}
+//			return;
+//		}
+//		// to parser json data
+//		try {
+//			JSONObject json = new JSONObject(result);
+//			boolean success = json.getBoolean("success");
+//			LogUtils.d("-----" + json);
+//			if (!success) {
+//				String message = json.getString("message");
+//				ToastUtil.showShort(this, message);
+//				if (json.getString("resCode").equals(Constant.RELOGIN)) {
+//					backLogin();
+//				}
+//				return;
+//			}
+//			JSONObject job = json.getJSONObject("object");
+//			JSONArray jsonArray = job.getJSONArray("infoList");
+//			mTotal = job.getInt("totalCount");
+//			// orderList.clear();
+//			for (int i = 0; i < jsonArray.length(); i++) {
+//				double orderPrice = 0d;
+//				JSONObject jb = jsonArray.getJSONObject(i);
+//				OrderBean orderBean = new OrderBean();
+//				orderBean.setOrderId(jb.getString("orderId"));
+//				String receiveType = "";
+//				if (jb.has("receiveType")) {
+//					receiveType = jb.getString("receiveType");
+//					orderBean.setReceiveType(receiveType);
+//				}
+//				if (receiveType.equals("2")) {
+//					orderBean.setLogisticsno(jb.getString("logisticsNo"));
+//				}
+//				orderBean.setOrderDate(DateUtil.stringToStr(jb.getString("orderTime")));
+//				orderPrice = jb.getDouble("cardPrice");
+//				// orderPrice = orderPrice + jb.getDouble("packPrice");
+//
+//				JSONArray jsonArray3 = jb.getJSONArray("customerList");
+//				List<ContactSortModel> contactList = new ArrayList<ContactSortModel>();
+//				List<GoodBean> goodlist = new ArrayList<GoodBean>();
+//				List<String> goodIds = new ArrayList<String>();
+//				for (int j = 0; j < jsonArray3.length(); j++) {
+//					JSONObject contactJB = jsonArray3.getJSONObject(j);
+//					ContactSortModel contactSortModel = new ContactSortModel();
+//					if (contactJB.has("avatar") && !contactJB.isNull("avatar")) {
+//						contactSortModel.setAvater(contactJB.getString("avatar"));
+//					}
+//					if (contactJB.has("customerAvatar") && !contactJB.isNull("customerAvatar")) {
+//						contactSortModel.setAvater(contactJB.getString("customerAvatar"));
+//					}
+//					// contactSortModel.setId(contactJB.getString("customerId"));
+//					contactList.add(contactSortModel);
+//
+//					if (receiveType.equals("1")) {
+//						orderBean.setLogisticsno(contactJB.getString("logisticsNo"));
+//					}
+//
+//					JSONArray jsonArray2 = contactJB.getJSONArray("productList");
+//					for (int k = 0; k < jsonArray2.length(); k++) {
+//						JSONObject goodJB = jsonArray2.getJSONObject(k);
+//						String pId = goodJB.getString("id");
+//						if (goodIds.contains(pId)) {
+//							continue;
+//						}
+//						goodIds.add(pId);
+//						GoodBean goodBean = new GoodBean();
+//						goodBean.setId(pId);
+//						String goodPrice = goodJB.getString("price");
+//						orderPrice = orderPrice + Double.valueOf(goodPrice);
+//						goodBean.setPiprice(goodPrice);
+//						if (goodJB.has("smallPicUrl")) {
+//							String picUrls = goodJB.getString("smallPicUrl");
+//							if (picUrls.contains(",")) {
+//								goodBean.setPicUrls(picUrls.split(",")[0]);
+//							} else if (picUrls.trim().length() > 2) {
+//								goodBean.setPicUrls(picUrls);
+//							}
+//						}
+//						if (goodJB.has("isService") && !goodJB.isNull("isService")) {
+//							goodBean.setIsService(goodJB.getString("isService"));
+//						}
+//						goodBean.setPname(goodJB.getString("name"));
+//						goodlist.add(goodBean);
+//					}
+//				}
+//				orderBean.setGoodlist(goodlist);
+//				orderPrice = orderPrice * jsonArray3.length();
+//				orderBean.setCustomerList(contactList);
+//				orderBean.setOrderPrice(jb.getDouble("totalPrice"));
+//				if (jb.has("orderStatus"))
+//					orderBean.setOrderState(jb.getString("orderStatus"));
+//				orderList.add(orderBean);
+//			}
+//			mPullRefreshListView.onRefreshComplete();
+//			mOrderAdapter.notifyDataSetChanged();
+//			if (mTotal <= 0) {
+//				ToastUtil.showShort(this, R.string.not_data);
+//			} else if (mTotal > mRow) {
+//				mPullRefreshListView.setMode(Mode.PULL_UP_TO_REFRESH);
+//			}
+//			if (mWaitDialog != null && mWaitDialog.isShowing()) {
+//				mWaitDialog.dismiss();
+//			}
+//		} catch (Exception ex) {
+//			LogUtils.e(ex.getMessage());
+//			if (mWaitDialog != null && mWaitDialog.isShowing()) {
+//				mWaitDialog.dismiss();
+//			}
+//			return;
+//		}
+//	}
 
 	/**
 	 * 设置状态栏背景状态

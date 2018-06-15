@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/activity_title_bar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include
+        android:id="@+id/list_head"
+        layout="@layout/head_story_replay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_title"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp" />
+
+    <com.jude.easyrecyclerview.EasyRecyclerView
+        android:id="@+id/ryl_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_head"
+        android:layout_above="@+id/layout_replay"
+        app:layout_empty="@layout/layout_view_empty"
+        app:scrollbarStyle="insideOverlay"
+        app:scrollbars="none" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_replay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <EditText
+            android:id="@+id/edt_replay"
+            style="@style/TxtBlackNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="请输入评论"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/bt_replay"
+            app:layout_constraintEnd_toStartOf="@+id/bt_replay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bt_replay" />
+
+        <Button
+            android:id="@+id/bt_replay"
+            style="@style/TxtWhiteBig"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_sm_green"
+            android:text="发表"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TxtBlackNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="评分"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+            app:layout_constraintStart_toStartOf="@+id/edt_replay"
+            app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/ratingBarBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="1"
+            app:layout_constraintBottom_toBottomOf="@+id/img_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/edt_replay" />
+    </android.support.constraint.ConstraintLayout>
+    <!--app:layout_error="@layout/layout_load_error"-->
+    <!--app:layout_progress="@layout/layout_load_progress"-->
+
+</RelativeLayout>

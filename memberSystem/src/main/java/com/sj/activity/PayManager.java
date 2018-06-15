@@ -71,7 +71,7 @@ public class PayManager {
         });
 
     }
-    public static interface  PayResultListener{
+    public  interface  PayResultListener{
         void success();
         void fail();
     }

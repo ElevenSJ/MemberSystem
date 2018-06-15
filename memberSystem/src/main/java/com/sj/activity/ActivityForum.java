@@ -42,6 +42,9 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
     @Override
     public void initView() {
         setTitleTxt("首席论坛");
+        SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
+        tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
+
         rylView = findViewById(R.id.ryl_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rylView.setLayoutManager(layoutManager);
@@ -53,18 +56,15 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
         mAdapter.setNoMore(R.layout.layout_load_no_more);
         rylView.setAdapterWithProgress(mAdapter);
         rylView.setRefreshListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        SharedPreferences mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
-        tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
-        onRefresh();
+        rylView.post(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        });
     }
 
     private void getData() {
-        showProgress();
         Map<String, Object> parameters = new ArrayMap<>(3);
         parameters.put("token_id", tokenid);
         parameters.put("pageNum", pageNum);
@@ -91,10 +91,6 @@ public class ActivityForum extends ActivityBase implements SwipeRefreshLayout.On
             public void onFailure(String error_code, String error_message) {
             }
 
-            @Override
-            public void onFinish() {
-                hideProgress();
-            }
         });
 
     }

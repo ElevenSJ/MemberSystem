@@ -64,27 +64,6 @@ public class LoginActivity extends BaseActivity {
         setTranslucentStatus();
         setContentView(R.layout.login_layout);
         initView();
-        AndPermission.with(this)
-                .permission(Permission.WRITE_EXTERNAL_STORAGE,
-                        Permission.READ_EXTERNAL_STORAGE,
-                        Permission.READ_PHONE_STATE,
-                        Permission.ACCESS_COARSE_LOCATION,
-                        Permission.CAMERA,
-                        Permission.READ_PHONE_STATE,
-                        Permission.ACCESS_FINE_LOCATION,
-                        Permission.CALL_PHONE,
-                        Permission.RECORD_AUDIO)
-                .onGranted(new Action() {
-                    @Override
-                    public void onAction(List<String> permissions) {
-                        // TODO what to do.
-                    }
-                }).onDenied(new Action() {
-            @Override
-            public void onAction(List<String> permissions) {
-                // TODO what to do
-            }
-        }).start();
     }
 
     @Override
@@ -103,6 +82,32 @@ public class LoginActivity extends BaseActivity {
         mSharedPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE);
         phone_number_et = (EditText) findViewById(R.id.phone_number_et);
         verify_code_et = (EditText) findViewById(R.id.verify_code_et);
+        verify_code_et.post(new Runnable() {
+            @Override
+            public void run() {
+                AndPermission.with(LoginActivity.this)
+                        .permission(Permission.WRITE_EXTERNAL_STORAGE,
+                                Permission.READ_EXTERNAL_STORAGE,
+                                Permission.READ_PHONE_STATE,
+                                Permission.ACCESS_COARSE_LOCATION,
+                                Permission.CAMERA,
+                                Permission.READ_PHONE_STATE,
+                                Permission.ACCESS_FINE_LOCATION,
+                                Permission.CALL_PHONE,
+                                Permission.RECORD_AUDIO)
+                        .onGranted(new Action() {
+                            @Override
+                            public void onAction(List<String> permissions) {
+                                // TODO what to do.
+                            }
+                        }).onDenied(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        // TODO what to do
+                    }
+                }).start();
+            }
+        });
     }
 
     public void getVerifyCode(View view) {

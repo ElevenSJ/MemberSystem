@@ -24,6 +24,8 @@ import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,7 +109,12 @@ public class CardFragment extends FragmentBase implements SwipeRefreshLayout.OnR
                 if (cardBean!=null){
                     Log.d(TAG, "onSuccessData: index = "+index+",size = "+cardBean.getCpChiefBBS().size());
                     ((ActivityCardBag)getHoldingActivity()).setCardNum(index,cardBean.getCount(),cardBean.getSideCount());
-                    mAdapter.addAll(cardBean.getCpChiefBBS());
+                    List<CardBean.CpBaseBean> allData = new ArrayList<>(cardBean.getCount());
+                    allData.addAll(cardBean.getCpGoods());
+                    allData.addAll(cardBean.getCpService());
+                    allData.addAll(cardBean.getCpCourse());
+                    allData.addAll(cardBean.getCpChiefBBS());
+                    mAdapter.addAll(allData);
                 }
             }
 
@@ -115,6 +122,12 @@ public class CardFragment extends FragmentBase implements SwipeRefreshLayout.OnR
             public void onFailure(String error_code, String error_message) {
                 Log.d(TAG, "onSuccessData: ");
 
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                rylView.setRefreshing(false);
             }
         });
     }

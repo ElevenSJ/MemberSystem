@@ -28,55 +28,15 @@
         android:id="@+id/webview_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_audio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/list_head"
+        app:layout_constraintEnd_toEndOf="@+id/txt_desc"
+        app:layout_constraintStart_toStartOf="@+id/img_icon"
         app:layout_constraintTop_toBottomOf="@+id/txt_price">
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/half_transparent_color"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
-
-        <ImageView
-            android:id="@+id/bt_play"
-            style="@style/TxtBlackBig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBar"
-            android:padding="4dp"
-            android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/img_stop"/>
-
-        <ImageView
-            android:id="@+id/bt_down"
-            style="@style/TxtBlackBig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBar"
-            android:padding="8dp"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/img_down"/>
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/txt_title"
@@ -143,8 +103,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:maxLines="3"
         android:ellipsize="end"
+        android:maxLines="3"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/txt_teacher_name"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
@@ -186,4 +146,70 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/txt_desc"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc" />
+
+
+    <include
+        android:id="@+id/list_head"
+        layout="@layout/head_story_replay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/ryl_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.jude.easyrecyclerview.EasyRecyclerView
+        android:id="@+id/ryl_view"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:scrollbarStyle="insideOverlay"
+        app:scrollbars="none" />
+
+
+    <RelativeLayout
+        android:id="@+id/layout_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/half_transparent_color"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/bt_play"
+            style="@style/TxtBlackBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:layout_centerHorizontal="true"
+            android:padding="4dp"
+            app:srcCompat="@drawable/img_stop" />
+
+        <ImageView
+            android:id="@+id/bt_down"
+            style="@style/TxtBlackBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seekBar"
+            android:padding="8dp"
+            app:srcCompat="@drawable/img_down" />
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

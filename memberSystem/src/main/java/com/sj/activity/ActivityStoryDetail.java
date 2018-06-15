@@ -2,6 +2,7 @@ package com.sj.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -9,9 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,14 +28,24 @@ import android.widget.TextView;
 
 import com.jady.retrofitclient.HttpManager;
 import com.jady.retrofitclient.listener.DownloadFileListener;
+import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.jude.easyrecyclerview.decoration.DividerDecoration;
 import com.lyp.membersystem.R;
 import com.lyp.membersystem.utils.Constant;
 import com.lyp.membersystem.utils.ToastUtil;
 import com.lyp.membersystem.view.CircleImageView;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.sj.activity.adapter.ForumRyvAdapter;
+import com.sj.activity.adapter.ReplayRyvAdapter;
 import com.sj.activity.base.ActivityBase;
+import com.sj.activity.bean.DataListBean;
+import com.sj.activity.bean.ForumBean;
+import com.sj.activity.bean.ReplayBean;
 import com.sj.activity.bean.StorytellingBean;
 import com.sj.audiotool.IMAudioManager;
+import com.sj.http.Callback;
+import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 import com.sj.utils.ImageUtils;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
@@ -44,13 +58,14 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.yuntongxun.ecdemo.common.utils.FileAccessor;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * 创建时间: on 2018/4/26.
  * 创建人: 孙杰
  * 功能描述:
  */
-public class ActivityStoryDetail extends ActivityBase implements View.OnClickListener {
+public class ActivityStoryDetail extends ActivityBase implements View.OnClickListener , RecyclerArrayAdapter.OnMoreListener{
 
     RelativeLayout layoutAudio;
     SeekBar audioSeekBar;
@@ -70,6 +85,11 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
     String tokenid;
     boolean isVip = false;
     boolean isPrepared = false;
+
+    EasyRecyclerView rylView;
+    TextView txtReplayCount;
+    ReplayRyvAdapter mAdapter;
+    int pageNum = 1;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -160,8 +180,27 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
         findViewById(R.id.bt_play).setOnClickListener(this);
         findViewById(R.id.bt_down).setOnClickListener(this);
 
-        initData();
-        initWebSetting();
+        rylView = findViewById(R.id.ryl_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rylView.setLayoutManager(layoutManager);
+        DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.item_line_color), 1, 16, 16);
+        dividerDecoration.setDrawLastItem(false);
+        rylView.addItemDecoration(dividerDecoration);
+        mAdapter = new ReplayRyvAdapter(this);
+        mAdapter.setMore(R.layout.layout_load_more, this);
+        mAdapter.setNoMore(R.layout.layout_load_no_more);
+        rylView.setAdapterWithProgress(mAdapter);
+
+        txtReplayCount = findViewById(R.id.txt_replay_count);
+        findViewById(R.id.txt_all).setOnClickListener(this);
+
+        webview.post(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                initWebSetting();
+            }
+        });
     }
 
     private void initData() {
@@ -177,6 +216,53 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
         }
         txtPrice.setText("¥ " + storytellingBean.getPrice());
         btBuy.setText(storytellingBean.getBuyStatus() != 0 || storytellingBean.getFreeStatus() == 1 ? "查看" : "购买");
+        if (storytellingBean.getBuyStatus() != 0 || storytellingBean.getFreeStatus() == 1){
+            loadReplay();
+        }
+    }
+
+    private void loadReplay() {
+        rylView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadReplayData();
+            }
+        });
+    }
+
+    private void loadReplayData() {
+        Map<String, Object> parameters = new ArrayMap<>(3);
+        parameters.put("token_id", tokenid);
+        parameters.put("storytellingId", storytellingBean.getId());
+        parameters.put("pageNum", pageNum);
+        parameters.put("pageSize", "10");
+        HttpManager.get(UrlConfig.STORY_REPLAY_LIST, parameters, new Callback() {
+            @Override
+            public void onSuccess(String message) {
+            }
+
+            @Override
+            public void onSuccessData(String json) {
+                DataListBean<ReplayBean> forumListBean = new GsonResponsePasare<DataListBean<ReplayBean>>() {
+                }.deal(json);
+                if (forumListBean != null) {
+                    if (forumListBean.getInfoList() != null&&!forumListBean.getInfoList().isEmpty()) {
+                        if (rylView.getVisibility()!=View.VISIBLE){
+                            rylView.setVisibility(View.VISIBLE);
+                            findViewById(R.id.list_head).setVisibility(View.VISIBLE);
+                        }
+                        mAdapter.addAll(forumListBean.getInfoList());
+                        pageNum++;
+                        txtReplayCount.setText("读者评论("+mAdapter.getCount()+")");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(String error_code, String error_message) {
+            }
+
+        });
     }
 
     private void initWebSetting() {
@@ -325,6 +411,9 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
     }
 
     private void initAudio() {
+        if (layoutAudio.getVisibility()==View.VISIBLE&&isPrepared){
+            return;
+        }
         String fileName = new Md5FileNameGenerator().generate(storytellingBean.getAudioUrl());
         File audioFile = new File(FileAccessor.APP_AUDIO, fileName);
         try {
@@ -339,6 +428,7 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
             layoutAudio.setVisibility(View.VISIBLE);
             audioSeekBar.setMax(IMAudioManager.instance().getMediaPlayer().getDuration());
             audioSeekBar.setOnSeekBarChangeListener(sbLis);
+            ((ImageView) findViewById(R.id.bt_play)).setImageResource(R.drawable.img_stop);
             updateSeekBar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -393,6 +483,11 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.txt_all:
+                Intent intent = new Intent(this,ActivityStoryReplayList.class);
+                intent.putExtra("id",storytellingBean.getId());
+                startActivity(intent);
+                break;
             case R.id.bt_down:
                 final String fileName = new Md5FileNameGenerator().generate(storytellingBean.getAudioUrl());
                 ToastUtil.showMessage("正在下载");
@@ -422,10 +517,8 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
                 });
                 break;
             case R.id.bt_play:
-                if (IMAudioManager.instance().getMediaPlayer() == null) {
-                    return;
-                }
-                if (!isPrepared) {
+                if (IMAudioManager.instance().getMediaPlayer() == null||!isPrepared) {
+                    initAudio();
                     return;
                 }
                 if (IMAudioManager.instance().getMediaPlayer().isPlaying()) {
@@ -450,6 +543,7 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
                             storytellingBean.setBuyStatus(1);
                             storytellingBean.setFreeStatus(1);
                             btBuy.setText(storytellingBean.getBuyStatus() != 0 || storytellingBean.getFreeStatus() == 1 ? "查看" : "购买");
+                            loadReplay();
                         }
 
                         @Override
@@ -460,6 +554,16 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
                 }
                 break;
         }
+
+    }
+
+    @Override
+    public void onMoreShow() {
+        loadReplayData();
+    }
+
+    @Override
+    public void onMoreClick() {
 
     }
 }
