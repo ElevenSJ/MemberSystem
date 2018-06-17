@@ -91,4 +91,6 @@ public class UrlConfig {
 
     //获取会员续费显示信息
     public static final String RENEWAL_FEEINFO = "api/app/v1/getRenewalFeeInfo";
+    //给客户添加标签
+    public static final String ADD_CUSTOM_TAG = "api/app/v1/addCustomerTag";
 }

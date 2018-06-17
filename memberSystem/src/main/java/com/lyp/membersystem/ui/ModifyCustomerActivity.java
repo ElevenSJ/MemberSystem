@@ -36,6 +36,8 @@ import com.sj.http.Callback;
 import com.sj.http.GsonResponsePasare;
 import com.sj.http.UrlConfig;
 import com.sj.widgets.TagsDialog;
+import com.sj.widgets.TitlePopAdapter;
+import com.sj.widgets.TitlePopupWindow;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -119,7 +121,12 @@ public class ModifyCustomerActivity extends BaseActivity {
 	List<ContactSortModel.TaglistBean> tagList;
 	List<ContactSortModel.TaglistBean> chooseTagList = new ArrayList<>();
 
-	TagsDialog tagsDialog;
+    final List<String> alltags = new ArrayList<>();
+    List<String> selectedTags = new ArrayList<>();
+
+    String tagIds;
+    private TitlePopupWindow titlePop;
+    private TitlePopAdapter titlePopAdapter;
 
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -354,9 +361,13 @@ public class ModifyCustomerActivity extends BaseActivity {
 			String[] specAry = specStr.split(":");
 			View hotelEvaluateView = View.inflate(this, R.layout.specially_layout_item, null);
 			TextView spec_tv = (TextView) hotelEvaluateView.findViewById(R.id.spec_tv);
-			spec_tv.setText(specAry[1]);
+			if (specAry.length>1){
+				spec_tv.setText(specAry[1]);
+			}
 			TextView spec_date = (TextView) hotelEvaluateView.findViewById(R.id.spec_date);
-			spec_date.setText(specAry[0]);
+			if (specAry.length>0){
+				spec_date.setText(specAry[0]);
+			}
 			addHotelNameView.addView(hotelEvaluateView);
 		}
 		sortSpecViewItem();
@@ -477,6 +488,25 @@ public class ModifyCustomerActivity extends BaseActivity {
 	}
 
 	public void addOrModifyCustomer(View view) {
+		if (!TextUtils.isEmpty(tagIds)) {
+			Map<String, Object> parameters = new ArrayMap<>(4);
+			parameters.put("token_id", tokenid);
+			parameters.put("customerId", contact.getId());
+			parameters.put("tagIds", tagIds);
+			HttpManager.get(UrlConfig.ADD_CUSTOM_TAG, parameters, new Callback() {
+				@Override
+				public void onSuccess(String message) {
+				}
+
+				@Override
+				public void onSuccessData(String json) {
+				}
+
+				@Override
+				public void onFailure(String error_code, String error_message) {
+				}
+			});
+		}
 		updateCustomer();
 	}
 
@@ -562,21 +592,13 @@ public class ModifyCustomerActivity extends BaseActivity {
 		if (spec != null) {
 			contact.setSpecialday(spec);
 		}
-		String ids =null;
-		if (!chooseTagList.isEmpty()){
-			List<String> tagIds = new ArrayList<>();
-			for (ContactSortModel.TaglistBean bean :chooseTagList){
-				tagIds.add(bean.getTagId());
-			}
-			ids = tagIds.isEmpty()?null:TextUtils.join(",",tagIds.toArray());
-		}
 
 		String salemanId = mSharedPreferences.getString(Constant.ID, "");
 		if (mWaitDialog == null) {
 			mWaitDialog = new WaitDialog(this, R.string.loading_press);
 		}
 		mWaitDialog.show();
-		NetProxyManager.getInstance().toUpdateCustomer(mHandler, tokenid, salemanId, contact,ids);
+		NetProxyManager.getInstance().toUpdateCustomer(mHandler, tokenid, salemanId, contact,tagIds);
 	}
 
 	public void setAddress(View view) {
@@ -622,60 +644,83 @@ public class ModifyCustomerActivity extends BaseActivity {
 		}
 	}
 
-	private void showTags() {
-		if (tagsDialog == null){
-			tagsDialog = new TagsDialog(this);
-			tagsDialog.setCancelable(true);
-			tagsDialog.setCanceledOnTouchOutside(true);
-		}
-		tagsDialog.setData(this.tagList, chooseTagList, new TagsDialog.ClickResult() {
-			@Override
-			public void getAllResult(List<ContactSortModel.TaglistBean> tagsList) {
-				chooseTagList .clear();
-				if (tagsList!=null&&!tagsList.isEmpty()){
-					chooseTagList.addAll(tagsList);
-				}
-				List<String> strs = new ArrayList<>();
-				for (ContactSortModel.TaglistBean bean :tagsList){
-					strs.add(bean.getTagName());
-				}
-				tv_tags.setText(TextUtils.join(",",strs.toArray()));
-				contact.setTags(TextUtils.join(",",strs.toArray()));
-			}
-		});
-	}
+    private void showTags() {
+        if (titlePop == null) {
+            titlePop = new TitlePopupWindow(this, R.layout.title_popupwindows);
+            titlePopAdapter = new TitlePopAdapter(this);
+            titlePop.setAdapater(titlePopAdapter);
+            titlePop.setOnItemClick(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (selectedTags.contains(titlePopAdapter.getItem(position))) {
+                        view.setBackgroundResource(R.drawable.shape_circle_button_gray);
+                        ((TextView) view.findViewById(R.id.tv_title)).setTextColor(getResources().getColor(R.color.gray));
+                        selectedTags.remove(titlePopAdapter.getItem(position));
+                        chooseTagList.remove(tagList.get(position));
+                    } else {
+                        ((TextView) view.findViewById(R.id.tv_title)).setTextColor(getResources().getColor(R.color.main_bg_color));
+                        view.setBackgroundResource(R.drawable.shape_circle_button_main_color);
+                        selectedTags.add(titlePopAdapter.getItem(position));
+                        chooseTagList.add(tagList.get(position));
+                    }
+                    List<String> idStrs = new ArrayList<>();
+                    for (ContactSortModel.TaglistBean bean : chooseTagList) {
+                        idStrs.add(bean.getTagId());
+                    }
+                    tagIds = TextUtils.join(",", idStrs.toArray());
+                    tv_tags.setText(TextUtils.join(",", selectedTags.toArray()));
+                }
+            });
+        }
+        titlePopAdapter.setData(alltags, selectedTags);
+        titlePop.showAsDropDown(tv_tags);
+    }
 
 	private void getTagData() {
 		if (mWaitDialog == null) {
 			mWaitDialog = new WaitDialog(this, R.string.loading_press);
 		}
 		mWaitDialog.show();
-			Map<String, Object> parameters = new ArrayMap<>(4);
-			parameters.put("token_id", tokenid);
-			HttpManager.get(UrlConfig.CUSTOM_TAG_LIST, parameters, new Callback() {
-				@Override
-				public void onSuccess(String message) {
-				}
+		Map<String, Object> parameters = new ArrayMap<>(4);
+		parameters.put("token_id", tokenid);
+		HttpManager.get(UrlConfig.CUSTOM_TAG_LIST, parameters, new Callback() {
+			@Override
+			public void onSuccess(String message) {
+			}
 
-				@Override
-				public void onSuccessData(String json) {
-					tagList = new GsonResponsePasare<List<ContactSortModel.TaglistBean>>() {
-					}.deal(json);
-					showTags();
-				}
-
-				@Override
-				public void onFailure(String error_code, String error_message) {
-				}
-
-				@Override
-				public void onFinish() {
-					super.onFinish();
-					if (mWaitDialog != null) {
-						mWaitDialog.dismiss();
+			@Override
+			public void onSuccessData(String json) {
+				tagList = new GsonResponsePasare<List<ContactSortModel.TaglistBean>>() {
+				}.deal(json);
+				alltags.clear();
+				for (int i = 0; i < tagList.size(); i++) {
+					alltags.add(tagList.get(i).getTagName());
+					if (!TextUtils.isEmpty(contact.getTags())) {
+						String[] tagNames = contact.getTags().split(",");
+						for (String tag : tagNames) {
+							if (tagList.get(i).getTagName().equals(tag)) {
+								chooseTagList.add(tagList.get(i));
+								selectedTags.add(tag);
+							}
+						}
 					}
 				}
-			});
+				showTags();
+			}
+
+			@Override
+			public void onFailure(String error_code, String error_message) {
+			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				if (mWaitDialog != null) {
+					mWaitDialog.dismiss();
+				}
+			}
+		});
 	}
 
 	public void setBirthday(View view) {
@@ -699,11 +744,11 @@ public class ModifyCustomerActivity extends BaseActivity {
 	}
 
 	private void parseUpdateCustomer(String result) {
+		if (mWaitDialog != null && mWaitDialog.isShowing()) {
+			mWaitDialog.dismiss();
+		}
 		if (Errors.ERROR_NET.equals(result) || Errors.ERROR_SERVER.equals(result)) {
 			ToastUtil.showLong(this, R.string.network_error);
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
 			return;
 		}
 		// to parser json data
@@ -732,11 +777,11 @@ public class ModifyCustomerActivity extends BaseActivity {
 	 * to parse upload avater from network
 	 */
 	private void parseUploadInfo(String result) {
+		if (mWaitDialog != null && mWaitDialog.isShowing()) {
+			mWaitDialog.dismiss();
+		}
 		if (Errors.ERROR_NET.equals(result) || Errors.ERROR_SERVER.equals(result)) {
 			ToastUtil.showLong(this, R.string.network_error);
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
 			return;
 		}
 		// to parser json data

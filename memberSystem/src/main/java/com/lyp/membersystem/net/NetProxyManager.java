@@ -133,22 +133,8 @@ public class NetProxyManager {
 		}).start();
 	}
 
-	/**
-	 * 增加客户接口
-	 * 
-	 * @param handler
-	 * @param tokenid
-	 * @param salemanId
-	 * @param cname
-	 * @param cphone
-	 * @param nickname
-	 * @param specialday
-	 * @param profiles
-	 * @param caddress
-	 * @param gender
-	 */
 	public void toAddCustomer(final Handler handler, final String tokenid, final String salemanId,
-			final ContactSortModel contactSortModel) {
+							  final ContactSortModel contactSortModel, final String tagIds) {
 		new Thread(new Runnable() {
 
 			@Override
@@ -189,6 +175,9 @@ public class NetProxyManager {
 				}
 				if (contactSortModel.getPolicyNo() != null) {
 					params.put("policyNo", contactSortModel.getPolicyNo());
+				}
+				if (tagIds !=null){
+					params.put("tagIds", tagIds);
 				}
 				// 职业移除了
 //				if (contactSortModel.getProfession() != null) {
@@ -305,7 +294,7 @@ public class NetProxyManager {
      * @param handler
      * @param tokenid
      * @param salemanId
-     * @param ids
+     * @param tagIds
      */
 	public void toUpdateCustomer(final Handler handler, final String tokenid, final String salemanId,
                                  final ContactSortModel contactSortModel, final String tagIds) {

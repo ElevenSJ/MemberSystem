@@ -191,7 +191,7 @@ public class ContactSortModel {
 		 */
 
 		private String tagName;
-		private String tagId;
+		private String id;
 
 		public String getTagName() {
 			return tagName;
@@ -202,11 +202,11 @@ public class ContactSortModel {
 		}
 
 		public String getTagId() {
-			return tagId;
+			return id;
 		}
 
-		public void setTagId(String tagId) {
-			this.tagId = tagId;
+		public void setId(String id) {
+			this.id = id;
 		}
 	}
 }

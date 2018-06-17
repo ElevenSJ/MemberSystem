@@ -216,8 +216,12 @@ public class CustomerDetailActivity extends BaseActivity {
 		if (spec.contains(":")) {
 			String[] specAry = spec.split(":");
 			SpecDateBean specDateBean = new SpecDateBean();
-			specDateBean.setRemark(specAry[1]);
-			specDateBean.setDate(specAry[0]);
+			if(specAry.length>0){
+				specDateBean.setDate(specAry[0]);
+			}
+			if(specAry.length>1){
+				specDateBean.setRemark(specAry[1]);
+			}
 			specDateList.add(specDateBean);
 		}
 	}

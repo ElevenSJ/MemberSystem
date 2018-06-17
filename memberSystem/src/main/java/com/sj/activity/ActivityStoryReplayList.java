@@ -146,7 +146,6 @@ public class ActivityStoryReplayList extends ActivityBase implements SwipeRefres
     }
 
     private void getData() {
-        showProgress();
         Map<String, Object> parameters = new ArrayMap<>(4);
         parameters.put("token_id", tokenid);
         parameters.put("storytellingId", storyid);
@@ -161,25 +160,19 @@ public class ActivityStoryReplayList extends ActivityBase implements SwipeRefres
             public void onSuccessData(String json) {
                 DataListBean<ReplayBean> forumListBean = new GsonResponsePasare<DataListBean<ReplayBean>>() {
                 }.deal(json);
-                if (forumListBean != null) {
-                    if (forumListBean.getInfoList() != null&&!forumListBean.getInfoList().isEmpty()) {
-                        if (pageNum==1){
-                            mAdapter.clear();
-                        }
-                        mAdapter.addAll(forumListBean.getInfoList());
-                        pageNum++;
+                if (forumListBean != null&&forumListBean.getInfoList() != null) {
+                    if (pageNum==1&& mAdapter.getCount() > 0){
+                        mAdapter.clear();
                     }
+                    mAdapter.addAll(forumListBean.getInfoList());
                 }
+                pageNum++;
             }
 
             @Override
             public void onFailure(String error_code, String error_message) {
             }
 
-            @Override
-            public void onFinish() {
-                hideProgress();
-            }
         });
 
     }

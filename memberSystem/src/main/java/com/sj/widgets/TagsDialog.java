@@ -31,8 +31,8 @@ public class TagsDialog extends Dialog {
     TagCloudView tagCloudView;
     Context mContext;
     ClickResult clickResult;
-    List<ContactSortModel.TaglistBean> tags = new ArrayList<>();
-    List<ContactSortModel.TaglistBean> allTagList= new ArrayList<>();
+    List<ContactSortModel.TaglistBean> tags;
+    List<ContactSortModel.TaglistBean> allTagList;
     public TagsDialog(Context context) {
         this(context, R.style.transdialog);
     }
@@ -79,23 +79,25 @@ public class TagsDialog extends Dialog {
         this.show();
         this.clickResult = clickResult;
         if (tagList!=null){
-            allTagList.addAll(tagList);
+            allTagList=tagList;
             if (chooseTagList!=null){
-                this.tags.addAll(chooseTagList);
+                this.tags=chooseTagList;
             }
             List<String> tagStrings = new ArrayList<>();
             for (int i = 0; i < tagList.size(); i++) {
                 tagStrings.add(tagList.get(i).getTagName());
             }
             tagCloudView.setTags(tagStrings);
-
-            for (int i =1;i<tagCloudView.getChildCount();i++){
+            for (int i =0;i<tagCloudView.getChildCount();i++){
                 TextView textView = (TextView) tagCloudView.getChildAt(i);
-                for (ContactSortModel.TaglistBean tag:this.tags){
-                    if (tag.getTagName().equals(textView.getText().toString())){
+                textView.setBackground(getContext().getResources().getDrawable(R.drawable.background_tag_selector));
+                for (String tag:tagStrings){
+                    if (tag.equals(textView.getText().toString())){
                         textView.setSelected(true);
+                        textView.setTextColor(mContext.getResources().getColor(R.color.main_bg_color));
                     }else{
                         textView.setSelected(false);
+                        textView.setTextColor(mContext.getResources().getColor(R.color.gray));
                     }
                 }
             }

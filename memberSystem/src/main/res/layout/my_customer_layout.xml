@@ -9,6 +9,7 @@
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/main_bg_color" >
@@ -75,6 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -87,8 +90,8 @@
             android:layout_marginRight="8dp"
             app:tcvItemBorderHorizontal="8dp"
             app:tcvItemBorderVertical="6dp"
-            app:tcvBorder="2dp"
-            app:tcvTextColor="@drawable/textcolor_tag_selector"
+            app:tcvBorder="8dp"
+            app:tcvTextColor="@color/gray"
             app:tcvBackground="@drawable/background_tag_selector"
             app:tcvSingleLine="true"
             app:tcvCanTagClick="true"

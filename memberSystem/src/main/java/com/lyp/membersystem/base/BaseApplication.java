@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDexApplication;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.jady.retrofitclient.HttpManager;
@@ -54,10 +55,13 @@ public class BaseApplication extends MultiDexApplication {
 
     private static PustDemoActivity mPustTestActivity = null;
 
+    public static DisplayMetrics displayMetrics;
+
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
+        displayMetrics = getResources().getDisplayMetrics();
         instance = this;
         activityStack = new Stack<Activity>();
         allActivityStack = new Stack<Activity>();
@@ -344,5 +348,12 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+    }
+
+    public int getWidth(float scale) {
+        if (scale > 1) {
+            return displayMetrics.widthPixels;
+        }
+        return (int) (displayMetrics.widthPixels * scale);
     }
 }

@@ -185,14 +185,13 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
         rylView.setLayoutManager(layoutManager);
         DividerDecoration dividerDecoration = new DividerDecoration(getResources().getColor(R.color.item_line_color), 1, 16, 16);
         dividerDecoration.setDrawLastItem(false);
+        dividerDecoration.setDrawHeaderFooter(true);
         rylView.addItemDecoration(dividerDecoration);
         mAdapter = new ReplayRyvAdapter(this);
-        mAdapter.setMore(R.layout.layout_load_more, this);
-        mAdapter.setNoMore(R.layout.layout_load_no_more);
+//        mAdapter.setMore(R.layout.layout_load_more, this);
+//        mAdapter.setNoMore(R.layout.layout_load_no_more);
         rylView.setAdapterWithProgress(mAdapter);
 
-        txtReplayCount = findViewById(R.id.txt_replay_count);
-        findViewById(R.id.txt_all).setOnClickListener(this);
 
         webview.post(new Runnable() {
             @Override
@@ -249,7 +248,19 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
                     if (forumListBean.getInfoList() != null&&!forumListBean.getInfoList().isEmpty()) {
                         if (rylView.getVisibility()!=View.VISIBLE){
                             rylView.setVisibility(View.VISIBLE);
-                            findViewById(R.id.list_head).setVisibility(View.VISIBLE);
+                            mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
+                                @Override
+                                public View onCreateView(ViewGroup parent) {
+                                    View view  = LayoutInflater.from(ActivityStoryDetail.this).inflate(R.layout.head_story_replay,null);
+                                    return view;
+                                }
+
+                                @Override
+                                public void onBindView(View headerView) {
+                                    txtReplayCount = headerView.findViewById(R.id.txt_replay_count);
+                                    headerView.findViewById(R.id.txt_all).setOnClickListener(ActivityStoryDetail.this);
+                                }
+                            });
                         }
                         mAdapter.addAll(forumListBean.getInfoList());
                         pageNum++;

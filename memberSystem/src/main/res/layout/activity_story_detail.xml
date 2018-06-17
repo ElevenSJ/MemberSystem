@@ -29,13 +29,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/list_head"
+        app:layout_constraintBottom_toTopOf="@+id/ryl_view"
         app:layout_constraintEnd_toEndOf="@+id/txt_desc"
         app:layout_constraintStart_toStartOf="@+id/img_icon"
         app:layout_constraintTop_toBottomOf="@+id/txt_price">
 
     </FrameLayout>
-
 
 
     <TextView
@@ -148,17 +147,18 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_desc" />
 
 
-    <include
-        android:id="@+id/list_head"
-        layout="@layout/head_story_replay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ryl_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--<include-->
+        <!--android:id="@+id/list_head"-->
+        <!--layout="@layout/head_story_replay"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/guideline6" />-->
 
     <com.jude.easyrecyclerview.EasyRecyclerView
         android:id="@+id/ryl_view"
@@ -212,4 +212,11 @@
             app:srcCompat="@drawable/img_down" />
 
     </RelativeLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
 </android.support.constraint.ConstraintLayout>
