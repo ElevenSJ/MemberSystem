@@ -444,12 +444,13 @@ public class MyCustomerActivity extends BaseActivity {
             }
             contactsSort();
             mCustomerDao.saveContactList(mCustomerList);
+        } catch (Exception ex) {
+            ToastUtil.showLongMessage("解析数据异常！");
+            LogUtils.e(ex.getMessage());
+        }finally {
             if (mWaitDialog != null && mWaitDialog.isShowing()) {
                 mWaitDialog.dismiss();
             }
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-            return;
         }
     }
 
@@ -476,7 +477,10 @@ public class MyCustomerActivity extends BaseActivity {
             adapter.notifyDataSetChanged();
         } catch (Exception ex) {
             LogUtils.e(ex.getMessage());
-            return;
+        }finally {
+            if (mWaitDialog != null && mWaitDialog.isShowing()) {
+                mWaitDialog.dismiss();
+            }
         }
     }
 
@@ -498,8 +502,9 @@ public class MyCustomerActivity extends BaseActivity {
             adapter.isCheckNum = 0;
             select_mode.setVisibility(View.GONE);
             customer_select_all.setChecked(false);
+            adapter.visiblecheck = View.INVISIBLE;
             for (int i = 0; i < mCustomerList.size(); i++) {
-                adapter.visiblecheck.put(i, CheckBox.INVISIBLE);
+//                adapter.visiblecheck.put(i, CheckBox.INVISIBLE);
                 adapter.ischeck.put(i, false);
             }
             adapter.notifyDataSetChanged();

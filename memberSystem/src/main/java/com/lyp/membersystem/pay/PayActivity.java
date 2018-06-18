@@ -183,7 +183,7 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 
 		Pingpp.DEBUG = BuildConfig.DEBUG;
 
-//		df = new DecimalFormat("0");
+		df = new DecimalFormat("0");
 //		try {
 //			Double amount = Double.valueOf(mOrderAmount);
 //			mOrderAmount = df.format(amount);
@@ -317,7 +317,10 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 			finish();
 		} catch (Exception ex) {
 			LogUtils.e(ex.getMessage());
-			return;
+		}finally {
+			if (mWaitDialog != null && mWaitDialog.isShowing()) {
+				mWaitDialog.dismiss();
+			}
 		}
 	}
 	
@@ -336,9 +339,6 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 		try {
 			JSONObject json = new JSONObject(result);
 			boolean success = json.getBoolean("success");
-			if (mWaitDialog != null && mWaitDialog.isShowing()) {
-				mWaitDialog.dismiss();
-			}
 			if (!success) {
 				String message = json.getString("message");
 				ToastUtil.showShort(this, message);
@@ -349,7 +349,7 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 			}
 			JSONObject job = json.getJSONObject("object");
 			if (job.has("unpaid")) {
-				unpaid = job.getDouble("unpaid");
+				unpaid = Double.parseDouble(job.getString("unpaid"));
 				if (unpaid <= 0) {
 					pay_layout.setVisibility(View.GONE);
 					payBtn.setVisibility(View.VISIBLE);
@@ -361,17 +361,20 @@ public class PayActivity extends BaseActivity implements OnClickListener {
 				
 			}
 			if (job.has("cashCardPay")) {
-				cashCardPay = job.getDouble("cashCardPay");
+				cashCardPay = Double.parseDouble(job.getString("cashCardPay"));
 				cash_card_num.setText(df.format(cashCardPay));
 			}
 			if (job.has("serviceCardPay")) {
-				serviceCardPay = job.getDouble("serviceCardPay");
+				serviceCardPay =  Double.parseDouble(job.getString("serviceCardPay"));
 				service_card_num.setText(df.format(serviceCardPay));
 			}
 		} catch (Exception ex) {
 			ToastUtil.showLongMessage("服务器数据异常！");
 			LogUtils.e(ex.getMessage());
-			return;
+		}finally {
+			if (mWaitDialog != null && mWaitDialog.isShowing()) {
+				mWaitDialog.dismiss();
+			}
 		}
 	}
 

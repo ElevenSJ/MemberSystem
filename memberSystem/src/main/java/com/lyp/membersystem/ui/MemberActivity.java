@@ -179,9 +179,10 @@ public class MemberActivity extends BaseActivity {
 				return;
 			}
 			JSONObject obj = json.getJSONObject("object");
-			member_type.setText(obj.getString("typeName"));
-			expiry_date.setText(obj.getString("validEndTime"));
-			typeId = obj.getString("typeId");
+			member_type.setText(obj.getString("name"));
+//			member_type.setText(obj.getString("typeName"));
+//			expiry_date.setText(obj.getString("validEndTime"));
+//			typeId = obj.getString("typeId");
 //			JSONArray array = obj.getJSONArray("memeberType");
 //			for (int i = 0; i < array.length(); i++) {
 //				JSONObject job = array.getJSONObject(i);
@@ -190,26 +191,27 @@ public class MemberActivity extends BaseActivity {
 					id1 = obj.getString("id");
 					money1 = obj.getString("price");
 					radio0.setText(obj.getString("name"));
-					timeRadio1.setText(obj.getString("continueTime"));
-					valid_endtime.setText(obj.getString("preValidEndTime"));
-				} else if (id.equals("2")) {
-					id2 = obj.getString("id");
-					money2 = obj.getString("price");
 					radio1.setText(obj.getString("name"));
 					timeRadio1.setText(obj.getString("continueTime"));
 					valid_endtime.setText(obj.getString("preValidEndTime"));
+					checkId = R.id.radio0;
+					price1.setText(money1);
+					group_temo.check(checkId);
+					radio1.setEnabled(false);
+					radio1.setVisibility(View.GONE);
+				} else if (id.equals("2")) {
+					id2 = obj.getString("id");
+					money2 = obj.getString("price");
+					radio0.setText(obj.getString("name"));
+					radio1.setText(obj.getString("name"));
+					timeRadio1.setText(obj.getString("continueTime"));
+					valid_endtime.setText(obj.getString("preValidEndTime"));
+					checkId = R.id.radio1;
+					price1.setText(money2);
+					group_temo.check(checkId);
+					radio0.setEnabled(false);
+					radio0.setVisibility(View.GONE);
 				}
-//			}
-//			if (typeId.equals("1")) {
-//				checkId = R.id.radio0;
-//				price1.setText(money1);
-//				group_temo.check(checkId);
-//			} else if (typeId.equals("2")) {
-				checkId = R.id.radio1;
-				price1.setText(money2);
-				group_temo.check(checkId);
-				radio0.setEnabled(false);
-				radio0.setVisibility(View.GONE);
 //			}
 		} catch (Exception ex) {
 			ToastUtil.showLongMessage("服务器数据异常！");

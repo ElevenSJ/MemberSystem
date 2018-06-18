@@ -29,7 +29,8 @@ public class MyCustomerAdapter extends BaseAdapter implements SectionIndexer {
 	// 每个客户的Item view集合
 	private HashMap<Integer, View> mView;
 	// 用来记录是否需要显示checkBox
-	public HashMap<Integer, Integer> visiblecheck;
+//	public HashMap<Integer, Integer> visiblecheck;
+	public int visiblecheck;
 	// 用来记录显示的checkBox是否是选中的状态
 	public HashMap<Integer, Boolean> ischeck;
 	// 用来计算选中的数目，以便于更新全选按钮
@@ -39,11 +40,12 @@ public class MyCustomerAdapter extends BaseAdapter implements SectionIndexer {
 		this.mContext = mContext;
 		this.list = list;
 		mView = new HashMap<Integer, View>();
-		visiblecheck = new HashMap<Integer, Integer>();
+//		visiblecheck = new HashMap<Integer, Integer>();
+		visiblecheck = View.INVISIBLE;
 		ischeck = new HashMap<Integer, Boolean>();
 		for (int i = 0; i < list.size(); i++) {
 			ischeck.put(i, false);
-			visiblecheck.put(i, CheckBox.INVISIBLE);
+//			visiblecheck.put(i, View.INVISIBLE);
 		}
 	}
 
@@ -85,7 +87,8 @@ public class MyCustomerAdapter extends BaseAdapter implements SectionIndexer {
 			customer_avater.setVisibility(View.VISIBLE);
 			ImageManager.loadImage(list.get(position).getAvater(), customer_avater, R.drawable.personal);
 		}
-		mCheckBox.setVisibility(visiblecheck.get(position));
+//		mCheckBox.setVisibility(visiblecheck.get(position));
+		mCheckBox.setVisibility(visiblecheck);
 		mCheckBox.setChecked(ischeck.get(position));
 		TextView tvName= ((TextView) view.findViewById(R.id.customer_name));
 		tvName.setText(this.list.get(position).getName());
@@ -142,14 +145,16 @@ public class MyCustomerAdapter extends BaseAdapter implements SectionIndexer {
 	public void notifyDataSetChanged() {
 		isCheckNum = 0;
 		if (isMulChoice) {
+			visiblecheck = View.VISIBLE;
 			for (int i = 0; i < list.size(); i++) {
 				ischeck.put(i, false);
-				visiblecheck.put(i, CheckBox.VISIBLE);
+//				visiblecheck.put(i, View.VISIBLE);
 			}
 		} else {
+			visiblecheck = View.INVISIBLE;
 			for (int i = 0; i < list.size(); i++) {
 				ischeck.put(i, false);
-				visiblecheck.put(i, CheckBox.INVISIBLE);
+//				visiblecheck.put(i, View.INVISIBLE);
 			}
 		}
 		super.notifyDataSetChanged();

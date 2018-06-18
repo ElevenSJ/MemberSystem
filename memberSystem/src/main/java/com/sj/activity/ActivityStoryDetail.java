@@ -252,19 +252,19 @@ public class ActivityStoryDetail extends ActivityBase implements View.OnClickLis
                                 @Override
                                 public View onCreateView(ViewGroup parent) {
                                     View view  = LayoutInflater.from(ActivityStoryDetail.this).inflate(R.layout.head_story_replay,null);
+                                    txtReplayCount = view.findViewById(R.id.txt_replay_count);
+                                    view.findViewById(R.id.txt_all).setOnClickListener(ActivityStoryDetail.this);
                                     return view;
                                 }
-
                                 @Override
                                 public void onBindView(View headerView) {
-                                    txtReplayCount = headerView.findViewById(R.id.txt_replay_count);
-                                    headerView.findViewById(R.id.txt_all).setOnClickListener(ActivityStoryDetail.this);
+
                                 }
                             });
                         }
                         mAdapter.addAll(forumListBean.getInfoList());
                         pageNum++;
-                        txtReplayCount.setText("读者评论("+mAdapter.getCount()+")");
+//                        txtReplayCount.setText("读者评论("+mAdapter.getCount()+")");
                     }
                 }
             }

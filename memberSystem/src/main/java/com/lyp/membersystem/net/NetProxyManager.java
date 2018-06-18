@@ -516,7 +516,7 @@ public class NetProxyManager {
 	 * @param token_id
 	 */
 	public void toGetProductList(final Handler handler, final String token_id, final int pageNum, final int pageSize,
-			final String pname, final String typeId) {
+			final String pname, final String typeId,final String orderStr,final String sortStr) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -540,6 +540,14 @@ public class NetProxyManager {
 				if (typeId != null) {
 					sb.append("&typeId=");
 					sb.append(typeId);
+				}
+				if (orderStr != null) {
+					sb.append("&order=");
+					sb.append(orderStr);
+				}
+				if (sortStr != null) {
+					sb.append("&sort=");
+					sb.append(sortStr);
 				}
 				String result = HttpManager.httpGet(sb.toString());
 				Message msg = new Message();
@@ -1786,7 +1794,7 @@ public class NetProxyManager {
 			@Override
 			public void run() {
 				StringBuffer sb = new StringBuffer();
-				sb.append(UrlConfig.RENEWAL_FEEINFO);
+				sb.append(UrlConfig.BASE_URL+UrlConfig.RENEWAL_FEEINFO);
 				sb.append("?");
 				sb.append("token_id=");
 				sb.append(tokenid);

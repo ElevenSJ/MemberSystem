@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class GoodsActivity extends BaseActivity implements OnRefreshListener2<ListView> {
@@ -52,6 +53,9 @@ public class GoodsActivity extends BaseActivity implements OnRefreshListener2<Li
 	private ListView mListView;
 	private GoodsAdapter mAdapter;
 	private SharedPreferences mSharedPreferences;
+
+	private ImageView imgSort;
+	private int sortType = 0;
 
 	private Handler mainHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -115,6 +119,9 @@ public class GoodsActivity extends BaseActivity implements OnRefreshListener2<Li
 				startActivity(intent);
 			}
 		});
+
+		imgSort = findViewById(R.id.img_sort);
+		findViewById(R.id.layout_sort).setVisibility(View.VISIBLE);
 	}
 
 	private void getData() {
@@ -122,9 +129,23 @@ public class GoodsActivity extends BaseActivity implements OnRefreshListener2<Li
 		String tokenid = mSharedPreferences.getString(Constant.TOKEN_ID, "");
 		String saleId = mSharedPreferences.getString(Constant.ID, "");
 		NetProxyManager.getInstance().toGetProductList(mainHandler, tokenid, mPage + (goodsList.size() / mRow), mRow,
-				null, id);
+				null, id,"psaleprice",sortType==0?"ASC":"DESC");
 	}
 
+	public void sortData(View view){
+		goodsList.clear();
+		switch (sortType){
+			case 0:
+				imgSort.setImageResource(R.drawable.img_desc);
+				sortType = 1;
+				break;
+			case 1:
+				imgSort.setImageResource(R.drawable.img_asc);
+				sortType = 0;
+				break;
+		}
+		getData();
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
